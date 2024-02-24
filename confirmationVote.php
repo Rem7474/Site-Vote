@@ -13,7 +13,10 @@
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
         <h1>Inscription pour les votes du BDE R&T</h1>
-        <p class="reussite">Votre inscription a bien été prise en compte. Vous recevrez un mail contenant un lien pour effectuer votre vote.</p>
+        <p class="reussite">Bravo, votre vote a bien été pris en compte !</p>
+        <p class="reussite">Merci pour votre participation.</p>
+        <!-- Affichage du hash de vote -->
+        <p class="hash">Hash de participation : <?php echo $_GET["hash"]?></p>
     </div>
 </body>
 </html>

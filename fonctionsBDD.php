@@ -1,7 +1,7 @@
 <?php
 //fonction pour ajouter un hash dans la base de données
 function addHash($hash, $conn){
-    $sql = "INSERT INTO utilisateurs (hash) VALUES (:hash) returning id";
+    $sql = "INSERT INTO participants (hash) VALUES (:hash) returning id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':hash', $hash);
     $stmt->execute();
@@ -10,7 +10,7 @@ function addHash($hash, $conn){
 }
 //fonction pour vérifier si un hash existe dans la base de données
 function getHash($hash, $conn){
-    $sql = "SELECT * FROM utilisateurs WHERE hash = :hash";
+    $sql = "SELECT * FROM participants WHERE hash = :hash";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':hash', $hash);
     $stmt->execute();
@@ -34,6 +34,17 @@ function getVotes($vote, $conn){
     $sql = "SELECT COUNT(*) FROM votes WHERE vote = :vote";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':vote', $vote);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
+}
+function addUser($nom, $prenom, $login, $email, $conn){
+    $sql = "INSERT INTO utilisateurs (nom, prenom, login, email) VALUES (:nom, :prenom, :login, :email) returning id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':prenom', $prenom);
+    $stmt->bindParam(':login', $login);
+    $stmt->bindParam(':email', $email);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];
