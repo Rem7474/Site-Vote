@@ -1,6 +1,6 @@
 <?php
 //fonction pour ajouter un hash dans la base de données
-function ajouterHash($hash, $conn){
+function addHash($hash, $conn){
     $sql = "INSERT INTO utilisateurs (hash) VALUES (:hash) returning id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':hash', $hash);
@@ -9,7 +9,7 @@ function ajouterHash($hash, $conn){
     return $result[0];
 }
 //fonction pour vérifier si un hash existe dans la base de données
-function hashExiste($hash, $conn){
+function getHash($hash, $conn){
     $sql = "SELECT * FROM utilisateurs WHERE hash = :hash";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':hash', $hash);
@@ -23,7 +23,7 @@ function hashExiste($hash, $conn){
     }
 }
 //fonction pour enregistrer un vote dans la base de données
-function enregistrerVote($vote, $conn){
+function addVote($vote, $conn){
     $sql = "INSERT INTO votes (vote) VALUES (:vote)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':vote', $vote);

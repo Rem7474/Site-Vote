@@ -27,7 +27,7 @@ else{
     <h1>Vote pour le BDE R&T</h1>
     <p>Bienvenue sur la page de vote pour le BDE R&T. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
 
-    <form action="vote.php" method="post">
+    <form action="index.php" method="post">
         <div class="gauche">
             <input id="candidat1" type="radio" name="candidat" value="1"><br>
             <label for="candidat1">Equipe de ....</label>
