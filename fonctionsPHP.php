@@ -1,7 +1,7 @@
 <?php
 //connexion à la base de données
 include 'FonctionsConnexion.php';
-$conn = ConnexionBDD('parametresBDD.php');
+$conn = connexionBDD('./private/parametres.ini');
 
 
 function InscriptionVote($nom, $prenom){
