@@ -67,11 +67,6 @@ function EnregistrerVote($vote, $hash){
             header('Location: erreur.html');
             exit();
         }
-        else{
-            //redirection vers une page d'erreur
-            header('Location: erreur.html');
-            exit();
-        }
     }
     else{
         //redirection vers une page d'erreur
@@ -89,3 +84,4 @@ function HashExiste($hash){
         return false;
     }
 }
+?>
