@@ -24,10 +24,12 @@ function getHash($hash, $conn){
 }
 //fonction pour enregistrer un vote dans la base de données
 function addVote($vote, $conn){
-    $sql = "INSERT INTO votes (vote) VALUES (:vote)";
+    $sql = "INSERT INTO votes (vote) VALUES (:vote) returning id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':vote', $vote);
     $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
 }
 //fonction pour récupérer le nombre de votes pour un candidat
 function getVotes($vote, $conn){
