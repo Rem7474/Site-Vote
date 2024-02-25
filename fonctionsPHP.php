@@ -65,7 +65,7 @@ function InscriptionVote($nom, $prenom){
 function EnregistrerVote($vote, $hash){
     global $conn;
     //vérification de l'existence du hash dans la base de données
-    if(hashExiste($hash, $conn) && ($vote==1 || $vote==2)){
+    if(hashExiste($hash, $conn) && ($vote=="1" || $vote=="2")){
         //enregistrement du vote dans la base de données
         $result=addVote($vote, $conn);
         if ($result){
