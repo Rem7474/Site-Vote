@@ -66,12 +66,23 @@ function EnregistrerVote($vote, $hash){
     global $conn;
     //vérification de l'existence du hash dans la base de données
     if(hashExiste($hash, $conn) && ($vote=="1" || $vote=="2")){
+        //création d'un nouveau hash aléatoire
+        $participation = hash('sha256', random_bytes(32));
         //enregistrement du vote dans la base de données
-        $result=addVote($vote, $conn);
+        $result=addVote($vote, $participation, $conn);
         if ($result){
-            //redirection vers une page de confirmation
-            header('Location: confirmationVote.php?hash='.$hash);
-            exit();
+            //suppression du hash dans la base de données
+            $result2=deltehash($hash, $conn);
+            if(!$result2){
+                //redirection vers une page d'erreur
+                header('Location: erreur.html');
+                exit();
+            }
+            else{
+                //redirection vers une page de confirmation
+                header('Location: confirmationVote.php?hash='.$participation);
+                exit();
+            }
         }
         else{
             //redirection vers une page d'erreur

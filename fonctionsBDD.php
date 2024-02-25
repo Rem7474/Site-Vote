@@ -23,10 +23,11 @@ function getHash($hash, $conn){
     }
 }
 //fonction pour enregistrer un vote dans la base de données
-function addVote($vote, $conn){
-    $sql = "INSERT INTO votes (vote) VALUES (:vote) returning id";
+function addVote($vote, $hash, $conn){
+    $sql = "INSERT INTO votes (vote,hash) VALUES (:vote,:hash) returning id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':vote', $vote);
+    $stmt->bindParam(':hash', $hash);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];
@@ -63,5 +64,13 @@ function getUser($login, $conn){
     else{
         return false;
     }
+}
+function deleteHash($hash, $conn){
+    $sql = "DELETE FROM participants WHERE hash = :hash returning id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':hash', $hash);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
 }
 ?>
