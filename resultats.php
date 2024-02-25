@@ -48,6 +48,8 @@ else{
                 <progress value="<?php echo $percent2; ?>" max="100"></progress>
                 <span><?php echo $percent2; ?>%</span>
             </div>
+            <!-- Affichage du nombre total de votes -->
+            <p>Total des votes : <?php echo $total; ?></p>
         </div>
         <div class="winner">
             <h2>Le gagnant est : <?php echo $winner; ?></h2>
