@@ -68,3 +68,27 @@ form input[type="submit"] {
 form input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.vote-form {
+    margin-top: 20px;
+}
+
+.candidate {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.candidate input[type="radio"] {
+    margin-right: 10px;
+}
+
+.candidate label {
+    font-weight: bold;
+}
+
+.candidate img {
+    max-width: 100px;
+    margin-left: 20px;
+    border-radius: 5px;
+}
