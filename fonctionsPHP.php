@@ -135,7 +135,8 @@ function SendMail($to, $subject, $message){
         $mail->Body = $message;
         $mail->send();
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        //redirection vers une page d'erreur
+        header('Location: erreur.html');
     }   
     
 }
