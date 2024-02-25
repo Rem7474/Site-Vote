@@ -1,8 +1,8 @@
 <?php
 //récupération des résultats des votes
 include 'fonctionsPHP.php';
-$vote1 = resultats("1")
-$vote2 = resultats("2")
+$vote1 = resultats("1");
+$vote2 = resultats("2");
 //calcul du pourcentage des votes
 $total = $vote1 + $vote2;
 $percent1 = round($vote1 / $total * 100);
