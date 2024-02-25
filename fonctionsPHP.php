@@ -72,7 +72,7 @@ function EnregistrerVote($vote, $hash){
         $result=addVote($vote, $participation, $conn);
         if ($result){
             //suppression du hash dans la base de données
-            $result2=deltehash($hash, $conn);
+            $result2=deleteHash($hash, $conn);
             if(!$result2){
                 //redirection vers une page d'erreur
                 header('Location: erreur.html');
