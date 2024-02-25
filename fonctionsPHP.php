@@ -3,7 +3,10 @@
 include 'FonctionsConnexion.php';
 include 'fonctionsBDD.php';
 $conn = connexionBDD('./private/parametres.ini');
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
 function InscriptionVote($nom, $prenom){
     global $conn;
     //vérication de la taille des noms et prénoms
@@ -22,7 +25,13 @@ function InscriptionVote($nom, $prenom){
     $nom = str_replace(' ', '', $nom);
     $prenom = str_replace(' ', '', $prenom);
     //création du login avec les 6 premières lettres du nom et les 2 premières lettres du prénom
-    $login = substr($nom, 0, 6).substr($prenom, 0, 2);
+    //test si le nom est plus petit que 6 caractères
+    if(strlen($nom) < 6){
+        $login = $nom.substr($prenom, 0, 1);
+    }
+    else{
+        $login = substr($nom, 0, 6).substr($prenom, 0, 2);
+    }
     //création du mail
     $email = $login."@etu.univ-smb.fr";
     //hashage salé avec le timestamp du nom et prénom
@@ -36,7 +45,7 @@ function InscriptionVote($nom, $prenom){
         exit();
     }
     else{
-        mail($email, "[Vote BDE R&T] Confirmation d'inscription", "Cliquez sur ce lien pour effectué votre vote : https://vote.remcorp.fr/vote.php?hash=".$hash);
+        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "Cliquez sur ce lien pour effectué votre vote : https://vote.remcorp.fr/vote.php?hash=".$hash);
         //enregistrement du hash dans la base de données
         $ajout=addHash($hash, $conn);
         $ajout2=addUser($nom, $prenom, $login, $email, $conn);
@@ -86,5 +95,48 @@ function HashExiste($hash){
     else{
         return false;
     }
+}
+function SendMail($to, $subject, $message){
+    include './private/parametres.ini';
+    $message = "<!DOCTYPE html>
+    <html lang='fr'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Inscription pour les votes du BDE R&T</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' type='text/css' href='https://vote.remcorp.fr/styles.css'>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <img src='https://vote.remcorp.fr/bgsharklo.jpg' alt='Logo du site'>
+            </div>
+            <h1>Inscription pour les votes du BDE R&T</h1>
+            <p class='reussite'>".$message."</p>
+        </div>
+    </body>
+    </html>";
+    $mail= new PHPMailer(true);
+    try {
+        //Server settings
+        $mail->isSMTP();
+        $mail->Host = $smtp_host;
+        $mail->SMTPAuth = true;
+        $mail->Username = $smtp_username;
+        $mail->Password = $smtp_password;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        //Recipients
+        $mail->setFrom('vote@remcorp.fr', 'BDE R&T');
+        $mail->addAddress($to);
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        $mail->send();
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }   
+    
 }
 ?>
