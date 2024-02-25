@@ -20,6 +20,7 @@
         </form>
         <div class="result" id="result">
             <?php
+            include 'fonctionsPHP.php';
             //récupération du hash
             if(isset($_POST['hash'])){
                 //vérification du hash
