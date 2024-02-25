@@ -8,7 +8,11 @@ $total = $vote1 + $vote2;
 $percent1 = round($vote1 / $total * 100);
 $percent2 = round($vote2 / $total * 100);
 //détermination du gagnant
-if($vote1 > $vote2){
+if($vote1 == $vote2){
+    $winner = "Egalité !";
+    $winnerImg = "candidat1.jpg";
+}
+else if($vote1 > $vote2){
     $winner = "Equipe de Couniamamaw";
     $winnerImg = "candidat1.jpg";
 }
@@ -27,6 +31,10 @@ else{
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <!-- Insérez votre logo ici -->
+            <img src="bgsharklo.jpg" alt="Logo du site">
+        </div>
         <h1>Résultats du vote pour le BDE R&T</h1>
         <div class="result">
             <h2>Résumé des votes :</h2>

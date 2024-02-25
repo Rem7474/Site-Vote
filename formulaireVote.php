@@ -27,6 +27,10 @@ else{
 </head>
 <body>
     <div class="container">
+        <div class="header">
+            <!-- Insérez votre logo ici -->
+            <img src="bgsharklo.jpg" alt="Logo du site">
+        </div>
         <h1>Vote pour le BDE R&T</h1>
         <p>Bienvenue sur la page de vote pour le BDE R&T. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
 
