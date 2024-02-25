@@ -45,7 +45,7 @@ function InscriptionVote($nom, $prenom){
         exit();
     }
     else{
-        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "Cliquez sur ce lien pour effectué votre vote : https://vote.remcorp.fr/vote.php?hash=".$hash);
+        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "Cliquez sur ce lien pour effectué votre vote : https://vote.remcorp.fr/index.php?hash=".$hash);
         //enregistrement du hash dans la base de données
         $ajout=addHash($hash, $conn);
         $ajout2=addUser($nom, $prenom, $login, $email, $conn);

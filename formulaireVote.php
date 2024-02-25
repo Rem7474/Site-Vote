@@ -1,5 +1,6 @@
 <?php
 //récupération du hash dans l'url
+include 'fonctionsPHP.php';
 if(isset($_GET['hash'])){
     //vérification du hash
     $hash = $_GET['hash'];
