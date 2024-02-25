@@ -107,6 +107,12 @@ function HashExiste($hash){
         return false;
     }
 }
+function resultats(){
+    global $conn;
+    $result1=getVotes(1, $conn);
+    $result2=getVotes(2, $conn);
+    return array($result1, $result2);
+}
 function SendMail($to, $subject, $message){
     include './private/parametres.ini';
     $message = "<!DOCTYPE html>

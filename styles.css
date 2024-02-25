@@ -92,3 +92,28 @@ form input[type="submit"]:hover {
     margin-left: 20px;
     border-radius: 5px;
 }
+
+.result {
+    margin-bottom: 20px;
+}
+
+.progress-wrapper {
+    margin-bottom: 15px;
+}
+
+progress {
+    width: 100%;
+}
+
+.progress-wrapper span {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.winner img {
+    max-width: 200px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
