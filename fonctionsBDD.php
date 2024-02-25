@@ -49,4 +49,17 @@ function addUser($nom, $prenom, $login, $email, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
+function getUser($login, $conn){
+    $sql = "SELECT * FROM utilisateurs WHERE login = :login";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':login', $login);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 ?>

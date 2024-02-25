@@ -1,10 +1,11 @@
 <?php
 //connexion à la base de données
 include 'FonctionsConnexion.php';
+include 'fonctionsBDD.php';
 $conn = connexionBDD('./private/parametres.ini');
 
-
 function InscriptionVote($nom, $prenom){
+    global $conn;
     //vérication de la taille des noms et prénoms
     if(strlen($nom) < 2 || strlen($nom) > 50 || strlen($prenom) < 2 || strlen($prenom) > 50){
         //redirection vers une page d'erreur
@@ -41,7 +42,7 @@ function InscriptionVote($nom, $prenom){
         $ajout2=addUser($nom, $prenom, $login, $email, $conn);
         //redirection vers une page de confirmation si l'ajout a réussi
         if($ajout){
-            header('Location: confirmationInscription.php?hash='.$hash);
+            header('Location: confirmationInscription.php?mail='.$email);
             exit();
         }
         else{
@@ -53,13 +54,14 @@ function InscriptionVote($nom, $prenom){
 }
 
 function EnregistrerVote($vote, $hash){
+    global $conn;
     //vérification de l'existence du hash dans la base de données
     if(hashExiste($hash, $conn) && ($vote==1 || $vote==2)){
         //enregistrement du vote dans la base de données
         $result=addVote($vote, $conn);
         if ($result){
             //redirection vers une page de confirmation
-            header('Location: confirmationVote.html');
+            header('Location: confirmationVote.php?hash='.$hash);
             exit();
         }
         else{
@@ -76,6 +78,7 @@ function EnregistrerVote($vote, $hash){
 }
 
 function HashExiste($hash){
+    global $conn;
     //vérification de l'existence du hash dans la base de données
     if(getHash($hash, $conn)){
         return true;

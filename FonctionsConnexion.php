@@ -1,6 +1,4 @@
 <?php
-// Parametres de connexion a la base de donnees
-$debug=false; // affichage des erreurs et avertissements PHP
 function ConnexionBDD($fichierParametre) {
     include $fichierParametre; // on "inclut" le fichier source contenant du code
     $dsn='pgsql:host='.$lehost.';dbname='.$dbname.';port='.$leport;
