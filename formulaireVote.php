@@ -34,12 +34,12 @@ else{
             <div class="candidate">
                 <input id="candidat1" type="radio" name="vote" value="1">
                 <label for="candidat1">Equipe de Couniamamaw</label>
-                <img src="candidat1.jpg" alt="Photo de l'équipe de ....">
+                <img src="candidat1.jpg" alt="Photo de l'équipe de Couniamamaw">
             </div>
             <div class="candidate">
                 <input id="candidat2" type="radio" name="vote" value="2">
                 <label for="candidat2">Equipe de Medrick</label>
-                <img src="candidat2.jpg" alt="Photo de l'équipe de ....">
+                <img src="candidat2.jpg" alt="Photo de l'équipe de Medrick">
             </div>
             <input type="hidden" name="hash" value="<?php echo $hash; ?>">
             <input type="submit" value="Voter">
