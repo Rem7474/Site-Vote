@@ -8,7 +8,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Vérifier son vote</h1>
+        <div class="header">
+            <!-- Insérez votre logo ici -->
+            <img src="bgsharklo.jpg" alt="Logo du site">
+        </div>
+        <h1>Vérifier son vote pour le BDE R&T</h1>
         <p>Veuillez entrer le hash de votre vote pour vérifier l'équipe pour laquelle vous avez voté :</p>
         <form action="checkVote.php" method="post">
             <input type="text" name="hash" placeholder="Entrez votre hash de vote" required>
