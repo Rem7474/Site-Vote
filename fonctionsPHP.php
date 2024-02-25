@@ -45,7 +45,7 @@ function InscriptionVote($nom, $prenom){
         exit();
     }
     else{
-        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "Cliquez sur ce lien pour effectué votre vote : https://vote.remcorp.fr/index.php?hash=".$hash);
+        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash);
         //enregistrement du hash dans la base de données
         $ajout=addHash($hash, $conn);
         $ajout2=addUser($nom, $prenom, $login, $email, $conn);
@@ -112,7 +112,7 @@ function SendMail($to, $subject, $message){
                 <img src='https://vote.remcorp.fr/bgsharklo.jpg' alt='Logo du site'>
             </div>
             <h1>Inscription pour les votes du BDE R&T</h1>
-            <p class='reussite'>".$message."</p>
+            <p class='reussite'>Cliquez sur ce lien pour effectuer votre vote : <a href=".$message.">Lien</a></p>
         </div>
     </body>
     </html>";
