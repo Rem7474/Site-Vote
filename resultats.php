@@ -10,7 +10,7 @@ $percent2 = round($vote2 / $total * 100);
 //détermination du gagnant
 if($vote1 == $vote2){
     $winner = "Egalité !";
-    $winnerImg = "candidat1.jpg";
+    $winnerImg = "bgsharklo.jpg";
 }
 else if($vote1 > $vote2){
     $winner = "Equipe de Couniamamaw";
