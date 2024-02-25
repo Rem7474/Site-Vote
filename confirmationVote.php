@@ -17,6 +17,8 @@
         <p class="reussite">Merci pour votre participation.</p>
         <!-- Affichage du hash de vote -->
         <p class="hash">Hash de participation : <?php echo $_GET["hash"]?></p>
+        <!-- Lien pour vérifier son vote-->
+        <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php">Vérifier son vote</a></p>
     </div>
 </body>
 </html>
