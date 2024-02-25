@@ -41,6 +41,15 @@ function getVotes($vote, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
+//fonction pour récupérer l'équipe pour laquelle un vote a été effectué
+function getEquipe($hash, $conn){
+    $sql = "SELECT vote FROM votes WHERE hash = :hash";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':hash', $hash);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
+}
 function addUser($nom, $prenom, $login, $email, $conn){
     $sql = "INSERT INTO utilisateurs (nom, prenom, login, email) VALUES (:nom, :prenom, :login, :email) returning id";
     $stmt = $conn->prepare($sql);

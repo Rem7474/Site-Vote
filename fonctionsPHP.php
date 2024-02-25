@@ -162,4 +162,21 @@ function deleteaccent($string){
 	$string = str_replace($search, $replace, $string);
     return $string;
 }
+function getEquipeVote($hash){
+    global $conn;
+    $result=getEquipe($hash, $conn);
+    if ($result){
+        if ($result['vote'] == 1){
+            return "Couniamamaw";
+        }
+        else{
+            return "Medrick";
+        }
+    }
+    else{
+        //redirection vers une page d'erreur
+        header('Location: erreur.html');
+        exit();
+    }
+}
 ?>
