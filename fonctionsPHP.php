@@ -26,7 +26,7 @@ function InscriptionVote($nom, $prenom){
     $prenom = str_replace(' ', '', $prenom);
     //création du login avec les 6 premières lettres du nom et les 2 premières lettres du prénom
     //test si le nom est plus petit que 6 caractères
-    if(strlen($nom) < 6){
+    if(strlen($nom) <= 6){
         $login = $nom.substr($prenom, 0, 1);
     }
     else{
