@@ -1,9 +1,8 @@
 <?php
 include 'fonctionsPHP.php';
-if(isset($_POST['nom']) && isset($_POST['prenom'])){
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    InscriptionVote($nom, $prenom);
+if(isset($_POST['login'])){
+    $login = $_POST['login'];
+    InscriptionVote($login);
 }
 //récupération du vote si il existe
 else if(isset($_POST['vote']) && isset($_POST['hash'])){

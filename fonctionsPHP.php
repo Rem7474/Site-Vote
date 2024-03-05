@@ -7,30 +7,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
-function InscriptionVote($nom, $prenom){
+function InscriptionVote($login){
     global $conn;
-    //vérication de la taille des noms et prénoms
-    if(strlen($nom) < 2 || strlen($nom) > 50 || strlen($prenom) < 2 || strlen($prenom) > 50){
-        //redirection vers une page d'erreur
+    //mise en minuscule du login
+    $login = strtolower($login);
+    //Vérification du login (sans caractères spéciaux + longueur entre 6 et 8 caractères)
+    if(!preg_match('/^[a-z]{6,8}$/', $login)){
+        //affichage d'une page html d'erreur
         header('Location: erreur.html');
         exit();
-    }
-    //mise en minuscule des noms et prénoms
-    $nom = strtolower($nom);
-    $prenom = strtolower($prenom);
-    //retirer les accents
-    $nom = deleteaccent($nom);
-    $prenom = deleteaccent($prenom);
-    //retire les espaces
-    $nom = str_replace(' ', '', $nom);
-    $prenom = str_replace(' ', '', $prenom);
-    //création du login avec les 6 premières lettres du nom et les 2 premières lettres du prénom
-    //test si le nom est plus petit que 6 caractères
-    if(strlen($nom) <= 6){
-        $login = $nom.substr($prenom, 0, 1);
-    }
-    else{
-        $login = substr($nom, 0, 6).substr($prenom, 0, 2);
     }
     //création du mail
     $email = $login."@etu.univ-smb.fr";
@@ -166,7 +151,7 @@ function getEquipeVote($hash){
     global $conn;
     $result=getEquipe($hash, $conn);
     if ($result){
-        if ($result['vote'] == 1){
+        if ($result == "1"){
             return "Couniamamaw";
         }
         else{

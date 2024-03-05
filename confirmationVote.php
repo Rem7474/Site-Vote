@@ -1,3 +1,18 @@
+<?php
+// Vérification de la présence du hash de vote
+if (!isset($_GET["hash"])) {
+    header("Location: index.php");
+    exit();
+}
+//longueur du hash
+$hashLength = 64;
+// Vérification de la longueur du hash
+if (strlen($_GET["hash"]) != $hashLength) {
+    header("Location: index.php");
+    exit();
+}
+$hash=$_GET["hash"];
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,7 +31,7 @@
         <p class="reussite">Bravo, votre vote a bien été pris en compte !</p>
         <p class="reussite">Merci pour votre participation.</p>
         <!-- Affichage du hash de vote -->
-        <p class="hash">Hash de participation : <?php echo $_GET["hash"]?></p>
+        <p class="hash">Hash de participation : <?php echo $hash?></p>
         <!-- Lien pour vérifier son vote-->
         <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php">Vérifier son vote</a></p>
     </div>

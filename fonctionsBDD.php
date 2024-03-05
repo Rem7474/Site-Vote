@@ -50,11 +50,9 @@ function getEquipe($hash, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
-function addUser($nom, $prenom, $login, $email, $conn){
-    $sql = "INSERT INTO utilisateurs (nom, prenom, login, email) VALUES (:nom, :prenom, :login, :email) returning id";
+function addUser($login, $email, $conn){
+    $sql = "INSERT INTO utilisateurs (login, email) VALUES (:login, :email) returning id";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':nom', $nom);
-    $stmt->bindParam(':prenom', $prenom);
     $stmt->bindParam(':login', $login);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
