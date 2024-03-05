@@ -21,7 +21,7 @@ function InscriptionVote($login){
     $email = $login."@etu.univ-smb.fr";
     //hashage salé avec le timestamp du nom et prénom
     $salt = time();
-    $hash = hash('sha256', $nom.$prenom.$salt);
+    $hash = hash('sha256', $login.$salt);
     //envoi du mail de confirmation si la personne n'est pas déjà inscrite
     $user=getUser($login, $conn);
     if($user){
@@ -33,7 +33,7 @@ function InscriptionVote($login){
         SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash);
         //enregistrement du hash dans la base de données
         $ajout=addHash($hash, $conn);
-        $ajout2=addUser($nom, $prenom, $login, $email, $conn);
+        $ajout2=addUser($login, $email, $conn);
         //redirection vers une page de confirmation si l'ajout a réussi
         if($ajout){
             header('Location: confirmationInscription.php?mail='.$email);
