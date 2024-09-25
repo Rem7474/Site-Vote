@@ -16,6 +16,7 @@
         <p>Vous recevrez un mail contenant un lien pour effectuer votre vote.</p>
         <form action="index.php" method="post">
             <input type="text" name="login" placeholder="login universitaire" required>
+            <input type="text" name="event" value=<?php echo $event; ?> hidden>
             <input type="submit" value="S'inscrire">
         </form>
     </div>

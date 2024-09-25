@@ -1,8 +1,9 @@
 <?php
 include 'fonctionsPHP.php';
-if(isset($_POST['login'])){
+if(isset($_POST['login'] && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event']))){
     $login = $_POST['login'];
-    InscriptionVote($login);
+    $event = $_POST['event'];
+    InscriptionVote($login, $event);
 }
 //récupération du vote si il existe
 else if(isset($_POST['vote']) && isset($_POST['hash'])){
@@ -25,9 +26,10 @@ else if(isset($_GET['hash'])){
         exit();
     }
 }
-else{
+elseif (isset($_GET['event']) && !empty($_GET['event'])){
+    $event = $_GET['event'];
     //forumlaire d'inscription au vote
-    include('formulaire.html');
+    include('formulaire.php');
     exit();
 }
 ?>

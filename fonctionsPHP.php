@@ -7,8 +7,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
-function InscriptionVote($login){
+function InscriptionVote($login, $IDevent){
     global $conn;
+    //vérification de l'existence de l'événement dans la base de données
+    if(!getEvent($IDevent, $conn)){
+        //redirection vers une page d'erreur
+        header('Location: erreur.html');
+        exit();
+    }
     //mise en minuscule du login
     $login = strtolower($login);
     //Vérification du login (sans caractères spéciaux + longueur entre 6 et 8 caractères)
@@ -17,23 +23,28 @@ function InscriptionVote($login){
         header('Location: erreur.html');
         exit();
     }
+    //création du mail a partir de l'université définie dans la table event
+    //récupération de l'université
+    $universite = getUniversite($IDevent, $conn);
     //création du mail
-    $email = $login."@etu.univ-smb.fr";
+    $email = $login."@etu.".$universite;
     //hashage salé avec le timestamp du nom et prénom
     $salt = time();
     $hash = hash('sha256', $login.$salt);
-    //envoi du mail de confirmation si la personne n'est pas déjà inscrite
-    $user=getUser($login, $conn);
+    //envoi du mail de confirmation si la personne n'est pas déjà inscrite à l'événement
+    $user=getUser($login, $IDevent, $conn);
     if($user){
-        //redirection vers une page d'erreur
+        //redirection vers une page d'erreur car l'utilisateur est déjà inscrit
         header('Location: erreur.html');
         exit();
     }
     else{
-        SendMail($email, "[Vote BDE R&T] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash);
+        //récupération du nom de l'événement
+        $nomEvent = getNomEvent($IDevent, $conn);
+        SendMail($email, "[Vote ".$nomEvent."] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash);
         //enregistrement du hash dans la base de données
-        $ajout=addHash($hash, $conn);
-        $ajout2=addUser($login, $email, $conn);
+        $ajout=addHash($hash, $IDevent, $conn);
+        $ajout2=addUser($login, $email, $IDevent, $conn);
         //redirection vers une page de confirmation si l'ajout a réussi
         if($ajout){
             header('Location: confirmationInscription.php?mail='.$email);
@@ -50,7 +61,7 @@ function InscriptionVote($login){
 function EnregistrerVote($vote, $hash){
     global $conn;
     //vérification de l'existence du hash dans la base de données
-    if(hashExiste($hash, $conn) && ($vote=="1" || $vote=="2")){
+    if(hashExiste($hash, $conn) && ($vote=="1" || $vote=="2")){ // A MODIFIER : VERIF ID LISTE VOTE
         //création d'un nouveau hash aléatoire
         $participation = hash('sha256', random_bytes(32));
         //enregistrement du vote dans la base de données
