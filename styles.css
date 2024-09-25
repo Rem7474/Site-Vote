@@ -13,6 +13,10 @@
     text-decoration: underline;
 }
 
+.footer a:hover {
+    color: #999999; /* Gris plus foncé au passage de la souris */
+}
+
 .erreur {
     color: red;
     font-size: 1.5em;
