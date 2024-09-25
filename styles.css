@@ -3,11 +3,14 @@
     margin-top: 20px;
 }
 
+.footer p {
+    display: inline;
+    margin: 0 10px; /* Espace horizontal entre les paragraphes */
+}
+
 .footer a {
     color: #cccccc; /* Gris clair */
     text-decoration: underline;
-    display: inline-block;
-    margin: 0 10px; /* Espace horizontal entre les liens */
 }
 
 .erreur {
