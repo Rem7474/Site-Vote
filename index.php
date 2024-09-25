@@ -27,7 +27,7 @@ else if(isset($_GET['hash'])){
 }
 else{
     //forumlaire d'inscription au vote
-    header('Location: formulaire.html');
+    include('formulaire.html');
     exit();
 }
 ?>

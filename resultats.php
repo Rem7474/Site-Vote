@@ -1,4 +1,6 @@
 <?php
+
+//PAGE A MODIFIER : ajout conexion au site (lien de cette page dans formulaire.html)
 //récupération des résultats des votes
 include 'fonctionsPHP.php';
 $vote1 = resultats("1");
