@@ -92,17 +92,6 @@ function EnregistrerVote($vote, $hash){
         exit();
     }
 }
-
-function HashExiste($hash){
-    global $conn;
-    //vérification de l'existence du hash dans la base de données
-    if(getHash($hash, $conn)){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
 function resultats($equipe){
     global $conn;
     $result=getVotes($equipe, $conn);

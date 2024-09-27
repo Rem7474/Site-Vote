@@ -10,19 +10,14 @@ function addHash($hash, $IDevent, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
-//fonction pour vérifier si un hash existe dans la base de données
+//fonction pour vérifier si un hash existe dans la base de données et renvoyer l'id de l'événement associé
 function getHash($hash, $conn){
-    $sql = "SELECT * FROM participants WHERE hash = :hash";
+    $sql = "SELECT RefEvent FROM participants WHERE hash = :hash";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':hash', $hash);
     $stmt->execute();
     $result = $stmt->fetch();
-    if($result){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return $result[0];
 }
 function deleteHash($hash, $conn){
     $sql = "DELETE FROM participants WHERE hash = :hash returning id";
@@ -53,19 +48,14 @@ function addEvent($Nom, $Univ, $RefOrga, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
-//fonction pour vérifier l'existence d'un événement dans la base de données
+//fonction pour récupérer les informations d'un événement
 function getEvent($IDevent, $conn){
     $sql = "SELECT * FROM evenements WHERE id = :IDevent";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':event', $event);
     $stmt->execute();
     $result = $stmt->fetch();
-    if($result){
-        return true;
-    }
-    else{
-        return false;
-    }
+    return $result[0];
 }
 function getNomEvent($IDevent, $conn){
     $sql = "SELECT Nom FROM evenements WHERE id = :IDevent";
@@ -84,6 +74,16 @@ function getUniversity($IDevent, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
+//fonction pour récupérer les événements d'un organisateur
+function getEventsOrga($RefOrga, $conn){
+    $sql = "SELECT * FROM evenements WHERE RefOrga = :RefOrga";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':RefOrga', $RefOrga);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
+}
+
 
 // ********** TABLE VOTES : id, RefListe, hash, RefEvent **********
 //fonction pour enregistrer un vote dans la base de données
@@ -209,6 +209,29 @@ function addOrga($email, $password, $Nom, $Prenom, $conn){
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':Nom', $Nom);
     $stmt->bindParam(':Prenom', $Prenom);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result[0];
+}
+//fonction pour vérifier l'existence d'un organisateur dans la base de données
+function getOrga($email, $conn){
+    $sql = "SELECT * FROM organisateurs WHERE email = :email";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    if($result){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+//fonction pour récupérer les informations d'un organisateur
+function getInfosOrga($email, $conn){
+    $sql = "SELECT * FROM organisateurs WHERE email = :email";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':email', $email);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];

@@ -5,9 +5,15 @@ if(isset($_GET['hash'])){
     //vérification du hash
     $hash = $_GET['hash'];
     //vérification de l'existence du hash dans la base de données (fonction à créer)
-    if(!hashExiste($hash)){
-        //affichage d'une page html d'erreur
-        header('Location: erreur.html');
+    $IDevent=getHash($hash);
+    if($IDevent){
+        //récupération de l'événement associé au hash
+        $event = getEvent($IDevent);
+        $nomEvent = $event['nom'];
+    }
+    else{
+        //hash non trouvé dans la base de données
+        header('Location: formulaire.html');
         exit();
     }
 }
@@ -16,6 +22,10 @@ else{
     header('Location: formulaire.html');
     exit();
 }
+//récupération des candidats dans la base de données
+$candidats = getListes();
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -31,20 +41,19 @@ else{
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Vote pour le BDE R&T</h1>
-        <p>Bienvenue sur la page de vote pour le BDE R&T. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
+        <h1>Vote pour le <?php echo $nomEvent;?></h1>
+        <p>Bienvenue sur la page de vote pour le <?php echo $nomEvent;?>. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
 
         <form action="index.php" method="post" class="vote-form">
-            <div class="candidate">
-                <input id="candidat1" type="radio" name="vote" value="1">
-                <label for="candidat1">Equipe de Couniamamaw</label>
-                <img src="candidat1.jpg" alt="Photo de l'équipe de Couniamamaw">
-            </div>
-            <div class="candidate">
-                <input id="candidat2" type="radio" name="vote" value="2">
-                <label for="candidat2">Equipe de Medrick</label>
-                <img src="candidat2.jpg" alt="Photo de l'équipe de Medrick">
-            </div>
+            <?php
+            foreach($candidats as $candidat){
+                echo '<div class="candidate">';
+                echo '<input id="candidat'.$candidat['id'].'" type="radio" name="vote" value="'.$candidat['id'].'">';
+                echo '<label for="candidat'.$candidat['id'].'">'.$candidat['nom'].'</label>';
+                echo '<img src="'.$candidat['photo'].'" alt="Photo de l\'équipe de '.$candidat['nom'].'">';
+                echo '</div>';
+            }
+            ?>
             <input type="hidden" name="hash" value="<?php echo $hash; ?>">
             <input type="submit" value="Voter">
         </form>

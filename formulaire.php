@@ -22,7 +22,7 @@
     </div>
     <div class="footer">
         <p><a href="checkVote.php">Vérifier un vote effectué</a></p>
-        <p><a href="resultats.php">Connexion administrateur</a></p>
+        <p><a href="login.php">Connexion administrateur</a></p>
     </div>
 </body>
 </html>
