@@ -234,7 +234,7 @@ function getInfosOrga($email, $conn){
     $stmt->bindParam(':email', $email);
     $stmt->execute();
     $result = $stmt->fetch();
-    return $result[0];
+    return $result;
 }
 // ********** TABLE MEMBRES : id, Nom, Prenom, Fonction, RefListe **********
 //fonction pour ajouter un membre dans la base de données
