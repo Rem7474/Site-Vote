@@ -1,6 +1,6 @@
 <?php
 include 'fonctionsPHP.php';
-if(isset($_POST['login'] && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event']))){
+if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
     $login = $_POST['login'];
     $event = $_POST['event'];
     InscriptionVote($login, $event);
