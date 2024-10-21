@@ -55,7 +55,7 @@ function getEvent($IDevent, $conn){
     $stmt->bindParam(':event', $event);
     $stmt->execute();
     $result = $stmt->fetch();
-    return $result[0];
+    return $result;
 }
 function getNomEvent($IDevent, $conn){
     $sql = "SELECT Nom FROM evenements WHERE id = :IDevent";
@@ -81,7 +81,7 @@ function getEventsOrga($RefOrga, $conn){
     $stmt->bindParam(':RefOrga', $RefOrga);
     $stmt->execute();
     $result = $stmt->fetch();
-    return $result[0];
+    return $result;
 }
 
 
