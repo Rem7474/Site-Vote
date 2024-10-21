@@ -70,7 +70,9 @@ p {
 }
 
 form input[type="text"],
-form input[type="submit"] {
+form input[type="submit"],
+form input[type="email"],
+form input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
