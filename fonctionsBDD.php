@@ -52,7 +52,7 @@ function addEvent($Nom, $Univ, $RefOrga, $conn){
 function getEvent($IDevent, $conn){
     $sql = "SELECT * FROM evenements WHERE id = :IDevent";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':event', $event);
+    $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result;
@@ -60,7 +60,7 @@ function getEvent($IDevent, $conn){
 function getNomEvent($IDevent, $conn){
     $sql = "SELECT Nom FROM evenements WHERE id = :IDevent";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':event', $event);
+    $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];
@@ -69,14 +69,14 @@ function getNomEvent($IDevent, $conn){
 function getUniversity($IDevent, $conn){
     $sql = "SELECT Univ FROM evenements WHERE id = :IDevent";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':event', $event);
+    $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];
 }
 //fonction pour récupérer les événements d'un organisateur
 function getEventsOrga($RefOrga, $conn){
-    $sql = "SELECT * FROM evenements WHERE RefOrga = :RefOrga";
+    $sql = "SELECT * FROM evenements WHERE reforga = :RefOrga";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':RefOrga', $RefOrga);
     $stmt->execute();
@@ -188,7 +188,7 @@ function getListes($IDevent, $conn){
     $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
-    return $result[0];
+    return $result;
 }
 //fonction pour supprimer une liste de la base de données
 function deleteListe($Nom, $IDevent, $conn){

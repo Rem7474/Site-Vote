@@ -10,6 +10,11 @@ include 'fonctionsPHP.php';
 
 //récupération des evenements de l'utilisateur
 $events = getEventsOrga($_SESSION['id'], $conn);
+//print de l'array $events
+//print_r($events);
+//affiche les erreurs php
+ini_set('display_errors', 1);
+
 
 //création d'un nouvel evenement
 if(isset($_POST['nom']) && isset($_POST['universite'])){
@@ -46,10 +51,10 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             </tr>
             <?php if (!empty($events)): ?>
                 <?php foreach ($events as $event): 
-                    $listes = getLists($event['id']); ?>
+                    $listes = getListes($event['id'], $conn); ?>
                     <tr>
-                        <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['Nom']; ?></a></td>
-                        <td><?php echo $event['universite']; ?></td>
+                        <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['nom']; ?></a></td>
+                        <td><?php echo $event['univ']; ?></td>
                         <td><?php foreach ($listes as $liste) {
                             // Affiche les listes de l'événement avec leur nom, photo et description
                             echo '<img src="data:image/jpeg;base64,'.base64_encode($liste['photo']).'" width="50" height="50">';

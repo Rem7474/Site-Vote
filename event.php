@@ -1,19 +1,22 @@
 <?php
 //page pour afficher un évènement, voir les listes, les votes pour les listes, et pouvoir ajouter une liste
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include 'fonctionsPHP.php';
 if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     header('Location: dashboard.php');
     exit();
 }
 $IDevent = $_GET['id'];
-$event = getEvent($id);
+$event = getEvent($id, $conn);
 if ($event == null) {
     header('Location: dashboard.php');
     exit();
 }
-$lists = getLists($IDevent);
-$votes = getVotes($IDevent);
+$lists = getListes($IDevent, $conn);
+$votes = getVotes($IDevent, $conn);
 
 //ajout d'une liste, avec nom, description et photo
 if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo'])) {
