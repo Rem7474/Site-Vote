@@ -44,21 +44,22 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                 <th>Nombre de votes</th>
                 <th>Liens de partage</th>
             </tr>
-            <?php foreach ($events as $event): 
-            $listes = getLists($event['id']);?>
-                <tr>
-                    <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['Nom']; ?></a></td>
-                    <td><?php echo $event['universite']; ?></td>
-                    <td><?php foreach ($listes as $liste) {
-                        //affiche les listes de l'evenement avec leur nom, photo et description
-                        echo '<img src="data:image/jpeg;base64,'.base64_encode($liste['photo']).'" width="50" height="50">';
-                        echo $liste['nom'].' : '.$liste['description'].'<br>';
-                    }  ?></td>
-
-                    <td><?php echo getNbVotes($event['id']); ?></td>
-                    <td><a href="https://vote.remcorp.fr/vote.php?id=<?php echo $event['id']; ?>">Lien de partage</a></td>
-                </tr>
-            <?php endforeach ?>
+            <?php if (!empty($events)): ?>
+                <?php foreach ($events as $event): 
+                    $listes = getLists($event['id']); ?>
+                    <tr>
+                        <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['Nom']; ?></a></td>
+                        <td><?php echo $event['universite']; ?></td>
+                        <td><?php foreach ($listes as $liste) {
+                            // Affiche les listes de l'événement avec leur nom, photo et description
+                            echo '<img src="data:image/jpeg;base64,'.base64_encode($liste['photo']).'" width="50" height="50">';
+                            echo $liste['nom'].' : '.$liste['description'].'<br>';
+                        } ?></td>
+                        <td><?php echo getNbVotes($event['id']); ?></td>
+                        <td><a href="https://vote.remcorp.fr/vote.php?id=<?php echo $event['id']; ?>">Lien de partage</a></td>
+                    </tr>
+                <?php endforeach ?>
+            <?php endif; ?>
         </table>
     </div>
     <div class="content">
