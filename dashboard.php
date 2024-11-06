@@ -13,7 +13,8 @@ $events = getEventsOrga($_SESSION['id'], $conn);
 
 //création d'un nouvel evenement
 if(isset($_POST['nom']) && isset($_POST['universite'])){
-    createEvent($_POST['nom'], $_POST['universite'], $_SESSION['id']); //A MODIFIER + SI PAS ENCORE D'EVENTS alors ne pas afficher le tableau
+    addEvent($_POST['nom'], $_POST['universite'], $_SESSION['id'], $conn);
+//A MODIFIER + SI PAS ENCORE D'EVENTS alors ne pas afficher le tableau
     header('location:dashboard.php');
 }
 ?>
