@@ -41,7 +41,7 @@ function InscriptionVote($login, $IDevent){
     else{
         //récupération du nom de l'événement
         $nomEvent = getNomEvent($IDevent, $conn);
-        SendMail($email, "[Vote ".$nomEvent."] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash);
+        SendMail($email, "[Vote ".$nomEvent."] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash, $nomEvent);
         //enregistrement du hash dans la base de données
         $ajout=addHash($hash, $IDevent, $conn);
         $ajout2=addUser($login, $email, $IDevent, $conn);
@@ -61,11 +61,25 @@ function InscriptionVote($login, $IDevent){
 function EnregistrerVote($vote, $hash){
     global $conn;
     //vérification de l'existence du hash dans la base de données
-    if(hashExiste($hash, $conn) && ($vote=="1" || $vote=="2")){ // A MODIFIER : VERIF ID LISTE VOTE
+    //récupération de l'event a partir du hash, puis des listes qui se sont inscrites a cet event
+    $event=getHash($hash, $conn);
+    if (isempty($event)){
+        //redirection vers une page d'erreur
+        header('Location: erreur.html');
+        exit();
+    }
+    $listes=getListes($event, $conn);
+    //récupération des id des listes, pour les mettre dans un tableau
+    $idListes=array();
+    foreach($listes as $liste){
+        array_push($idListes, $liste['id']);
+    }
+    //vérification si vote est dans les id des listes
+    if(in_array($vote, $idListes)){
         //création d'un nouveau hash aléatoire
         $participation = hash('sha256', random_bytes(32));
         //enregistrement du vote dans la base de données
-        $result=addVote($vote, $participation, $conn);
+        $result=addVote($vote, $participation,$idListes, $conn);
         if ($result){
             //suppression du hash dans la base de données
             $result2=deleteHash($hash, $conn);
@@ -97,13 +111,13 @@ function resultats($equipe){
     $result=getVotes($equipe, $conn);
     return $result;
 }
-function SendMail($to, $subject, $message){
+function SendMail($to, $subject, $lien, $event){
     include './private/parametres.ini';
     $message = "<!DOCTYPE html>
     <html lang='fr'>
     <head>
         <meta charset='utf-8'>
-        <title>Inscription pour les votes du BDE R&T</title>
+        <title>Inscription pour les votes</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
         <link rel='stylesheet' type='text/css' href='https://vote.remcorp.fr/styles.css'>
     </head>
@@ -112,8 +126,8 @@ function SendMail($to, $subject, $message){
             <div class='header'>
                 <img src='https://vote.remcorp.fr/bgsharklo.jpg' alt='Logo du site'>
             </div>
-            <h1>Inscription pour les votes du BDE R&T</h1>
-            <p class='reussite'>Cliquez sur ce lien pour effectuer votre vote : <a href=".$message.">Lien</a></p>
+            <h1>Inscription pour les votes de : ".$event."</h1>
+            <p class='reussite'>Cliquez sur ce lien pour effectuer votre vote : <a href=".$lien.">Lien</a></p>
         </div>
     </body>
     </html>";

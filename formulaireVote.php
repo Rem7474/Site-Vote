@@ -8,7 +8,7 @@ if(isset($_GET['hash'])){
     $IDevent=getHash($hash);
     if($IDevent){
         //récupération de l'événement associé au hash
-        $event = getEvent($IDevent);
+        $event = getEvent($IDevent, $conn);
         $nomEvent = $event['nom'];
     }
     else{
@@ -23,7 +23,7 @@ else{
     exit();
 }
 //récupération des candidats dans la base de données
-$candidats = getListes();
+$candidats = getListes($IDevent, $conn);
 
 
 ?>

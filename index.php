@@ -26,10 +26,12 @@ else if(isset($_GET['hash'])){
         exit();
     }
 }
-elseif (isset($_GET['event']) && !empty($_GET['event'])){
-    $event = $_GET['event'];
+elseif (isset($_GET['id']) && !empty($_GET['id'])){
+    $event = $_GET['id'];
+    //récupération des informations de l'événement
+    $infosEvent = getEvent($event, $conn);
     //forumlaire d'inscription au vote
-    include('formulaire.php');
+    include('vote.php');
     exit();
 }
 ?>

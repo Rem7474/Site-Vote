@@ -183,7 +183,7 @@ function addListe($Nom, $Photo, $Description, $IDevent, $conn){
 }
 //fonction pour récupérer la liste des listes pour un événement
 function getListes($IDevent, $conn){
-    $sql = "SELECT Nom, Photo, Description FROM listes WHERE RefEvent = :IDevent";
+    $sql = "SELECT * FROM listes WHERE RefEvent = :IDevent";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();

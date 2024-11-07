@@ -47,26 +47,36 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Event</title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-    </head>
-    <body>
+<head>
+    <title>Event</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
     <div class="container">
         <a href="dashboard.php">Retour au tableau de bord</a>
         <h1>Evènement : <?php echo $event['nom']; ?></h1>
         <h2>Listes</h2>
-        <?php if (!empty($lists)):
-            ?>
-            <ul>
+        <?php if (!empty($lists)): ?>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Photo</th>
+                    <th>Nombre de votes</th>
+                    <th>Action</th>
+                </tr>
                 <?php foreach ($lists as $list): 
                     $votes = getVotes($list['id'], $conn);
                 ?>
-                    <!-- Affichage de chaque liste avec les informations et le nombre de votes -->
-                    <li><?php echo $list['nom'] . ' : ' . $list['description'] . ' (' . $votes . ' votes)'; ?>
-                        <a href="list.php?id=<?php echo $list['id']; ?>">Voir</a>
+                    <tr>
+                        <td><?php echo $list['nom']; ?></td>
+                        <td><?php echo $list['description']; ?></td>
+                        <td><div class="liste"><img src="./images/<?php echo $list['photo']; ?>" alt="<?php echo $list['nom']; ?>"></div></td>
+                        <td><?php echo $votes; ?></td>
+                        <td><a href="list.php?id=<?php echo $list['id']; ?>">Voir</a></td>
+                    </tr>
                 <?php endforeach; ?>
-            </ul>
+            </table>
         <?php else: ?>
             <p>Aucune liste disponible pour cet événement.</p>
         <?php endif; ?>
@@ -81,5 +91,5 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
             <input type="submit" value="Ajouter">
         </form>
     </div>
-    </body>
+</body>
 </html>
