@@ -24,32 +24,31 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="header">
-        <h2>Dashboard</h2>
-    </div>
-    <div class="content">
-        //affiche un header avec le nom de l'utilisateur et un bouton de déconnexion
+<div class="container">
+    <h1>Dashboard</h2>
+        <!-- affiche un header avec le nom de l'utilisateur et un bouton de déconnexion -->
         <header>
             <h2>Bonjour <?php echo $_SESSION['prenom'].' '.$_SESSION['nom']; ?></h2>
-            <a href="logout.php" class="btn">Déconnexion</a>
-    </div>
-    <div class="content">
+            <form action="logout.php" method="post">
+                <input type="submit" value="Déconnexion">
+            </form>
+        </header>
         <h2>Evenements</h2>
-        <table>
-            <tr>
-                <th>Nom</th>
-                <th>Université</th>
-                <th>Listes</th>
-                <th>Nombre de votes</th>
-                <th>Liens de partage</th>
-            </tr>
-            <?php if (!empty($events)): ?>
+        <?php if (!empty($events)): ?>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Université</th>
+                    <th>Listes</th>
+                    <th>Nombre de votes</th>
+                    <th>Liens de partage</th>
+                </tr>
                 <?php foreach ($events as $event): 
                     $listes = getListes($event['id'], $conn); ?>
                     <tr>
@@ -57,30 +56,27 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                         <td><?php echo $event['univ']; ?></td>
                         <td><?php foreach ($listes as $liste) {
                             // Affiche les listes de l'événement avec leur nom, photo et description
+                            echo '<div class="liste">';
                             echo '<img src="./images/'.$liste['photo'].'" alt="'.$liste['nom'].'">';
                             echo $liste['nom'].' : '.$liste['description'].'<br>';
+                            echo '</div>';
                         } ?></td>
                         <td><?php echo getNbVotes($event['id'], $conn); ?></td>
                         <td><a href="https://vote.remcorp.fr/vote.php?id=<?php echo $event['id']; ?>">Lien de partage</a></td>
                     </tr>
                 <?php endforeach ?>
-            <?php endif; ?>
-        </table>
-    </div>
-    <div class="content">
+            </table>
+        <?php else: ?>
+            <p>Aucun événement disponible.</p>
+        <?php endif; ?>
         <h2>Créer un nouvel événement</h2>
         <form method="post" action="dashboard.php">
-            <div class="input-group">
-                <label>Nom</label>
+                <label for="nom">Nom de l'événement</label>
                 <input type="text" name="nom">
-            </div>
-            <div class="input-group">
-                <label>Université (ex : univ-smb.fr)</label>
+                <label for="universite">Université (ex : univ-smb.fr)</label>
                 <input type="text" name="universite">
-            </div>
-            <div class="input-group">
-                <button type="submit" class="btn" name="create_event">Créer</button>
-            </div>
+                <input type="submit" value="Créer">
         </form>
     </div>
 </body>
+</html>

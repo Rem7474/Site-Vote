@@ -72,6 +72,7 @@ p {
 form input[type="text"],
 form input[type="submit"],
 form input[type="email"],
+form input[type="file"],
 form input[type="password"] {
     width: 100%;
     padding: 10px;
@@ -138,4 +139,39 @@ progress {
     max-width: 200px;
     border-radius: 5px;
     margin-top: 20px;
+}
+
+.liste img{
+    max-width: 50px;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+/* Styles pour le tableau */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+/* Styles pour le header utilisateur */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }

@@ -52,7 +52,8 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
         <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
-        <h1><?php echo $event['nom']; ?></h1>
+    <div class="container">
+        <h1>Evènement : <?php echo $event['nom']; ?></h1>
         <h2>Listes</h2>
         <?php if (!empty($lists)):
             ?>
@@ -75,5 +76,6 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
             <input type="file" name="photo" id="photo" required>
             <input type="submit" value="Ajouter">
         </form>
+    </div>
     </body>
 </html>
