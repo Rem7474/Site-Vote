@@ -1,9 +1,6 @@
 <?php
 //page pour afficher un évènement, voir les listes, les votes pour les listes, et pouvoir ajouter une liste
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 include 'fonctionsPHP.php';
 if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     header('Location: dashboard.php');
@@ -16,8 +13,11 @@ if ($event == null) {
     //exit();
     echo "Event not found";
 }
+else if ($event['reforga'] != $_SESSION['id']) {
+    header('Location: dashboard.php');
+    exit();
+}
 $lists = getListes($IDevent, $conn);
-$votes = getVotes($IDevent, $conn);
 
 //ajout d'une liste, avec nom, description et photo
 if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo'])) {
@@ -53,14 +53,18 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     </head>
     <body>
     <div class="container">
+        <a href="dashboard.php">Retour au tableau de bord</a>
         <h1>Evènement : <?php echo $event['nom']; ?></h1>
         <h2>Listes</h2>
         <?php if (!empty($lists)):
             ?>
             <ul>
-                <?php foreach ($lists as $list): ?>
+                <?php foreach ($lists as $list): 
+                    $votes = getVotes($list['id'], $conn);
+                ?>
                     <!-- Affichage de chaque liste avec les informations et le nombre de votes -->
-                    <li><?php echo $list['nom'] . ' : ' . $list['description']; ?></li>
+                    <li><?php echo $list['nom'] . ' : ' . $list['description'] . ' (' . $votes . ' votes)'; ?>
+                        <a href="list.php?id=<?php echo $list['id']; ?>">Voir</a>
                 <?php endforeach; ?>
             </ul>
         <?php else: ?>

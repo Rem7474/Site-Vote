@@ -54,13 +54,19 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                     <tr>
                         <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['nom']; ?></a></td>
                         <td><?php echo $event['univ']; ?></td>
-                        <td><?php foreach ($listes as $liste) {
-                            // Affiche les listes de l'événement avec leur nom, photo et description
-                            echo '<div class="liste">';
-                            echo '<img src="./images/'.$liste['photo'].'" alt="'.$liste['nom'].'">';
-                            echo $liste['nom'].' : '.$liste['description'].'<br>';
-                            echo '</div>';
-                        } ?></td>
+                        <td>
+                        <?php if (!empty($listes)): ?>
+                            <?php foreach ($listes as $liste): ?>
+                                <!-- Affiche les listes de l'événement avec leur nom, photo et description -->
+                                <div class="liste">
+                                    <img src="./images/<?php echo $liste['photo']; ?>" alt="<?php echo $liste['nom']; ?>">
+                                    <?php echo $liste['nom'] . ' : ' . $liste['description']; ?><br>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>Aucune liste disponible pour le moment.</p>
+                        <?php endif; ?>
+                    </td>
                         <td><?php echo getNbVotes($event['id'], $conn); ?></td>
                         <td><a href="https://vote.remcorp.fr/vote.php?id=<?php echo $event['id']; ?>">Lien de partage</a></td>
                     </tr>
