@@ -10,10 +10,11 @@ if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     exit();
 }
 $IDevent = $_GET['id'];
-$event = getEvent($id, $conn);
+$event = getEvent($IDevent, $conn);
 if ($event == null) {
-    header('Location: dashboard.php');
-    exit();
+    //header('Location: dashboard.php');
+    //exit();
+    echo "Event not found";
 }
 $lists = getListes($IDevent, $conn);
 $votes = getVotes($IDevent, $conn);
@@ -39,15 +40,16 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     <body>
         <h1><?php echo $event['nom']; ?></h1>
         <h2>Listes</h2>
-        <ul>
-            <?php
-            foreach ($lists as $list) {
-                //affichage de chaque liste avec les informations et le nombre de votes, toutes les informations sont afficher ici sans lien
-                echo '<li>' . $list['nom'] . ' : ' . $list['description'] . ' (' . $list['votes'] . ' votes)</li>';
-                
-            }
-            ?>
-        </ul>
+        <?php if (!empty($lists)): ?>
+            <ul>
+                <?php foreach ($lists as $list): ?>
+                    <!-- Affichage de chaque liste avec les informations et le nombre de votes -->
+                    <li><?php echo $list['nom'] . ' : ' . $list['description'] . ' (' . $list['votes'] . ' votes)'; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <p>Aucune liste disponible pour cet événement.</p>
+        <?php endif; ?>
         <h2>Ajouter une liste</h2>
         <form method="post" enctype="multipart/form-data">
             <label for="nom">Nom de la liste</label>
@@ -59,4 +61,4 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
             <input type="submit" value="Ajouter">
         </form>
     </body>
-
+</html>
