@@ -69,7 +69,7 @@ function EnregistrerVote($vote, $hash){
     //vérification de l'existence du hash dans la base de données
     //récupération de l'event a partir du hash, puis des listes qui se sont inscrites a cet event
     $event=getHash($hash, $conn);
-    if (isempty($event)){
+    if (!isset($event)){
         //redirection vers une page d'erreur
         header('Location: erreur.html');
         exit();
@@ -85,7 +85,7 @@ function EnregistrerVote($vote, $hash){
         //création d'un nouveau hash aléatoire
         $participation = hash('sha256', random_bytes(32));
         //enregistrement du vote dans la base de données
-        $result=addVote($vote, $participation,$idListes, $conn);
+        $result=addVote($vote, $participation,$event, $conn);
         if ($result){
             //suppression du hash dans la base de données
             $result2=deleteHash($hash, $conn);

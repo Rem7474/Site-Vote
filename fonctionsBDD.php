@@ -88,10 +88,11 @@ function getEventsOrga($RefOrga, $conn){
 // ********** TABLE VOTES : id, RefListe, hash, RefEvent **********
 //fonction pour enregistrer un vote dans la base de données
 function addVote($liste, $hash, $IDevent, $conn){
-    $sql = "INSERT INTO votes (RefListe,hash) VALUES (:liste,:hash) returning id";
+    $sql = "INSERT INTO votes (refliste,hash,refevent) VALUES (:liste,:hash,:IDevent) returning id";
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':liste', $vote);
+    $stmt->bindParam(':liste', $liste);
     $stmt->bindParam(':hash', $hash);
+    $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result[0];

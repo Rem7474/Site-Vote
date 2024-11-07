@@ -53,7 +53,7 @@ $candidats = getListes($IDevent, $conn);
                 echo '<div class="candidate">';
                 echo '<input id="candidat'.$candidat['id'].'" type="radio" name="vote" value="'.$candidat['id'].'">';
                 echo '<label for="candidat'.$candidat['id'].'">'.$candidat['nom'].'</label>';
-                echo '<img src="'.$candidat['photo'].'" alt="Photo de l\'équipe de '.$candidat['nom'].'">';
+                echo '<img src="./images/'.$candidat['photo'].'" alt="Photo de l\'équipe de '.$candidat['nom'].'">';
                 echo '</div>';
             }
             ?>
