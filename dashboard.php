@@ -27,7 +27,7 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
 <html>
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <div class="header">
@@ -57,10 +57,10 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                         <td><?php echo $event['univ']; ?></td>
                         <td><?php foreach ($listes as $liste) {
                             // Affiche les listes de l'événement avec leur nom, photo et description
-                            echo '<img src="data:image/jpeg;base64,'.base64_encode($liste['photo']).'" width="50" height="50">';
+                            echo '<img src="./images/'.$liste['photo'].'" alt="'.$liste['nom'].'">';
                             echo $liste['nom'].' : '.$liste['description'].'<br>';
                         } ?></td>
-                        <td><?php echo getNbVotes($event['id']); ?></td>
+                        <td><?php echo getNbVotes($event['id'], $conn); ?></td>
                         <td><a href="https://vote.remcorp.fr/vote.php?id=<?php echo $event['id']; ?>">Lien de partage</a></td>
                     </tr>
                 <?php endforeach ?>

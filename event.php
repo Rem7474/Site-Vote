@@ -49,7 +49,7 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
 <html>
     <head>
         <title>Event</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
         <h1><?php echo $event['nom']; ?></h1>

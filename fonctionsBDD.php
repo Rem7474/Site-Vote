@@ -116,7 +116,7 @@ function getEquipe($hash, $conn){
 }
 //fonction pour récupérer le nombre de votes pour un événement
 function getNbVotes($IDevent, $conn){
-    $sql = "SELECT COUNT(*) FROM votes INNER JOIN listes ON votes.RefListe = listes.id WHERE RefEvent = :IDevent";
+    $sql = "SELECT COUNT(*) FROM votes INNER JOIN listes ON votes.RefListe = listes.id WHERE listes.RefEvent = :IDevent";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
