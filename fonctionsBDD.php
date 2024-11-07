@@ -80,7 +80,7 @@ function getEventsOrga($RefOrga, $conn){
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':RefOrga', $RefOrga);
     $stmt->execute();
-    $result = $stmt->fetch();
+    $result = $stmt->fetchAll();
     return $result;
 }
 
@@ -187,7 +187,8 @@ function getListes($IDevent, $conn){
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
-    $result = $stmt->fetch();
+    //récupère toutes les lignes de la table
+    $result = $stmt->fetchAll();
     return $result;
 }
 //fonction pour supprimer une liste de la base de données

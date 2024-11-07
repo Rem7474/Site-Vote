@@ -24,10 +24,24 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     $nom = $_POST['nom'];
     $description = $_POST['description'];
     $photo = $_FILES['photo'];
-    $idList = addList($IDevent, $nom, $description, $photo);
+    //vérification de l'extension de la photo
+    $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
+    $extension = explode('.', $photo['name']);
+    $extension = strtolower(end($extension));
+    if (!in_array($extension, $extensions)) {
+        echo 'Extension de fichier non autorisée';
+        exit();
+    }
+    //déplacement de la photo dans le dossier images
+    $nomphoto = $nom . $IDevent . '.' . $extension;
+    move_uploaded_file($photo['tmp_name'], './images/' . $nomphoto);
+    $idList = addListe($nom, $nomphoto, $description, $IDevent, $conn);
     if ($idList != null) {
         header('Location: list.php?id=' . $idList);
         exit();
+    }
+    else {
+        echo 'Erreur lors de l\'ajout de la liste';
     }
 }
 ?>
@@ -40,11 +54,12 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     <body>
         <h1><?php echo $event['nom']; ?></h1>
         <h2>Listes</h2>
-        <?php if (!empty($lists)): ?>
+        <?php if (!empty($lists)):
+            ?>
             <ul>
                 <?php foreach ($lists as $list): ?>
                     <!-- Affichage de chaque liste avec les informations et le nombre de votes -->
-                    <li><?php echo $list['nom'] . ' : ' . $list['description'] . ' (' . $list['votes'] . ' votes)'; ?></li>
+                    <li><?php echo $list['nom'] . ' : ' . $list['description']; ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php else: ?>
