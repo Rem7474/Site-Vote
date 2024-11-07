@@ -18,14 +18,20 @@ function InscriptionVote($login, $IDevent){
     //mise en minuscule du login
     $login = strtolower($login);
     //Vérification du login (sans caractères spéciaux + longueur entre 6 et 8 caractères)
-    if(!preg_match('/^[a-z]{6,8}$/', $login)){
+    /*if(!preg_match('/^[a-z]{6,8}$/', $login)){
+        //affichage d'une page html d'erreur
+        header('Location: erreur.html');
+        exit();
+    }*/
+    //vérification du login : prénom.nom
+    if (!preg_match('/^[a-z]+\.[a-z]+$/', $login)){
         //affichage d'une page html d'erreur
         header('Location: erreur.html');
         exit();
     }
     //création du mail a partir de l'université définie dans la table event
     //récupération de l'université
-    $universite = getUniversite($IDevent, $conn);
+    $universite = getUniversity($IDevent, $conn);
     //création du mail
     $email = $login."@etu.".$universite;
     //hashage salé avec le timestamp du nom et prénom
@@ -142,7 +148,7 @@ function SendMail($to, $subject, $lien, $event){
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         //Recipients
-        $mail->setFrom('vote@remcorp.fr', 'BDE R&T');
+        $mail->setFrom('vote@remcorp.fr', $event);
         $mail->addAddress($to);
         // Content
         $mail->isHTML(true);

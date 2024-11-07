@@ -1,11 +1,14 @@
 <?php
 //récupération du hash dans l'url
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 include 'fonctionsPHP.php';
 if(isset($_GET['hash'])){
     //vérification du hash
     $hash = $_GET['hash'];
     //vérification de l'existence du hash dans la base de données (fonction à créer)
-    $IDevent=getHash($hash);
+    $IDevent=getHash($hash,$conn);
     if($IDevent){
         //récupération de l'événement associé au hash
         $event = getEvent($IDevent, $conn);

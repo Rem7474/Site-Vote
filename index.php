@@ -1,5 +1,9 @@
 <?php
 include 'fonctionsPHP.php';
+//debug : affichage des erreurs
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
     $login = $_POST['login'];
     $event = $_POST['event'];
@@ -14,8 +18,9 @@ else if(isset($_POST['vote']) && isset($_POST['hash'])){
 //récupération du hash dans l'url
 else if(isset($_GET['hash'])){
     $hash = $_GET['hash'];
-    //vérification de l'existence du hash dans la base de données (fonction à créer)
-    if(hashExiste($hash)){
+    //vérification de l'existence du hash dans la base de données (fonction à créer) UNDEFINED FUNCTION
+    $refevent=getHash($hash, $conn);
+    if($refevent != null){
         //redirection vers le formulaire de vote en passant en paramètre le hash
         header('Location: formulaireVote.php?hash='.$hash);
         exit();

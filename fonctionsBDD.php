@@ -136,10 +136,10 @@ function addUser($login, $email, $IDevent, $conn){
 }
 //fonction pour vérifier l'existence d'un utilisateur a un evenement dans la base de données 
 function getUser($login, $IDevent, $conn){
-    $sql = "SELECT * FROM utilisateurs WHERE login = :login AND idevent = :IDevent";
+    $sql = "SELECT * FROM utilisateurs WHERE login = :login AND refevent = :IDevent";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':login', $login);
-    $stmt->bindParam(':event', $event);
+    $stmt->bindParam(':IDevent', $event);
     $stmt->execute();
     $result = $stmt->fetch();
     if($result){
