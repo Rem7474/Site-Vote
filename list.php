@@ -59,6 +59,22 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
     <meta charset="utf-8">
     <title>Modifier la liste</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <script>
+    function previewImage(input) {
+        const preview = document.getElementById('img-preview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    }
+    </script>
 </head>
 <body>
 <?php include 'inc_header.php'; ?>
@@ -71,7 +87,8 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
         <label for="description">Description</label>
         <input type="text" name="description" value="<?php echo htmlspecialchars($liste['description']); ?>" required>
         <label for="photo">Photo de la liste</label>
-        <input type="file" name="photo">
+        <input type="file" name="photo" onchange="previewImage(this)">
+        <img id="img-preview" src="<?php echo $liste['photo'] ? './images/' . htmlspecialchars($liste['photo']) : ''; ?>" alt="Prévisualisation" style="max-width:120px;display:<?php echo $liste['photo'] ? 'block' : 'none'; ?>;margin-top:10px;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
         <input type="submit" value="Enregistrer les modifications">
     </form>
     <a href="event.php?id=<?php echo $liste['refevent']; ?>">Retour à l'événement</a>

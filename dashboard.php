@@ -69,9 +69,22 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
     <div class="logo-admin-block" style="margin-bottom:20px;">
         <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;">
             <label for="logo" style="font-weight:bold;">Changer le logo&nbsp;:</label>
-            <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" style="width:auto;">
+            <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" style="width:auto;" onchange="previewLogo(this)">
             <input type="submit" value="Mettre à jour" style="width:auto;">
+            <img id="logo-preview" src="<?php echo $logoPath; ?>" alt="Prévisualisation logo" style="max-width:60px;max-height:60px;border-radius:50%;margin-left:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
         </form>
+        <script>
+        function previewLogo(input) {
+            const preview = document.getElementById('logo-preview');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        </script>
         <?php if (isset($msg)) echo '<p class="erreur">'.$msg.'</p>'; ?>
         <small>Le logo personnalisé s'affichera sur toutes vos pages. Si aucun logo n'est défini, le logo par défaut sera utilisé.</small>
     </div>

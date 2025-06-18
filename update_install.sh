@@ -14,7 +14,17 @@ if [ ! -d ".git" ]; then
   INSTALL_MODE=1
 else
   echo "Mise à jour du code source..."
-  git pull origin $BRANCH
+  # Gestion automatique des modifications locales du script (auto-stash)
+  if [ $INSTALL_MODE -eq 0 ]; then
+    if ! git diff --quiet -- update_install.sh; then
+      echo "Des modifications locales sur update_install.sh ont été détectées. Elles vont être sauvegardées (stash) automatiquement."
+      git stash push -m "Sauvegarde auto update_install.sh avant update" update_install.sh
+      git pull origin $BRANCH
+      git stash pop || true
+    else
+      git pull origin $BRANCH
+    fi
+  fi
   INSTALL_MODE=0
 fi
 
