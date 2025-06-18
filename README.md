@@ -17,9 +17,61 @@ Ce projet est une plateforme complète de gestion de votes en ligne, adaptée à
 - **Page de contact/FAQ**.
 - **Sécurité** : authentification organisateur, confirmation avant suppression, gestion des erreurs, redirections sécurisées.
 
+## Problèmes courants lors de l'installation/mise à jour
+
+### Conflits git : "Your local changes to the following files would be overwritten by merge"
+
+Si vous voyez ce message lors de l'exécution du script ou d'un `git pull` :
+
+```
+error: Your local changes to the following files would be overwritten by merge:
+  ...
+Please commit your changes or stash them before you merge.
+error: The following untracked working tree files would be overwritten by merge:
+  ...
+Please move or remove them before you merge.
+Aborting
+```
+
+Cela signifie que vous avez des modifications locales non enregistrées ou des fichiers non suivis qui bloquent la mise à jour.
+
+#### Solutions possibles :
+
+1. **Sauvegarder et committer vos modifications locales**
+   ```bash
+   git add .
+   git commit -m "Sauvegarde locale avant update"
+   git pull origin beta
+   ```
+2. **Ou stasher vos modifications (temporairement)**
+   ```bash
+   git stash
+   git pull origin beta
+   git stash pop # pour récupérer vos modifs après
+   ```
+3. **Ou supprimer les fichiers non suivis qui bloquent**
+   ```bash
+   git clean -f
+   # ou pour supprimer aussi les dossiers non suivis :
+   git clean -fd
+   ```
+
+Veillez à bien sauvegarder tout travail important avant d'utiliser ces commandes.
+
 ## Installation rapide (recommandée)
 
-### 1. Clonage et installation automatique
+### 1. Installation directe du script d'installation/mise à jour
+Vous pouvez télécharger et exécuter uniquement le script d’installation/mise à jour sans cloner tout le dépôt :
+
+```bash
+curl -O https://raw.githubusercontent.com/Rem7474/Site-Vote/beta/update_install.sh
+chmod +x update_install.sh
+./update_install.sh
+```
+
+Ce script gère l’installation complète ou la mise à jour du site, en conservant le dossier `private` si présent.
+
+### 2. Clonage et installation automatique (alternative)
 Utilisez le script fourni pour installer ou mettre à jour le site. Ce script gère le clonage, l'installation des dépendances et la configuration initiale.
 
 ```bash
@@ -33,17 +85,17 @@ chmod +x update_install.sh
 - Lors de la première installation, le script vous demandera toutes les informations nécessaires pour générer le fichier `private/parametres.ini` (connexion BDD, SMTP, etc.).
 - Pour une mise à jour, relancez simplement `./update_install.sh` dans le dossier du projet : le dossier `private` et vos paramètres seront conservés.
 
-### 2. Création de la base de données
+### 3. Création de la base de données
 - Utilisez le script SQL fourni :
 ```bash
 psql -U <user> -d <dbname> -f schema.sql
 ```
 
-### 3. Droits d'accès
+### 4. Droits d'accès
 - Le dossier `images/` doit être accessible en écriture pour l’upload des logos et photos de listes.
 - Le dossier `private/` doit être protégé (chmod 700 ou 770).
 
-### 4. Accès
+### 5. Accès
 - Rendez-vous sur `index.php` pour l’inscription des votants.
 - Les organisateurs peuvent s’inscrire et se connecter via `register.php` et `login.php`.
 - Le dashboard admin est accessible après connexion.
