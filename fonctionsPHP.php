@@ -2,9 +2,9 @@
 //connexion à la base de données
 include 'FonctionsConnexion.php';
 include 'fonctionsBDD.php';
-$conn = connexionBDD('./private/parametres.ini');
-// Lecture de la config debug
+// Correction : ne pas inclure parametres.ini comme un fichier PHP, mais le parser
 $param = parse_ini_file('./private/parametres.ini');
+$conn = connexionBDD('./private/parametres.ini');
 $DEBUG = isset($param['debug']) && ($param['debug'] === true || $param['debug'] === 'true');
 if ($DEBUG) {
     ini_set('display_errors', 1);
@@ -133,7 +133,11 @@ function resultats($equipe){
     return $result;
 }
 function SendMail($to, $subject, $lien, $event){
-    include './private/parametres.ini';
+    $param = parse_ini_file('./private/parametres.ini');
+    $smtp_host = $param['smtp_host'] ?? '';
+    $smtp_port = $param['smtp_port'] ?? 587;
+    $smtp_user = $param['smtp_user'] ?? '';
+    $smtp_pass = $param['smtp_pass'] ?? '';
     $message = "<!DOCTYPE html>
     <html lang='fr'>
     <head>
@@ -158,10 +162,10 @@ function SendMail($to, $subject, $lien, $event){
         $mail->isSMTP();
         $mail->Host = $smtp_host;
         $mail->SMTPAuth = true;
-        $mail->Username = $smtp_username;
-        $mail->Password = $smtp_password;
+        $mail->Username = $smtp_user;
+        $mail->Password = $smtp_pass;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = 587;
+        $mail->Port = $smtp_port;
         //Recipients
         $mail->setFrom('vote@remcorp.fr', $event);
         $mail->addAddress($to);
@@ -172,9 +176,12 @@ function SendMail($to, $subject, $lien, $event){
         $mail->send();
     } catch (Exception $e) {
         //redirection vers une page d'erreur
+        global $DEBUG;
+        if ($DEBUG) {
+            echo '<b>Erreur d\'envoi de mail :</b> ' . $e->getMessage();
+        }
         header('Location: erreur.html');
     }   
-    
 }
 function deleteaccent($string){
     $search  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
