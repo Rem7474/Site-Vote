@@ -3,10 +3,25 @@
 include 'FonctionsConnexion.php';
 include 'fonctionsBDD.php';
 $conn = connexionBDD('./private/parametres.ini');
+// Lecture de la config debug
+$param = parse_ini_file('./private/parametres.ini');
+$DEBUG = isset($param['debug']) && ($param['debug'] === true || $param['debug'] === 'true');
+if ($DEBUG) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+// Chargement de Composer autoload
+if (!file_exists('vendor/autoload.php')) {
+    if ($DEBUG) {
+        echo '<b>Erreur :</b> vendor/autoload.php est manquant. Exécutez composer install.';
+    }
+    exit();
+}
+require 'vendor/autoload.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-require 'vendor/autoload.php';
 function InscriptionVote($login, $IDevent){
     global $conn;
     //vérification de l'existence de l'événement dans la base de données
