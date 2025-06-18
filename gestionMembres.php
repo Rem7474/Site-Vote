@@ -38,13 +38,15 @@ if (!$liste) {
 // Ajout d'un membre
 if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['fonction'])) {
     addMembre($_POST['nom'], $_POST['prenom'], $_POST['fonction'], $idListe, $conn);
-    header('Location: gestionMembres.php?id=' . $idListe);
+    echo "<script>window.toastMessage='Membre ajouté avec succès';window.toastType='success';</script>";
+    header('Refresh:1;url=gestionMembres.php?id=' . $idListe);
     exit();
 }
 // Suppression d'un membre
 if (isset($_GET['delete']) && isset($_GET['nom']) && isset($_GET['prenom'])) {
     deleteMembre($_GET['nom'], $_GET['prenom'], $idListe, $conn);
-    header('Location: gestionMembres.php?id=' . $idListe);
+    echo "<script>window.toastMessage='Membre supprimé avec succès';window.toastType='success';</script>";
+    header('Refresh:1;url=gestionMembres.php?id=' . $idListe);
     exit();
 }
 $membres = getMembres($idListe, $conn);
@@ -90,5 +92,7 @@ $membres = getMembres($idListe, $conn);
             <p>Aucun membre pour cette liste.</p>
         <?php endif; ?>
     </div>
+    <?php include 'inc_header.php'; ?>
+    <?php include 'inc_admin_menu.php'; ?>
 </body>
 </html>

@@ -22,4 +22,7 @@ if ($orgaId) {
 ?>
 <div class="header">
     <img src="<?php echo $logoPath; ?>" alt="Logo du site">
+    <div style="margin-top:10px;">
+        <a href="dashboard.php" style="color:#3b6eea;text-decoration:underline;font-size:0.98em;">&larr; Retour au dashboard</a>
+    </div>
 </div>

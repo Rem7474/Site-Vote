@@ -1,3 +1,9 @@
+<?php
+if (!isset($infosEvent) || empty($infosEvent)) {
+    header('Location: index.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

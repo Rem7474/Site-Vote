@@ -23,15 +23,16 @@ if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
         $ext = $fileType === 'image/png' ? 'png' : ($fileType === 'image/webp' ? 'webp' : 'jpg');
         $dest = './images/logo_' . $idOrga . '.' . $ext;
         move_uploaded_file($fileTmp, $dest);
-        // Supprimer les anciens logos si extension différente
         foreach(['jpg','png','webp'] as $e) {
             $old = './images/logo_' . $idOrga . '.' . $e;
             if ($old !== $dest && file_exists($old)) unlink($old);
         }
-        header('Location: dashboard.php');
+        echo "<script>window.toastMessage='Logo mis à jour avec succès';window.toastType='success';</script>";
+        header('Refresh:1;url=dashboard.php');
         exit();
     } else {
         $msg = 'Format de logo non supporté.';
+        echo "<script>window.toastMessage='Format de logo non supporté';window.toastType='error';</script>";
     }
 }
 

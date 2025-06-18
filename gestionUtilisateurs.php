@@ -15,7 +15,8 @@ if (!$event || $event['reforga'] != $_SESSION['id']) {
 // Suppression d'un utilisateur
 if (isset($_GET['delete']) && isset($_GET['login'])) {
     deleteUser($_GET['login'], $eventId, $conn);
-    header('Location: gestionUtilisateurs.php?id=' . $eventId);
+    echo "<script>window.toastMessage='Utilisateur supprimé avec succès';window.toastType='success';</script>";
+    header('Refresh:1;url=gestionUtilisateurs.php?id=' . $eventId);
     exit();
 }
 $users = getUsers($eventId, $conn);

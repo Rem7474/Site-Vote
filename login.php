@@ -1,5 +1,10 @@
 <?php
 include 'fonctionsPHP.php';
+session_start();
+if (isset($_SESSION['id'])) {
+    header('Location: dashboard.php');
+    exit();
+}
 if (isset($_POST['login']) && isset($_POST['password'])) {
     $login = $_POST['login'];
     $password = $_POST['password'];
@@ -8,7 +13,6 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
         //vérification du mot de passe
         if (password_verify($password, $result['password'])){
             //on démarre la session
-            session_start();
             $_SESSION['email'] = $result['email'];
             $_SESSION['id'] = $result['id'];
             $_SESSION['nom'] = $result['nom'];
