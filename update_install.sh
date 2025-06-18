@@ -6,6 +6,7 @@
 set -e
 REPO_URL="https://github.com/Rem7474/Site-Vote.git"
 BRANCH="beta"
+INSTALL_MODE=""
 
 # 0. Détection install ou update
 if [ ! -d ".git" ]; then
@@ -14,22 +15,11 @@ if [ ! -d ".git" ]; then
   INSTALL_MODE=1
 else
   echo "Mise à jour du code source..."
-  # Gestion automatique des modifications locales du script (auto-stash)
-  if [ $INSTALL_MODE -eq 0 ]; then
-    if ! git diff --quiet -- update_install.sh; then
-      echo "Des modifications locales sur update_install.sh ont été détectées. Elles vont être sauvegardées (stash) automatiquement."
-      git stash push -m "Sauvegarde auto update_install.sh avant update" update_install.sh
-      git pull origin $BRANCH
-      git stash pop || true
-    else
-      git pull origin $BRANCH
-    fi
-  fi
   INSTALL_MODE=0
 fi
 
 # 1. Sauvegarde du dossier private si update
-if [ $INSTALL_MODE -eq 0 ] && [ -d "private" ]; then
+if [ "$INSTALL_MODE" = "0" ] && [ -d "private" ]; then
   echo "Sauvegarde du dossier private..."
   cp -r private private_backup_$(date +%Y%m%d_%H%M%S)
 fi
@@ -41,7 +31,7 @@ if [ -f "composer.json" ]; then
 fi
 
 # 3. Création/configuration du dossier private et parametres.ini si install
-if [ $INSTALL_MODE -eq 1 ]; then
+if [ "$INSTALL_MODE" = "1" ]; then
   mkdir -p private
   PARAM_FILE="private/parametres.ini"
   echo "Configuration initiale du fichier $PARAM_FILE :"
@@ -122,7 +112,7 @@ grep -q 'user' private/parametres.ini || { echo "Erreur : user manquant dans par
 grep -q 'pass' private/parametres.ini || { echo "Erreur : pass manquant dans parametres.ini"; exit 1; }
 
 # 6. Message de fin
-if [ $INSTALL_MODE -eq 1 ]; then
+if [ "$INSTALL_MODE" = "1" ]; then
   echo "Installation terminée. Pensez à créer la base de données (voir README)."
 else
   echo "Mise à jour terminée. Le dossier private est conservé."
