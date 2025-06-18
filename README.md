@@ -17,46 +17,42 @@ Ce projet est une plateforme complète de gestion de votes en ligne, adaptée à
 - **Page de contact/FAQ**.
 - **Sécurité** : authentification organisateur, confirmation avant suppression, gestion des erreurs, redirections sécurisées.
 
-## Installation
+## Installation rapide (recommandée)
 
-### Prérequis
-- Serveur web (Apache/Nginx) avec PHP >= 7.4
-- Base de données PostgreSQL
-- Composer (pour les dépendances PHP, notamment PHPMailer)
+### 1. Clonage et installation automatique
+Utilisez le script fourni pour installer ou mettre à jour le site. Ce script gère le clonage, l'installation des dépendances et la configuration initiale.
 
-### Procédure
-1. **Cloner le projet**
-   ```bash
-   git clone <repo> && cd Site-Vote
-   ```
-2. **Installer les dépendances PHP**
-   ```bash
-   composer install
-   ```
-3. **Créer la base de données**
-   - Importer le schéma SQL fourni (à adapter selon vos besoins).
-   - Créer les tables : `organisateurs`, `evenements`, `listes`, `membres`, `participants`, `votes`, `utilisateurs`.
+```bash
+# Pour une première installation :
+git clone -b beta https://github.com/Rem7474/Site-Vote.git
+cd Site-Vote
+chmod +x update_install.sh
+./update_install.sh
+```
 
-4. **Configurer les paramètres de connexion**
-   - Copier le fichier d’exemple dans le dossier `private` :
-     ```bash
-     cp private/parametres.ini.example private/parametres.ini
-     ```
-   - Éditer `private/parametres.ini` pour renseigner :
-     - `lehost` : hôte de la base de données
-     - `dbname` : nom de la base
-     - `leport` : port PostgreSQL
-     - `user` / `pass` : identifiants
-     - `debug` : true/false selon besoin
-     - Paramètres SMTP pour l’envoi des mails (PHPMailer)
+- Lors de la première installation, le script vous demandera toutes les informations nécessaires pour générer le fichier `private/parametres.ini` (connexion BDD, SMTP, etc.).
+- Pour une mise à jour, relancez simplement `./update_install.sh` dans le dossier du projet : le dossier `private` et vos paramètres seront conservés.
 
-5. **Droits d’écriture**
-   - Le dossier `images/` doit être accessible en écriture pour l’upload des logos et photos de listes.
+### 2. Création de la base de données
+- Utilisez le script SQL fourni :
+```bash
+psql -U <user> -d <dbname> -f schema.sql
+```
 
-6. **Accès**
-   - Rendez-vous sur `index.php` pour l’inscription des votants.
-   - Les organisateurs peuvent s’inscrire et se connecter via `register.php` et `login.php`.
-   - Le dashboard admin est accessible après connexion.
+### 3. Droits d'accès
+- Le dossier `images/` doit être accessible en écriture pour l’upload des logos et photos de listes.
+- Le dossier `private/` doit être protégé (chmod 700 ou 770).
+
+### 4. Accès
+- Rendez-vous sur `index.php` pour l’inscription des votants.
+- Les organisateurs peuvent s’inscrire et se connecter via `register.php` et `login.php`.
+- Le dashboard admin est accessible après connexion.
+
+## Mise à jour
+Pour mettre à jour le site sans perdre la configuration :
+```bash
+./update_install.sh
+```
 
 ## Arborescence des fichiers principaux
 - `index.php` : point d’entrée général
