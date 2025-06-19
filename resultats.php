@@ -87,5 +87,8 @@ foreach ($listes as $liste) {
             <?php endforeach; ?>
         </div>
     </div>
+    <div style="text-align:center;margin:30px 0 0 0;">
+        <button class="btn" onclick="navigator.clipboard.writeText(window.location.href)" style="padding:10px 30px;font-size:1.1em;">📋 Copier le lien de cette page</button>
+    </div>
 </body>
 </html>

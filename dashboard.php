@@ -112,12 +112,12 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         </form>
     </div>
     <!-- Onglets de personnalisation en bas de page -->
-    <div class="card" style="margin:40px auto 0 auto;max-width:500px;">
-        <h2>Personnalisation</h2>
+    <div class="card card-personnalisation" style="margin:40px auto 0 auto;max-width:520px;box-shadow:0 4px 24px rgba(60,90,200,0.13);border-radius:18px;border:1.5px solid #dbeafe;background:linear-gradient(135deg,#f4f7ff 0%,#e0e7ff 100%);padding:32px 28px 28px 28px;">
+        <h2 style="margin-bottom:18px;text-align:center;color:#3b6eea;font-size:1.25em;letter-spacing:0.5px;">Personnalisation</h2>
         <div style="display:flex;flex-direction:column;gap:30px;">
             <!-- Logo -->
-            <div>
-                <h3>Logo personnalisé</h3>
+            <div style="background:#f7faff;border-radius:12px;padding:18px 14px 14px 14px;box-shadow:0 2px 8px rgba(60,90,200,0.07);">
+                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">Logo personnalisé</h3>
                 <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
                     <label for="logo" style="font-weight:bold;">Logo&nbsp;:</label>
                     <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" style="width:auto;">
@@ -156,11 +156,11 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                     }
                 }
                 ?>
-                <small>Le logo personnalisé s’affichera sur toutes vos pages. Format accepté : .jpg, .png, .webp.</small>
+                <small style="color:#3b6eea;">Le logo personnalisé s’affichera sur toutes vos pages. Format accepté : .jpg, .png, .webp.</small>
             </div>
             <!-- Favicon -->
-            <div>
-                <h3>Favicon personnalisé</h3>
+            <div style="background:#f7faff;border-radius:12px;padding:18px 14px 14px 14px;box-shadow:0 2px 8px rgba(60,90,200,0.07);">
+                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">Favicon personnalisé</h3>
                 <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
                     <label for="favicon" style="font-weight:bold;">Favicon&nbsp;:</label>
                     <input type="file" name="favicon" accept="image/x-icon,image/png" style="width:auto;">
@@ -198,7 +198,7 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                     }
                 }
                 ?>
-                <small>Le favicon personnalisé s’affichera sur toutes vos pages. Format accepté : .ico ou .png (32x32 recommandé).</small>
+                <small style="color:#3b6eea;">Le favicon personnalisé s’affichera sur toutes vos pages. Format accepté : .ico ou .png (32x32 recommandé).</small>
             </div>
         </div>
     </div>
