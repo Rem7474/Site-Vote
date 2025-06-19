@@ -16,7 +16,7 @@ if (file_exists($customLogo)) {
 }
 
 if (!isset($_GET['id'])) {
-    echo '<div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : aucune liste sélectionnée.</p><a href="dashboard.php">Retour au dashboard</a></div>';
+    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : aucune liste sélectionnée.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
     exit();
 }
 $idListe = $_GET['id'];
@@ -32,7 +32,7 @@ foreach ($listes as $l) {
     }
 }
 if (!$liste) {
-    echo '<div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : liste introuvable.</p><a href="dashboard.php">Retour au dashboard</a></div>';
+    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : liste introuvable.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
     exit();
 }
 // Ajout d'un membre
