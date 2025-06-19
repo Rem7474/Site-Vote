@@ -25,7 +25,7 @@ if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) &&
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
@@ -43,7 +43,8 @@ if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) &&
             <input type="password" id="password" name="password" required minlength="8">
             <label for="password2">Confirmer le mot de passe :</label>
             <input type="password" id="password2" name="password2" required minlength="8">
-            <input type="submit" value="S'inscrire">
+            <input type="submit" value="S'inscrire" class="btn">
+        </form>
     </div>
 </body>
 </html>

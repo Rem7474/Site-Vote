@@ -22,7 +22,7 @@ $hash=$_GET["hash"];
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -33,7 +33,7 @@ $hash=$_GET["hash"];
         <!-- Affichage du hash de vote -->
         <p class="hash">Hash de participation : <?php echo $hash?></p>
         <!-- Lien pour vérifier son vote-->
-        <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php">Vérifier son vote</a></p>
+        <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php" class="btn">Vérifier son vote</a></p>
     </div>
 </body>
 </html>

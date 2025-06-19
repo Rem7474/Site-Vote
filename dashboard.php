@@ -64,13 +64,13 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
 <body>
 <?php include 'inc_header.php'; ?>
 <?php include 'inc_admin_menu.php'; ?>
-<div class="container">
+<div class="container card">
     <h1>Dashboard</h1>
-    <div class="logo-admin-block" style="margin-bottom:20px;">
-        <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;">
+    <div class="logo-admin-block card" style="margin-bottom:20px;">
+        <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <label for="logo" style="font-weight:bold;">Changer le logo&nbsp;:</label>
             <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" style="width:auto;" onchange="previewLogo(this)">
-            <input type="submit" value="Mettre à jour" style="width:auto;">
+            <input type="submit" value="Mettre à jour" class="btn" style="width:auto;">
             <img id="logo-preview" src="<?php echo $logoPath; ?>" alt="Prévisualisation logo" style="max-width:60px;max-height:60px;border-radius:50%;margin-left:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
         </form>
         <script>
@@ -88,13 +88,14 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         <?php if (isset($msg)) echo '<p class="erreur">'.$msg.'</p>'; ?>
         <small>Le logo personnalisé s'affichera sur toutes vos pages. Si aucun logo n'est défini, le logo par défaut sera utilisé.</small>
     </div>
-    <header>
+    <header style="margin-bottom:18px;">
         <h2>Bonjour <?php echo $_SESSION['prenom'].' '.$_SESSION['nom']; ?></h2>
-        <form action="logout.php" method="post">
-            <input type="submit" value="Déconnexion">
+        <form action="logout.php" method="post" style="display:inline;">
+            <input type="submit" value="Déconnexion" class="btn">
         </form>
     </header>
     <h2>Événements</h2>
+    <div class="table-responsive">
     <?php if (!empty($events)): ?>
         <table>
             <tr>
@@ -110,28 +111,24 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                 $nbVotes = getNbVotes($event['id'], $conn);
             ?>
             <tr>
-                <td><a href="event.php?id=<?php echo $event['id']; ?>"><?php echo $event['nom']; ?></a></td>
+                <td><a href="event.php?id=<?php echo $event['id']; ?>" class="btn" style="padding:6px 14px;font-size:1em;">Gérer<br><?php echo $event['nom']; ?></a></td>
                 <td><?php echo $event['univ']; ?></td>
                 <td>
                 <?php if (!empty($listes)): ?>
                     <?php foreach ($listes as $liste): ?>
-                        <div class="liste">
-                            <img src="./images/<?php echo $liste['photo']; ?>" alt="<?php echo $liste['nom']; ?>">
-                        </div>
+                        <div class="liste"><img src="./images/<?php echo $liste['photo']; ?>" alt="<?php echo $liste['nom']; ?>"></div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>Aucune liste</p>
                 <?php endif; ?>
                 </td>
                 <td><?php echo $nbVotes; ?></td>
-                <td>
-                    <a href="resultats.php?id=<?php echo $event['id']; ?>">Résultats</a> | 
-                    <a href="exportResultats.php?id=<?php echo $event['id']; ?>">Export CSV</a> | 
-                    <a href="event.php?id=<?php echo $event['id']; ?>">Gérer</a> | 
-                    <a href="gestionUtilisateurs.php?id=<?php echo $event['id']; ?>">Utilisateurs</a> | 
-                    <a href="gestionMembres.php?id=<?php echo !empty($listes) ? $listes[0]['id'] : ''; ?>">Membres</a> | 
-                    <a href="statistiques.php?id=<?php echo $event['id']; ?>">Statistiques</a> | 
-                    <a href="contact.php">FAQ/Contact</a>
+                <td style="min-width:180px;">
+                    <a href="resultats.php?id=<?php echo $event['id']; ?>" class="btn" style="padding:6px 10px;font-size:0.95em;">Résultats</a> 
+                    <a href="exportResultats.php?id=<?php echo $event['id']; ?>" class="btn" style="padding:6px 10px;font-size:0.95em;">Export</a>
+                    <a href="gestionUtilisateurs.php?id=<?php echo $event['id']; ?>" class="btn" style="padding:6px 10px;font-size:0.95em;">Utilisateurs</a>
+                    <a href="gestionMembres.php?id=<?php echo !empty($listes) ? $listes[0]['id'] : ''; ?>" class="btn" style="padding:6px 10px;font-size:0.95em;">Membres</a>
+                    <a href="statistiques.php?id=<?php echo $event['id']; ?>" class="btn" style="padding:6px 10px;font-size:0.95em;">Stats</a>
                 </td>
                 <td>
                     <canvas id="chart_<?php echo $event['id']; ?>" width="120" height="80"></canvas>
@@ -171,14 +168,17 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
     <?php else: ?>
         <p>Aucun événement disponible.</p>
     <?php endif; ?>
-    <h2>Créer un nouvel événement</h2>
-    <form method="post" action="dashboard.php">
+    </div>
+    <div class="card" style="margin-top:30px;">
+        <h2>Créer un nouvel événement</h2>
+        <form method="post" action="dashboard.php">
             <label for="nom">Nom de l'événement</label>
             <input type="text" name="nom">
             <label for="universite">Université (ex : univ-smb.fr)</label>
             <input type="text" name="universite">
-            <input type="submit" value="Créer">
-    </form>
+            <input type="submit" value="Créer" class="btn">
+        </form>
+    </div>
 </div>
 </body>
 </html>

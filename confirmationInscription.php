@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">

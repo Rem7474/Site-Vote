@@ -243,12 +243,13 @@ header {
 }
 
 .erreur {
-    color: #e74c3c;
-    font-size: 1.2em;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-weight: 600;
+    color: #fff;
+    background: #e74c3c;
+    padding: 12px 0;
+    border-radius: 7px;
+    font-size: 1.1em;
+    margin: 18px 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
 }
 
 /* Toast notifications */
@@ -300,6 +301,60 @@ header {
     color: #444;
     font-weight: 600;
     margin-left: 18px;
+}
+
+/* Améliorations responsive et design moderne */
+.card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 18px 16px;
+    margin-bottom: 22px;
+}
+
+.btn {
+    display: inline-block;
+    background: linear-gradient(90deg, #4f8cff 0%, #3b6eea 100%);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    text-decoration: none;
+    margin: 5px 0;
+}
+.btn:hover {
+    background: linear-gradient(90deg, #3b6eea 0%, #4f8cff 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+input[type="submit"].btn {
+    width: auto;
+    min-width: 120px;
+}
+
+/* Tableaux scrollables sur mobile */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+    .table-responsive {
+        margin: 0 -2vw;
+    }
+    table {
+        min-width: 500px;
+    }
+}
+
+/* Effet focus sur les champs */
+form input:focus, form select:focus {
+    border: 1.5px solid #3b6eea;
+    background: #e0e7ff;
 }
 
 /* Responsive design */

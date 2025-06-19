@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
@@ -20,7 +20,7 @@
             <li><strong>Comment devenir organisateur ?</strong> <br>Inscrivez-vous via la page dédiée aux organisateurs.</li>
         </ul>
         <h2>Contact</h2>
-        <p>Pour toute question ou problème technique, contactez-nous à : <a href="mailto:support@vote.remcorp.fr">support@vote.remcorp.fr</a></p>
+        <p>Pour toute question ou problème technique, contactez-nous à : <a href="mailto:support@vote.remcorp.fr" class="btn">support@vote.remcorp.fr</a></p>
     </div>
 </body>
 </html>

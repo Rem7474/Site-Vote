@@ -13,7 +13,7 @@ if (!isset($infosEvent) || empty($infosEvent)) {
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
@@ -23,12 +23,12 @@ if (!isset($infosEvent) || empty($infosEvent)) {
         <form action="index.php" method="post">
             <input type="text" name="login" placeholder="login universitaire" required>
             <input type="text" name="event" value=<?php echo $infosEvent["id"]; ?> hidden>
-            <input type="submit" value="S'inscrire">
+            <input type="submit" value="S'inscrire" class="btn">
         </form>
     </div>
     <div class="footer">
-        <p><a href="checkVote.php">Vérifier un vote effectué</a></p>
-        <p><a href="login.php">Connexion administrateur</a></p>
+        <p><a href="checkVote.php" class="btn">Vérifier un vote effectué</a></p>
+        <p><a href="login.php" class="btn">Connexion administrateur</a></p>
     </div>
 </body>
 </html>

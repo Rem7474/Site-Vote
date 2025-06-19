@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -16,7 +16,7 @@
         <p>Veuillez entrer le hash de votre vote pour vérifier l'équipe pour laquelle vous avez voté :</p>
         <form action="checkVote.php" method="post">
             <input type="text" name="hash" placeholder="Entrez votre hash de vote" required>
-            <input type="submit" value="Vérifier">
+            <input type="submit" value="Vérifier" class="btn">
         </form>
         <div class="result" id="result">
             <?php

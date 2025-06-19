@@ -39,7 +39,7 @@ $candidats = getListes($IDevent, $conn);
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -58,7 +58,7 @@ $candidats = getListes($IDevent, $conn);
             }
             ?>
             <input type="hidden" name="hash" value="<?php echo $hash; ?>">
-            <input type="submit" value="Voter">
+            <input type="submit" value="Voter" class="btn">
         </form>
     </div>
 </body>
