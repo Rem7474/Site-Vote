@@ -212,7 +212,7 @@ function addDarkModeScript() {
     if (localStorage.getItem("theme") === "dark" || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
         document.documentElement.classList.add("dark-mode");
     }
-    function toggleDarkMode() {
+    window.toggleDarkMode = function() {
         document.documentElement.classList.toggle("dark-mode");
         localStorage.setItem("theme", document.documentElement.classList.contains("dark-mode") ? "dark" : "light");
     }

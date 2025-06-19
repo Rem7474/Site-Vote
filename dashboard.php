@@ -78,6 +78,39 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             <canvas id="evolutionVotes" width="320" height="120"></canvas>
         </div>
     </div>
+    <!-- Mes événements -->
+    <div class="card" style="margin-bottom:30px;">
+        <h2>Mes événements</h2>
+        <?php if (empty($events)) : ?>
+            <p>Vous n'avez pas encore créé d'événement.</p>
+        <?php else : ?>
+            <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr><th>Nom</th><th>Université</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                <?php foreach($events as $event): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($event['nom']); ?></td>
+                        <td><?php echo htmlspecialchars($event['universite']); ?></td>
+                        <td>
+                            <a href="event.php?id=<?php echo $event['id']; ?>" class="btn">Détails</a>
+                            <a href="event.php?id=<?php echo $event['id']; ?>&edit=1" class="btn">Modifier</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            </div>
+        <?php endif; ?>
+        <h3>Créer un nouvel événement</h3>
+        <form method="post" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <input type="text" name="nom" placeholder="Nom de l'événement" required class="input" style="flex:1;min-width:180px;">
+            <input type="text" name="universite" placeholder="Université" required class="input" style="flex:1;min-width:180px;">
+            <input type="submit" value="Créer" class="btn">
+        </form>
+    </div>
     <!-- Onglets de personnalisation en bas de page -->
     <div class="card" style="margin:40px auto 0 auto;max-width:500px;">
         <h2>Personnalisation</h2>

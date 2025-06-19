@@ -44,14 +44,22 @@ $showRetour = $current !== 'dashboard.php';
         <button class="btn" onclick="toggleDarkMode()" style="padding:7px 18px;font-size:1em;">🌓 Thème sombre</button>
     </div>
     <script>
-    // Fermer le menu burger si on clique ailleurs
-    document.addEventListener('click', function(e) {
-        var menu = document.querySelector('.global-menu');
+    // Burger menu mobile : ouverture/fermeture
+    (function() {
         var burger = document.querySelector('.burger');
-        if (menu && burger && !menu.contains(e.target) && !burger.contains(e.target)) {
-            menu.classList.remove('open');
+        var menu = document.querySelector('.global-menu');
+        if (burger && menu) {
+            burger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                menu.classList.toggle('open');
+            });
+            document.addEventListener('click', function(e) {
+                if (!menu.contains(e.target) && !burger.contains(e.target)) {
+                    menu.classList.remove('open');
+                }
+            });
         }
-    });
+    })();
     </script>
 </div>
 <style>
