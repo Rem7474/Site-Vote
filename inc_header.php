@@ -23,7 +23,7 @@ if ($orgaId) {
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
-<div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#e0e7ff 0%,#f4f4f4 100%);padding:24px 0 18px 0;box-sizing:border-box;">
+<div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#e0e7ff 0%,#f4f4f4 100%);padding:24px 0 18px 0;box-sizing:border-box;position:relative;">
     <img src="<?php echo $logoPath; ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
     <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
         <span style="font-size:1.25em;font-weight:600;color:#2d3a4b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
@@ -39,17 +39,27 @@ $showRetour = $current !== 'dashboard.php';
             </form>
         <?php endif; ?>
     </div>
+    <script>
+    // Fermer le menu burger si on clique ailleurs
+    document.addEventListener('click', function(e) {
+        var menu = document.querySelector('.global-menu');
+        var burger = document.querySelector('.burger');
+        if (menu && burger && !menu.contains(e.target) && !burger.contains(e.target)) {
+            menu.classList.remove('open');
+        }
+    });
+    </script>
 </div>
 <style>
 @media (max-width: 900px) {
     .header {flex-direction: column !important;align-items: center !important;gap: 10px !important;}
     .header img {max-width: 80px !important;min-width: 50px !important;}
-    .header span {font-size: 1.1em !important;max-width: 90vw !important;}
+    .header span {font-size: 1.1em !important;max-width: 90vw !important;text-align: center;}
     .header .btn, .header form {margin-top: 8px;}
 }
 @media (max-width: 600px) {
     .header {padding: 10px 4vw 10px 4vw !important;}
     .header img {max-width: 60px !important;min-width: 40px !important;}
-    .header span {font-size: 1em !important;}
+    .header span {font-size: 1em !important;max-width: 98vw !important;text-align: center;}
 }
 </style>
