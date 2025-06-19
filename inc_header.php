@@ -24,24 +24,24 @@ $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
 <?php printFaviconTag(); addDarkModeScript(); ?>
-<div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#e0e7ff 0%,#f4f4f4 100%);padding:24px 0 18px 0;box-sizing:border-box;position:relative;">
-    <img src="<?php echo $logoPath; ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
+<div class="header">
+    <img src="<?php echo $logoPath; ?>" alt="Logo du site">
     <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
-        <span style="font-size:1.25em;font-weight:600;color:#2d3a4b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
+        <span>Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
     <?php endif; ?>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;">
-        <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')" style="display:none;">☰</button>
+    <div class="header-actions">
+        <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')">☰</button>
         <?php if ($showRetour): ?>
-            <a href="dashboard.php" class="btn" style="padding:7px 16px;font-size:0.98em;">&larr; Retour au dashboard</a>
+            <a href="dashboard.php" class="btn">&larr; Retour au dashboard</a>
         <?php endif; ?>
         <?php if ($current === 'dashboard.php'): ?>
             <form action="logout.php" method="post" style="display:inline;">
-                <input type="submit" value="Déconnexion" class="btn" style="padding:7px 16px;font-size:0.98em;">
+                <input type="submit" value="Déconnexion" class="btn">
             </form>
         <?php endif; ?>
     </div>
-    <div style="position:absolute;right:18px;bottom:10px;">
-        <button class="btn" onclick="toggleDarkMode()" style="padding:7px 18px;font-size:1em;">🌓 Thème sombre</button>
+    <div class="header-theme-btn">
+        <button class="btn" onclick="toggleDarkMode()">🌓 Thème sombre</button>
     </div>
     <script>
     // Burger menu mobile : ouverture/fermeture
