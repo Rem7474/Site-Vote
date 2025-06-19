@@ -69,8 +69,9 @@ fi
 
 # 4. Création du dossier images si nécessaire et droits d'accès
 mkdir -p images
-chmod -R 770 images/
-chmod -R 700 private/
+chmod -R 755 images/
+chmod -R 750 private/
+chmod 755 "$(pwd)"
 
 # 5. Vérifications automatiques
 # Vérification de la présence de PHP
