@@ -4,7 +4,7 @@ include 'FonctionsConnexion.php';
 include 'fonctionsBDD.php';
 // Correction : ne pas inclure parametres.ini comme un fichier PHP, mais le parser
 $param = parse_ini_file('./private/parametres.ini');
-$conn = connexionBDD('./private/parametres.ini');
+$conn = ConnexionBDD('./private/parametres.ini');
 $DEBUG = isset($param['debug']) && ($param['debug'] === true || $param['debug'] === 'true');
 if ($DEBUG) {
     ini_set('display_errors', 1);
