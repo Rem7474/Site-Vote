@@ -64,9 +64,6 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
 </head>
 <body>
 <?php include 'inc_header.php'; ?>
-<div style="text-align:right;margin-bottom:10px;">
-    <button class="btn" onclick="toggleDarkMode()" style="padding:7px 16px;">🌓 Thème sombre</button>
-</div>
 <?php include 'inc_admin_menu.php'; ?>
 <div class="container card">
     <h1>Dashboard</h1>
@@ -81,11 +78,12 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             <canvas id="evolutionVotes" width="320" height="120"></canvas>
         </div>
     </div>
-    <!-- Formulaire d'upload du favicon personnalisé -->
-    <div class="card" style="margin-bottom:20px;">
-        <h2>Favicon personnalisé</h2>
-        <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-            <label for="favicon" style="font-weight:bold;">Changer le favicon&nbsp;:</label>
+    <!-- Onglets de personnalisation en bas de page -->
+    <div class="card" style="margin:40px auto 0 auto;max-width:500px;">
+        <h2>Personnalisation</h2>
+        <!-- Favicon -->
+        <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
+            <label for="favicon" style="font-weight:bold;">Favicon&nbsp;:</label>
             <input type="file" name="favicon" accept="image/x-icon,image/png" style="width:auto;">
             <input type="submit" name="upload_favicon" value="Mettre à jour" class="btn" style="width:auto;">
             <?php
@@ -238,39 +236,9 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             <input type="submit" value="Créer" class="btn">
         </form>
     </div>
+    <div style="text-align:center;margin:30px 0 0 0;">
+        <button class="btn" onclick="toggleDarkMode()" style="padding:10px 30px;font-size:1.1em;">🌓 Thème sombre</button>
+    </div>
 </div>
-<script>
-// Statistiques avancées (exemple, à adapter selon la structure réelle)
-document.addEventListener('DOMContentLoaded', function() {
-    // Simuler des données pour l'évolution (à remplacer par un appel AJAX réel)
-    const evolutionData = [5, 12, 18, 25, 32, 40, 55, 60]; // votes cumulés par heure
-    const labels = ['8h','9h','10h','11h','12h','13h','14h','15h'];
-    const totalVotes = evolutionData[evolutionData.length-1];
-    const totalInscrits = 100; // À remplacer par le vrai nombre d'inscrits
-    const taux = totalInscrits ? Math.round(totalVotes/totalInscrits*100) : 0;
-    document.getElementById('taux-participation').textContent = taux + '%';
-    document.getElementById('total-votes').textContent = totalVotes;
-    new Chart(document.getElementById('evolutionVotes').getContext('2d'), {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Votes cumulés',
-                data: evolutionData,
-                borderColor: '#3b6eea',
-                backgroundColor: 'rgba(75, 134, 255, 0.1)',
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options: {
-            plugins: {legend: {display: false}},
-            scales: {y: {beginAtZero: true}},
-            responsive: false,
-            maintainAspectRatio: false
-        }
-    });
-});
-</script>
 </body>
 </html>
