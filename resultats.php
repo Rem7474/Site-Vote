@@ -1,6 +1,7 @@
 <?php
 // Page de résultats dynamique pour un événement
 include 'fonctionsPHP.php';
+include 'inc_header.php';
 
 // Vérification de l'id de l'événement
 if (!isset($_GET['id']) || empty($_GET['id'])) {
