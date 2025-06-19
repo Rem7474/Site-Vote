@@ -20,6 +20,7 @@ $hash=$_GET["hash"];
     <title>Inscription pour les votes du BDE R&T</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
     <div class="container card">

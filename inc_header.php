@@ -23,6 +23,7 @@ if ($orgaId) {
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
+<?php printFaviconTag(); addDarkModeScript(); ?>
 <div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#e0e7ff 0%,#f4f4f4 100%);padding:24px 0 18px 0;box-sizing:border-box;position:relative;">
     <img src="<?php echo $logoPath; ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
     <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
@@ -38,6 +39,9 @@ $showRetour = $current !== 'dashboard.php';
                 <input type="submit" value="Déconnexion" class="btn" style="padding:7px 16px;font-size:0.98em;">
             </form>
         <?php endif; ?>
+    </div>
+    <div style="position:absolute;right:18px;bottom:10px;">
+        <button class="btn" onclick="toggleDarkMode()" style="padding:7px 18px;font-size:1em;">🌓 Thème sombre</button>
     </div>
     <script>
     // Fermer le menu burger si on clique ailleurs

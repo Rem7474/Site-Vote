@@ -32,9 +32,10 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Page de connexion en tant qu'organisateur</title>
+    <title>Connexion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
     <div class="container card">
