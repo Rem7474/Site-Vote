@@ -28,13 +28,7 @@ if [ "$INSTALL_MODE" = "0" ] && [ -d "private" ]; then
   cp -r private private_backup_$(date +%Y%m%d_%H%M%S)
 fi
 
-# 2. Installation des dépendances PHP
-if [ -f "composer.json" ]; then
-  echo "Installation des dépendances PHP..."
-  composer install
-fi
-
-# 3. Création/configuration du dossier private et parametres.ini si install
+# 2. Création/configuration du dossier private et parametres.ini si install
 if [ "$INSTALL_MODE" = "1" ]; then
   mkdir -p private
   PARAM_FILE="private/parametres.ini"
@@ -67,13 +61,13 @@ EOF
   echo "Fichier $PARAM_FILE généré."
 fi
 
-# 4. Création du dossier images si nécessaire et droits d'accès
+# 3. Création du dossier images si nécessaire et droits d'accès
 mkdir -p images
 chmod -R 755 images/
 chmod -R 750 private/
 chmod 755 "$(pwd)"
 
-# 5. Vérifications automatiques
+# 4. Vérifications automatiques
 # Vérification de la présence de PHP
 if ! command -v php >/dev/null 2>&1; then
   echo "Erreur : PHP n'est pas installé. Installez PHP avant de continuer." >&2
@@ -95,7 +89,7 @@ if [ ! -w private/ ]; then
   echo "Attention : le dossier private/ n'est pas accessible en écriture !"
 fi
 
-# Vérification de vendor/autoload.php
+# Vérification de vendor/autoload.php et installation des dépendances si besoin
 if [ ! -f vendor/autoload.php ]; then
   echo "Installation des dépendances PHP (composer install)..."
   composer install
@@ -116,7 +110,7 @@ grep -q 'dbname' private/parametres.ini || { echo "Erreur : dbname manquant dans
 grep -q 'user' private/parametres.ini || { echo "Erreur : user manquant dans parametres.ini"; exit 1; }
 grep -q 'pass' private/parametres.ini || { echo "Erreur : pass manquant dans parametres.ini"; exit 1; }
 
-# 6. Message de fin
+# 5. Message de fin
 if [ "$INSTALL_MODE" = "1" ]; then
   echo "Installation terminée. Pensez à créer la base de données (voir README)."
 else
