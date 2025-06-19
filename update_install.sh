@@ -16,15 +16,10 @@ if [ ! -d ".git" ]; then
 else
   echo "Mise à jour du code source..."
   INSTALL_MODE=0
-  # Gestion automatique des modifications locales du script (auto-stash)
-  if ! git diff --quiet -- update_install.sh; then
-    echo "Des modifications locales sur update_install.sh ont été détectées. Elles vont être sauvegardées (stash) automatiquement."
-    git stash push -m "Sauvegarde auto update_install.sh avant update" update_install.sh
-    git pull origin $BRANCH
-    git stash pop || true
-  else
-    git pull origin $BRANCH
-  fi
+  TMPDIR=$(mktemp -d)
+  git clone -b $BRANCH $REPO_URL "$TMPDIR"
+  rsync -av --exclude='private' --exclude='.git' --exclude='vendor' "$TMPDIR"/ ./
+  rm -rf "$TMPDIR"
 fi
 
 # 1. Sauvegarde du dossier private si update

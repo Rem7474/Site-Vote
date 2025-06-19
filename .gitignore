@@ -1,0 +1,10 @@
+# Ne jamais versionner le dossier de configuration privée
+private/
+# Dépendances PHP
+/vendor/
+# Fichiers temporaires
+*.log
+*.tmp
+# Fichiers système
+.DS_Store
+Thumbs.db
