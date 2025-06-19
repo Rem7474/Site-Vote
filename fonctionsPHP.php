@@ -206,4 +206,47 @@ function getEquipeVote($hash){
         exit();
     }
 }
+// Ajout du mode sombre
+function addDarkModeScript() {
+    echo '<script>
+    if (localStorage.getItem("theme") === "dark" || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark-mode");
+    }
+    function toggleDarkMode() {
+        document.documentElement.classList.toggle("dark-mode");
+        localStorage.setItem("theme", document.documentElement.classList.contains("dark-mode") ? "dark" : "light");
+    }
+    </script>';
+}
+// Ajout d'une fonction de double confirmation JS
+function doubleConfirm($message = 'Êtes-vous sûr de vouloir effectuer cette action ?') {
+    echo "<script>
+    function doubleConfirmAction(e) {
+        if (!confirm('$message')) { e.preventDefault(); return false; }
+        if (!confirm('Merci de confirmer à nouveau.')) { e.preventDefault(); return false; }
+    }
+    document.querySelectorAll('.double-confirm').forEach(function(btn) {
+        btn.addEventListener('click', doubleConfirmAction);
+    });
+    </script>";
+}
+function printFaviconTag() {
+    $idOrga = null;
+    if (isset($_SESSION['id'])) {
+        $idOrga = $_SESSION['id'];
+    } elseif (isset($event) && isset($event['reforga'])) {
+        $idOrga = $event['reforga'];
+    }
+    if ($idOrga) {
+        foreach(['ico','png'] as $ext) {
+            $customFavicon = './images/favicon_' . $idOrga . '.' . $ext;
+            if (file_exists($customFavicon)) {
+                echo '<link rel="icon" type="image/'.$ext.'" href="'.$customFavicon.'">';
+                return;
+            }
+        }
+    }
+    // Fallback
+    echo '<link rel="icon" type="image/png" href="favicon.png">';
+}
 ?>

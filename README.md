@@ -124,6 +124,31 @@ Pour mettre à jour le site sans perdre la configuration :
 - Chaque organisateur peut téléverser son logo depuis le dashboard.
 - Les couleurs et le style sont modifiables dans `styles.css`.
 
+## Accès Super Admin
+
+Une interface super admin est disponible pour la gestion globale des organisateurs et de leurs événements.
+
+- Accès : `superadmin.php`
+- Authentification : les identifiants sont à définir dans le fichier `private/parametres.ini` :
+
+```
+superadmin_user = "admin"
+superadmin_pass = "motdepasse"
+```
+
+Le super admin peut voir la liste de tous les organisateurs, leurs emails, et les événements associés.
+
+## Personnalisation avancée
+- Chaque organisateur peut téléverser son logo personnalisé (affiché sur toutes ses pages).
+- Les couleurs principales du thème peuvent être modifiées dans `styles.css`.
+- Le favicon peut être personnalisé par événement en ajoutant un fichier `favicon_<idOrga>.ico` dans le dossier `images/`.
+- Un mode sombre est disponible (bouton en haut à droite du dashboard).
+
+## Ergonomie et design
+- Transitions et animations douces sur les boutons, notifications et menus.
+- Menu burger et navigation simplifiée sur mobile.
+- Double confirmation pour les actions sensibles (suppression, export, etc.).
+
 ## Sécurité
 - Les actions sensibles nécessitent une authentification.
 - Les suppressions sont confirmées côté client.

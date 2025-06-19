@@ -84,7 +84,7 @@ $membres = getMembres($idListe, $conn);
                         <td><?php echo htmlspecialchars($membre['nom']); ?></td>
                         <td><?php echo htmlspecialchars($membre['prenom']); ?></td>
                         <td><?php echo htmlspecialchars($membre['fonction']); ?></td>
-                        <td><a href="gestionMembres.php?id=<?php echo $idListe; ?>&delete=1&nom=<?php echo urlencode($membre['nom']); ?>&prenom=<?php echo urlencode($membre['prenom']); ?>">Supprimer</a></td>
+                        <td><a href="gestionMembres.php?id=<?php echo $idListe; ?>&delete=1&nom=<?php echo urlencode($membre['nom']); ?>&prenom=<?php echo urlencode($membre['prenom']); ?>" class="btn double-confirm">Supprimer</a></td>
                     </tr>
                 <?php endforeach; ?>
             </table>

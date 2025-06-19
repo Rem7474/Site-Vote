@@ -30,6 +30,7 @@ $showRetour = $current !== 'dashboard.php';
             <span style="font-size:1.1em;font-weight:600;color:#2d3a4b;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
         <?php endif; ?>
     </div>
+    <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')">☰</button>
     <div style="display:flex;align-items:center;gap:10px;">
         <?php if ($showRetour): ?>
             <a href="dashboard.php" class="btn" style="padding:7px 16px;font-size:0.98em;">&larr; Retour au dashboard</a>

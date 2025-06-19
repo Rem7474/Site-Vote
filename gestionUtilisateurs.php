@@ -40,7 +40,7 @@ $users = getUsers($eventId, $conn);
                 <tr>
                     <td><?php echo htmlspecialchars($user['login']); ?></td>
                     <td><?php echo htmlspecialchars($user['email']); ?></td>
-                    <td><a href="gestionUtilisateurs.php?id=<?php echo $eventId; ?>&delete=1&login=<?php echo urlencode($user['login']); ?>" onclick="return confirm('Supprimer cet utilisateur ?');">Supprimer</a></td>
+                    <td><a href="gestionUtilisateurs.php?id=<?php echo $eventId; ?>&delete=1&login=<?php echo urlencode($user['login']); ?>" class="btn double-confirm">Supprimer</a></td>
                 </tr>
             <?php endforeach; ?>
         </table>

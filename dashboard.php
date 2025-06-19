@@ -60,12 +60,71 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
 <?php include 'inc_header.php'; ?>
+<div style="text-align:right;margin-bottom:10px;">
+    <button class="btn" onclick="toggleDarkMode()" style="padding:7px 16px;">🌓 Thème sombre</button>
+</div>
 <?php include 'inc_admin_menu.php'; ?>
 <div class="container card">
     <h1>Dashboard</h1>
+    <!-- Statistiques avancées -->
+    <div class="card" style="margin-bottom:20px;">
+        <h2>Statistiques globales</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:30px;align-items:center;">
+            <div>
+                <strong>Taux de participation :</strong> <span id="taux-participation">Calcul...</span><br>
+                <strong>Nombre total de votes :</strong> <span id="total-votes">Calcul...</span>
+            </div>
+            <canvas id="evolutionVotes" width="320" height="120"></canvas>
+        </div>
+    </div>
+    <!-- Formulaire d'upload du favicon personnalisé -->
+    <div class="card" style="margin-bottom:20px;">
+        <h2>Favicon personnalisé</h2>
+        <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <label for="favicon" style="font-weight:bold;">Changer le favicon&nbsp;:</label>
+            <input type="file" name="favicon" accept="image/x-icon,image/png" style="width:auto;">
+            <input type="submit" name="upload_favicon" value="Mettre à jour" class="btn" style="width:auto;">
+            <?php
+            $idOrga = $_SESSION['id'];
+            $faviconPath = null;
+            foreach(['ico','png'] as $ext) {
+                $customFavicon = './images/favicon_' . $idOrga . '.' . $ext;
+                if (file_exists($customFavicon)) {
+                    $faviconPath = $customFavicon;
+                    break;
+                }
+            }
+            if ($faviconPath) {
+                echo '<img src="'.$faviconPath.'" alt="Favicon actuel" style="max-width:32px;max-height:32px;vertical-align:middle;">';
+            }
+            ?>
+        </form>
+        <?php
+        if (isset($_POST['upload_favicon']) && isset($_FILES['favicon']) && $_FILES['favicon']['error'] === UPLOAD_ERR_OK) {
+            $fileTmp = $_FILES['favicon']['tmp_name'];
+            $fileType = mime_content_type($fileTmp);
+            $allowed = ['image/x-icon', 'image/vnd.microsoft.icon', 'image/png'];
+            if (in_array($fileType, $allowed)) {
+                $ext = $fileType === 'image/png' ? 'png' : 'ico';
+                $dest = './images/favicon_' . $idOrga . '.' . $ext;
+                move_uploaded_file($fileTmp, $dest);
+                // Supprimer l'ancien favicon si extension différente
+                foreach(['ico','png'] as $e) {
+                    $old = './images/favicon_' . $idOrga . '.' . $e;
+                    if ($old !== $dest && file_exists($old)) unlink($old);
+                }
+                echo '<script>window.toastMessage="Favicon mis à jour avec succès";window.toastType="success";setTimeout(()=>location.reload(),800);</script>';
+            } else {
+                echo '<p class="erreur">Format de favicon non supporté (ico, png uniquement).</p>';
+            }
+        }
+        ?>
+        <small>Le favicon personnalisé s’affichera sur toutes vos pages. Format accepté : .ico ou .png (32x32 recommandé).</small>
+    </div>
     <div class="logo-admin-block card" style="margin-bottom:20px;">
         <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <label for="logo" style="font-weight:bold;">Changer le logo&nbsp;:</label>
@@ -180,5 +239,38 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         </form>
     </div>
 </div>
+<script>
+// Statistiques avancées (exemple, à adapter selon la structure réelle)
+document.addEventListener('DOMContentLoaded', function() {
+    // Simuler des données pour l'évolution (à remplacer par un appel AJAX réel)
+    const evolutionData = [5, 12, 18, 25, 32, 40, 55, 60]; // votes cumulés par heure
+    const labels = ['8h','9h','10h','11h','12h','13h','14h','15h'];
+    const totalVotes = evolutionData[evolutionData.length-1];
+    const totalInscrits = 100; // À remplacer par le vrai nombre d'inscrits
+    const taux = totalInscrits ? Math.round(totalVotes/totalInscrits*100) : 0;
+    document.getElementById('taux-participation').textContent = taux + '%';
+    document.getElementById('total-votes').textContent = totalVotes;
+    new Chart(document.getElementById('evolutionVotes').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Votes cumulés',
+                data: evolutionData,
+                borderColor: '#3b6eea',
+                backgroundColor: 'rgba(75, 134, 255, 0.1)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            plugins: {legend: {display: false}},
+            scales: {y: {beginAtZero: true}},
+            responsive: false,
+            maintainAspectRatio: false
+        }
+    });
+});
+</script>
 </body>
 </html>

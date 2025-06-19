@@ -275,6 +275,7 @@ header {
     opacity: 1;
     pointer-events: auto;
     top: 60px;
+    transition: opacity 0.3s, top 0.3s, background 0.3s;
 }
 .toast.success { border-left: 6px solid #28a745; }
 .toast.error { border-left: 6px solid #e74c3c; }
@@ -329,6 +330,10 @@ header {
 .btn:hover {
     background: linear-gradient(90deg, #3b6eea 0%, #4f8cff 100%);
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
 }
 
 input[type="submit"].btn {
@@ -399,4 +404,52 @@ form input:focus, form select:focus {
     .footer {
         font-size: 0.93em;
     }
+}
+
+/* Mode sombre */
+.dark-mode body {
+    background: linear-gradient(135deg, #23272f 0%, #181a1b 100%) !important;
+    color: #e0e7ff;
+}
+.dark-mode .container, .dark-mode .card {
+    background: #23272f !important;
+    color: #e0e7ff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+.dark-mode .header img {
+    background: #23272f;
+}
+.dark-mode h1, .dark-mode h2, .dark-mode label, .dark-mode th, .dark-mode td, .dark-mode p, .dark-mode small, .dark-mode .footer, .dark-mode .btn, .dark-mode .erreur, .dark-mode .reussite {
+    color: #e0e7ff !important;
+}
+.dark-mode .btn {
+    background: linear-gradient(90deg, #3b6eea 0%, #4f8cff 100%) !important;
+    color: #fff !important;
+}
+.dark-mode table, .dark-mode th, .dark-mode td {
+    border-color: #444 !important;
+    background: #23272f !important;
+}
+.dark-mode tr:nth-child(even) {
+    background: #23272f !important;
+}
+.dark-mode .erreur {
+    background: #c0392b !important;
+}
+.dark-mode .reussite {
+    background: #218838 !important;
+}
+.dark-mode input, .dark-mode select, .dark-mode textarea {
+    background: #23272f !important;
+    color: #e0e7ff !important;
+    border: 1px solid #444 !important;
+}
+.dark-mode .global-menu {
+    background: #181a1b !important;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Animations douces */
+.btn, .header img, .card, .container, .toast, .global-menu, .footer, .liste img, .candidate img, .table-responsive, table, th, td, .erreur, .reussite {
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
 }
