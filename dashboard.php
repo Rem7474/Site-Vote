@@ -93,7 +93,7 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                 <?php foreach($events as $event): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($event['nom']); ?></td>
-                        <td><?php echo htmlspecialchars($event['Univ'] ?? $event['universite'] ?? ''); ?></td>
+                        <td><?php echo htmlspecialchars($event['Univ'] ?? getUniversity($event['id'], $conn) ?? ''); ?></td>
                         <td>
                             <a href="event.php?id=<?php echo $event['id']; ?>" class="btn">Détails</a>
                             <a href="event.php?id=<?php echo $event['id']; ?>&edit=1" class="btn">Modifier</a>

@@ -209,8 +209,10 @@ function getEquipeVote($hash){
 // Ajout du mode sombre
 function addDarkModeScript() {
     echo '<script>
-    if (localStorage.getItem("theme") === "dark" || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (localStorage.getItem("theme") === "dark") {
         document.documentElement.classList.add("dark-mode");
+    } else {
+        document.documentElement.classList.remove("dark-mode");
     }
     window.toggleDarkMode = function() {
         document.documentElement.classList.toggle("dark-mode");
