@@ -7,14 +7,7 @@ if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     exit();
 }
 $idListe = $_GET['id'];
-$liste = null;
-$listes = getListes(null, $conn); // On cherche la liste par id
-foreach ($listes as $l) {
-    if ($l['id'] == $idListe) {
-        $liste = $l;
-        break;
-    }
-}
+$liste = getListeById($idListe, $conn); // Utilise une fonction dédiée
 if (!$liste) {
     echo "<p>Liste introuvable.</p>";
     exit();

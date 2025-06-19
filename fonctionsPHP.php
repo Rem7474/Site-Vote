@@ -249,4 +249,12 @@ function printFaviconTag() {
     // Fallback
     echo '<link rel="icon" type="image/png" href="favicon.png">';
 }
+// Ajout d'une fonction pour récupérer une liste par son id
+function getListeById($id, $conn) {
+    $sql = "SELECT * FROM listes WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch();
+}
 ?>

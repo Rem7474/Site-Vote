@@ -93,7 +93,7 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                 <?php foreach($events as $event): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($event['nom']); ?></td>
-                        <td><?php echo htmlspecialchars($event['universite']); ?></td>
+                        <td><?php echo htmlspecialchars($event['Univ'] ?? $event['universite'] ?? ''); ?></td>
                         <td>
                             <a href="event.php?id=<?php echo $event['id']; ?>" class="btn">Détails</a>
                             <a href="event.php?id=<?php echo $event['id']; ?>&edit=1" class="btn">Modifier</a>
@@ -201,9 +201,6 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
                 <small>Le favicon personnalisé s’affichera sur toutes vos pages. Format accepté : .ico ou .png (32x32 recommandé).</small>
             </div>
         </div>
-    </div>
-    <div style="text-align:center;margin:30px 0 0 0;">
-        <button class="btn" onclick="toggleDarkMode()" style="padding:10px 30px;font-size:1.1em;">🌓 Thème sombre</button>
     </div>
 </div>
 </body>

@@ -30,7 +30,7 @@ $showRetour = $current !== 'dashboard.php';
         <span style="font-size:1.25em;font-weight:600;color:#2d3a4b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
     <?php endif; ?>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;">
-        <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')">☰</button>
+        <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')" style="display:none;">☰</button>
         <?php if ($showRetour): ?>
             <a href="dashboard.php" class="btn" style="padding:7px 16px;font-size:0.98em;">&larr; Retour au dashboard</a>
         <?php endif; ?>
@@ -68,6 +68,10 @@ $showRetour = $current !== 'dashboard.php';
     .header img {max-width: 80px !important;min-width: 50px !important;}
     .header span {font-size: 1.1em !important;max-width: 90vw !important;text-align: center;}
     .header .btn, .header form {margin-top: 8px;}
+    .burger { display: inline-block !important; }
+}
+@media (min-width: 901px) {
+    .burger { display: none !important; }
 }
 @media (max-width: 600px) {
     .header {padding: 10px 4vw 10px 4vw !important;}
