@@ -23,11 +23,21 @@ if ($orgaId) {
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
-<div class="header">
-    <img src="<?php echo $logoPath; ?>" alt="Logo du site">
-    <?php if ($showRetour): ?>
-    <div style="margin-top:10px;">
-        <a href="dashboard.php" style="color:#3b6eea;text-decoration:underline;font-size:0.98em;">&larr; Retour au dashboard</a>
+<div class="header" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:15px;">
+        <img src="<?php echo $logoPath; ?>" alt="Logo du site">
+        <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
+            <span style="font-size:1.1em;font-weight:600;color:#2d3a4b;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
+    <div style="display:flex;align-items:center;gap:10px;">
+        <?php if ($showRetour): ?>
+            <a href="dashboard.php" class="btn" style="padding:7px 16px;font-size:0.98em;">&larr; Retour au dashboard</a>
+        <?php endif; ?>
+        <?php if ($current === 'dashboard.php'): ?>
+            <form action="logout.php" method="post" style="display:inline;">
+                <input type="submit" value="Déconnexion" class="btn" style="padding:7px 16px;font-size:0.98em;">
+            </form>
+        <?php endif; ?>
+    </div>
 </div>
