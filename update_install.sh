@@ -64,8 +64,10 @@ fi
 # 3. Création du dossier images si nécessaire et droits d'accès
 mkdir -p images
 chmod -R 755 images/
-chmod -R 750 private/
+chmod -R 755 private/
+chmod 755 private/parametres.ini 2>/dev/null || true
 chmod 755 "$(pwd)"
+chmod +x "$0"
 
 # 4. Vérifications automatiques
 # Vérification de la présence de PHP
