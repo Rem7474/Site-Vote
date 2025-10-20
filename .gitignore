@@ -1,0 +1,40 @@
+# Configuration sensible
+private/parametres.ini
+
+# Logs
+logs/
+*.log
+
+# Images uploadées
+images/
+!images/.gitkeep
+
+# Vendor (Composer)
+vendor/
+
+# Sessions PHP
+sessions/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.phpintel/
+.phpunit.result.cache
+
+# Backups de base de données
+*.sql
+*.dump
+backup/

@@ -1,5 +1,12 @@
-# Résumé des Corrections - Site-Vote
+# Résumé des Corrections et Améliorations - Site-Vote
 **Date**: 20 Octobre 2025
+**Version**: 2.0
+
+## 🎯 Vue d'Ensemble
+
+Cette version 2.0 représente une refonte majeure axée sur la **sécurité**, la **fiabilité** et l'**expérience utilisateur**. Tous les bugs critiques ont été corrigés et de nombreuses fonctionnalités de sécurité ont été ajoutées.
+
+---
 
 ## 🔧 Bugs Critiques Corrigés
 
@@ -33,24 +40,134 @@
 **Impact**: Fuite d'informations sensibles en production
 **Solution**: Suppression du code de debug
 
-## 🛡️ Améliorations de Sécurité
+## 🛡️ Améliorations de Sécurité Majeures
 
-### Protection XSS
-Ajout de `htmlspecialchars()` sur tous les affichages de données utilisateur dans:
+### 1. Protection CSRF Complète
+**Nouveau fichier**: `fonctionsSecurite.php`
+
+Toutes les formes incluent maintenant une protection CSRF :
+- Génération de tokens sécurisés avec `random_bytes(32)`
+- Validation avec `hash_equals()` pour éviter les timing attacks
+- Fonction helper `csrfField()` pour faciliter l'intégration
+
+**Formulaires protégés**:
+- Login organisateur
+- Inscription organisateur
+- Création d'événement
+- Ajout de liste
+- Inscription au vote
+- Soumission de vote
+
+### 2. Rate Limiting Implémenté
+Protection contre les abus et attaques par force brute :
+
+| Action | Limite | Fenêtre de temps |
+|--------|--------|------------------|
+| Login | 5 tentatives | 15 minutes |
+| Inscription organisateur | 3 tentatives | 30 minutes |
+| Inscription vote | 5 tentatives | 5 minutes |
+| Vote | 3 tentatives | 10 minutes |
+
+**Fonction**: `checkRateLimit($action, $max_attempts, $time_window)`
+
+### 3. Logging de Sécurité Détaillé
+**Nouveau système de logs** dans `./logs/security_YYYY-MM-DD.log`
+
+**Événements loggés** :
+- ✅ Connexions (succès/échec)
+- ✅ Inscriptions (votants et organisateurs)
+- ✅ Votes (succès/échec)
+- ⚠️ Tentatives CSRF
+- ⚠️ Dépassements de rate limit
+- ⚠️ Accès non autorisés
+- ⚠️ Formats d'email invalides
+- ❌ Erreurs d'envoi d'email
+- ❌ Erreurs système
+
+**Format** : `[timestamp] [level] IP: x.x.x.x | Action: ... | Details: ... | User-Agent: ...`
+
+### 4. Validation Renforcée des Fichiers
+
+**Avant** :
+```php
+// Vérification extension uniquement
+if (!in_array($extension, $extensions)) {
+    echo 'Extension non autorisée';
+}
+```
+
+**Après** :
+```php
+// Validation complète avec MIME type
+$validation = validateFileUpload($_FILES['photo']);
+if (!$validation['valid']) {
+    echo htmlspecialchars($validation['error']);
+    exit();
+}
+```
+
+**Vérifications** :
+- ✅ Taille maximale (5 MB)
+- ✅ Extension autorisée
+- ✅ **Type MIME réel** (pas seulement extension)
+- ✅ Nom de fichier sécurisé
+
+### 5. Amélioration du Hachage
+**Avant** :
+```php
+$salt = time();
+$hash = hash('sha256', $login.$salt);
+```
+
+**Après** :
+```php
+function generateSecureHash($login) {
+    $salt = random_bytes(16);
+    $timestamp = time();
+    $data = $login . $timestamp . bin2hex($salt);
+    return hash('sha256', $data);
+}
+```
+
+### 6. Sanitization des Entrées
+Nouvelle fonction `sanitizeInput()` :
+```php
+function sanitizeInput($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    return $data;
+}
+```
+
+Appliquée à **toutes** les entrées utilisateur avant traitement.
+
+### 7. Headers HTTP de Sécurité
+**Nouveau fichier**: `security_headers.php`
+
+```php
+Content-Security-Policy
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+X-XSS-Protection: 1; mode=block
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy
+Strict-Transport-Security (pour HTTPS)
+```
+
+### 8. Protection XSS Complète
+Tous les affichages utilisent maintenant `htmlspecialchars()` :
+```php
+echo htmlspecialchars($event['nom'], ENT_QUOTES, 'UTF-8');
+```
+
+**Fichiers mis à jour** :
 - `dashboard.php`
 - `formulaireVote.php`
 - `checkVote.php`
 - `vote.php`
+- `event.php`
 
-**Avant**:
-```php
-echo $event['nom'];
-```
-
-**Après**:
-```php
-echo htmlspecialchars($event['nom']);
-```
+---
 
 ## 🎨 Refonte Complète du Dashboard
 

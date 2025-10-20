@@ -1,12 +1,27 @@
 <?php
 include 'fonctionsPHP.php';
+
 if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Registration', 'WARNING');
+        header('Location: erreur.html');
+        exit();
+    }
+    
     $login = $_POST['login'];
     $event = $_POST['event'];
     InscriptionVote($login, $event);
 }
 //récupération du vote si il existe
 else if(isset($_POST['vote']) && isset($_POST['hash'])){
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Vote', 'WARNING');
+        header('Location: erreur.html');
+        exit();
+    }
+    
     $vote = $_POST['vote'];
     $hash = $_POST['hash'];
     EnregistrerVote($vote, $hash);

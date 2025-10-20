@@ -15,6 +15,7 @@
         <p>Bienvenue sur le site d'inscription pour les votes de l'évènement <?php echo htmlspecialchars($infosEvent["nom"]); ?>. Pour vous inscrire, veuillez remplir le formulaire ci-dessous.</p>
         <p>Vous recevrez un mail contenant un lien pour effectuer votre vote.</p>
         <form action="index.php" method="post">
+            <?php echo csrfField(); ?>
             <input type="text" name="login" placeholder="login universitaire" required>
             <input type="text" name="event" value=<?php echo $infosEvent["id"]; ?> hidden>
             <input type="submit" value="S'inscrire">

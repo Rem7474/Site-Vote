@@ -1,8 +1,30 @@
 <?php
 include 'fonctionsPHP.php';
+
 if (isset($_POST['login']) && isset($_POST['password'])) {
-    $login = $_POST['login'];
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Login', 'WARNING');
+        header('Location: login.php');
+        exit();
+    }
+    
+    // Rate limiting - max 5 tentatives de connexion toutes les 15 minutes
+    if (!checkRateLimit('login', 5, 900)) {
+        logSecurityEvent('RATE_LIMIT_EXCEEDED', 'Login attempts', 'WARNING');
+        header('Location: erreur.html');
+        exit();
+    }
+    
+    $login = sanitizeInput($_POST['login']);
     $password = $_POST['password'];
+    
+    if (!validateEmail($login)) {
+        logSecurityEvent('INVALID_EMAIL_FORMAT', "Email: $login", 'WARNING');
+        header('Location: login.php');
+        exit();
+    }
+    
     $result=getInfosOrga($login, $conn);
     if ($result){
         //vérification du mot de passe
@@ -13,14 +35,21 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
             $_SESSION['id'] = $result['id'];
             $_SESSION['nom'] = $result['nom'];
             $_SESSION['prenom'] = $result['prenom'];
+            
+            logSecurityEvent('LOGIN_SUCCESS', "Email: $login", 'INFO');
             header('Location: dashboard.php');
+            exit();
         }
         else{
+            logSecurityEvent('LOGIN_FAILED', "Email: $login - Wrong password", 'WARNING');
             header('Location: login.php');
+            exit();
         }
     }
     else{
+        logSecurityEvent('LOGIN_FAILED', "Email: $login - User not found", 'WARNING');
         header('Location: login.php');
+        exit();
     }
 }
 ?>
@@ -41,6 +70,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
         <p>Bienvenue sur le site de vote en ligne. Pour vous connecter en tant qu'organisateur, veuillez remplir le formulaire ci-dessous.</p>
         <p>Pour effectuer un vote, veuillez vous rendre sur le lien indiqué par l'organisateur.</p>
         <form action="login.php" method="post">
+            <?php echo csrfField(); ?>
             <label for="login">Email</label>
             <input type="text" name="login" placeholder="email" required>
             <label for="password">Mot de passe</label>

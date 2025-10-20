@@ -11,7 +11,18 @@ $events = getEventsOrga($_SESSION['id'], $conn);
 
 //création d'un nouvel evenement
 if(isset($_POST['nom']) && isset($_POST['universite'])){
-    addEvent($_POST['nom'], $_POST['universite'], $_SESSION['id'], $conn);
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Create event', 'WARNING');
+        header('location:erreur.html');
+        exit();
+    }
+    
+    $nom = sanitizeInput($_POST['nom']);
+    $universite = sanitizeInput($_POST['universite']);
+    
+    addEvent($nom, $universite, $_SESSION['id'], $conn);
+    logSecurityEvent('EVENT_CREATED', "Event: $nom", 'INFO');
     header('location:dashboard.php');
     exit();
 }
@@ -475,6 +486,7 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         <div class="section">
             <h2>➕ Créer un Nouvel Événement</h2>
             <form method="post" action="dashboard.php">
+                <?php echo csrfField(); ?>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="nom">📝 Nom de l'événement</label>

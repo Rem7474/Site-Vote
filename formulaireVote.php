@@ -45,6 +45,7 @@ $candidats = getListes($IDevent, $conn);
         <p>Bienvenue sur la page de vote pour le <?php echo $nomEvent;?>. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
 
         <form action="index.php" method="post" class="vote-form">
+            <?php echo csrfField(); ?>
             <?php
             foreach($candidats as $candidat){
                 echo '<div class="candidate">';

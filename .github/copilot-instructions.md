@@ -3,12 +3,15 @@
 ## Project Overview
 A PHP-based voting system for university events (e.g., BDE elections) with secure, hash-based voting links sent via email. Organizers create events and candidate lists; voters register with university emails and receive unique voting links.
 
+**Security-First Approach**: This application implements comprehensive security measures including CSRF protection, rate limiting, XSS prevention, secure file uploads, and detailed security logging.
+
 ## Architecture
 
 ### Three-Layer Structure
 1. **Entry Point Router** (`index.php`) - handles all URL routing via GET/POST parameters
 2. **Business Logic** (`fonctionsPHP.php`) - coordinates workflows and email sending
 3. **Data Access** (`fonctionsBDD.php`) - all PostgreSQL queries using PDO prepared statements
+4. **Security Layer** (`fonctionsSecurite.php`) - CSRF, rate limiting, validation, logging
 
 ### Database Schema (PostgreSQL)
 ```
@@ -62,9 +65,15 @@ Used in `dashboard.php`, `event.php` - organizer authentication with `password_v
 
 ### Security Best Practices
 - **ALWAYS use `htmlspecialchars()` when echoing user data** to prevent XSS
-- Debug mode (`ini_set('display_errors', 1)`) should ONLY be in development
-- Never use variable names that don't match function parameters (e.g., `$event` vs `$IDevent`)
-- Validate file uploads with extension whitelisting
+- **ALWAYS include CSRF token in forms** using `<?php echo csrfField(); ?>`
+- **ALWAYS verify CSRF token** in form handlers: `verifyCSRFToken($_POST['csrf_token'])`
+- **ALWAYS use rate limiting** for sensitive actions (login, vote, registration)
+- **ALWAYS sanitize input** using `sanitizeInput()` before processing
+- **ALWAYS validate file uploads** using `validateFileUpload()` with MIME type checking
+- **ALWAYS log security events** using `logSecurityEvent()` for auditing
+- Debug mode (`$debug = true`) should ONLY be in development (set in `parametres.ini`)
+- Never use variable names that don't match function parameters
+- Always use `exit()` after `header()` redirects
 
 ### Email System (PHPMailer)
 - SMTP credentials in `private/parametres.ini` (variables: `$smtp_host`, `$smtp_username`, `$smtp_password`)
@@ -72,6 +81,54 @@ Used in `dashboard.php`, `event.php` - organizer authentication with `password_v
 - Voting links format: `https://vote.remcorp.fr/index.php?hash={hash}`
 
 ## Common Tasks
+
+### Adding CSRF Protection to a New Form
+```php
+// In the form HTML
+<form method="post">
+    <?php echo csrfField(); ?>
+    <!-- other fields -->
+</form>
+
+// In the form handler
+if (!verifyCSRFToken($_POST['csrf_token'])) {
+    logSecurityEvent('CSRF_ATTEMPT', 'Description', 'WARNING');
+    header('Location: erreur.html');
+    exit();
+}
+```
+
+### Implementing Rate Limiting
+```php
+// Max 5 attempts every 10 minutes (600 seconds)
+if (!checkRateLimit('action_name', 5, 600)) {
+    logSecurityEvent('RATE_LIMIT_EXCEEDED', 'Details', 'WARNING');
+    header('Location: erreur.html');
+    exit();
+}
+```
+
+### Validating File Uploads
+```php
+$validation = validateFileUpload($_FILES['photo']);
+if (!$validation['valid']) {
+    echo htmlspecialchars($validation['error']);
+    exit();
+}
+// File is safe to process
+```
+
+### Logging Security Events
+```php
+// INFO: Normal operation
+logSecurityEvent('USER_LOGIN', "Email: $email", 'INFO');
+
+// WARNING: Suspicious activity
+logSecurityEvent('INVALID_HASH', "Hash not found", 'WARNING');
+
+// ERROR: System errors
+logSecurityEvent('EMAIL_FAILED', "Email: $email", 'ERROR');
+```
 
 ### Adding a New Database Table
 1. Add CRUD functions to `fonctionsBDD.php` following table comment pattern:
@@ -125,6 +182,40 @@ The dashboard (`dashboard.php`) provides:
 - Email constructed as: `{login}@etu.{university}`
 - One vote per participant (hash deleted after voting)
 - Organizers can only access their own events (checked via `RefOrga` comparison)
+- File uploads limited to 5MB and image types only (with MIME verification)
+- Rate limiting enforced on all sensitive operations
+- All forms protected with CSRF tokens
+
+## Security Features
+
+### File Structure
+```
+fonctionsSecurite.php    - Security functions (CSRF, rate limit, validation, logging)
+security_headers.php     - HTTP security headers
+SECURITY.md             - Complete security documentation
+database_schema.sql     - PostgreSQL schema with security comments
+logs/                   - Security event logs (not in git)
+private/parametres.ini  - Configuration (not in git)
+```
+
+### Rate Limits
+- Login: 5 attempts / 15 minutes
+- Registration (organizer): 3 attempts / 30 minutes  
+- Registration (voter): 5 attempts / 5 minutes
+- Vote: 3 attempts / 10 minutes
+
+### Security Logs Location
+- `./logs/security_YYYY-MM-DD.log`
+- Format: `[timestamp] [level] IP: x.x.x.x | Action: ... | Details: ... | User-Agent: ...`
+- Levels: INFO, WARNING, ERROR
+
+### Protected Actions
+All forms include CSRF protection and are logged:
+- User login/registration
+- Event creation
+- List creation  
+- Vote submission
+- Voter registration
 
 ## Recent Bug Fixes (Oct 2025)
 1. ✅ Fixed `getUser()` - corrected variable name from `$event` to `$IDevent`
@@ -134,4 +225,16 @@ The dashboard (`dashboard.php`) provides:
 5. ✅ Added XSS protection with `htmlspecialchars()` across all output
 6. ✅ Removed debug mode from production files
 7. ✅ Fixed share link in dashboard (was pointing to non-existent `vote.php`)
+
+## Security Improvements (Oct 2025)
+1. ✅ Added CSRF protection on all forms
+2. ✅ Implemented rate limiting on sensitive actions
+3. ✅ Added comprehensive security logging (`./logs/`)
+4. ✅ Enhanced file upload validation (MIME type checking)
+5. ✅ Improved hash generation with `random_bytes()`
+6. ✅ Added input sanitization functions
+7. ✅ Created security headers configuration
+8. ✅ Added `.gitignore` for sensitive files
+9. ✅ Created `SECURITY.md` documentation
+10. ✅ Added database schema with security comments
 

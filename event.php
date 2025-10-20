@@ -2,46 +2,76 @@
 //page pour afficher un évènement, voir les listes, les votes pour les listes, et pouvoir ajouter une liste
 session_start();
 include 'fonctionsPHP.php';
-if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
+
+// Vérifier que l'utilisateur est connecté
+requireLogin();
+
+if (!isset($_GET['id'])) {
     header('Location: dashboard.php');
     exit();
 }
-$IDevent = $_GET['id'];
+
+$IDevent = sanitizeInput($_GET['id']);
 $event = getEvent($IDevent, $conn);
+
 if ($event == null) {
-    //header('Location: dashboard.php');
-    //exit();
-    echo "Event not found";
-}
-else if ($event['reforga'] != $_SESSION['id']) {
+    logSecurityEvent('EVENT_NOT_FOUND', "Event ID: $IDevent", 'WARNING');
     header('Location: dashboard.php');
     exit();
 }
+
+// Vérifier que l'utilisateur est bien le propriétaire de l'événement
+if ($event['reforga'] != $_SESSION['id']) {
+    logSecurityEvent('UNAUTHORIZED_ACCESS', "User: {$_SESSION['id']} - Event: $IDevent", 'WARNING');
+    header('Location: dashboard.php');
+    exit();
+}
+
 $lists = getListes($IDevent, $conn);
 
 //ajout d'une liste, avec nom, description et photo
 if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo'])) {
-    $nom = $_POST['nom'];
-    $description = $_POST['description'];
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Add list', 'WARNING');
+        echo 'Erreur de sécurité - Token invalide';
+        exit();
+    }
+    
+    $nom = sanitizeInput($_POST['nom']);
+    $description = sanitizeInput($_POST['description']);
     $photo = $_FILES['photo'];
-    //vérification de l'extension de la photo
-    $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
-    $extension = explode('.', $photo['name']);
-    $extension = strtolower(end($extension));
-    if (!in_array($extension, $extensions)) {
-        echo 'Extension de fichier non autorisée';
+    
+    // Validation du fichier
+    $validation = validateFileUpload($photo);
+    if (!$validation['valid']) {
+        echo htmlspecialchars($validation['error']);
         exit();
     }
+    
+    // Obtenir l'extension
+    $extension = strtolower(pathinfo($photo['name'], PATHINFO_EXTENSION));
+    
     //déplacement de la photo dans le dossier images
-    $nomphoto = $nom . $IDevent . '.' . $extension;
-    move_uploaded_file($photo['tmp_name'], './images/' . $nomphoto);
-    $idList = addListe($nom, $nomphoto, $description, $IDevent, $conn);
-    if ($idList != null) {
-        header('Location: list.php?id=' . $idList);
-        exit();
+    $nomphoto = preg_replace('/[^a-zA-Z0-9]/', '', $nom) . $IDevent . '.' . $extension;
+    
+    // Créer le dossier images si il n'existe pas
+    if (!file_exists('./images')) {
+        mkdir('./images', 0755, true);
     }
-    else {
-        echo 'Erreur lors de l\'ajout de la liste';
+    
+    if (move_uploaded_file($photo['tmp_name'], './images/' . $nomphoto)) {
+        $idList = addListe($nom, $nomphoto, $description, $IDevent, $conn);
+        if ($idList != null) {
+            logSecurityEvent('LIST_CREATED', "List: $nom - Event: $IDevent", 'INFO');
+            header('Location: event.php?id=' . $IDevent);
+            exit();
+        }
+        else {
+            echo 'Erreur lors de l\'ajout de la liste';
+        }
+    } else {
+        echo 'Erreur lors de l\'upload du fichier';
     }
 }
 ?>
@@ -82,6 +112,7 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
         <?php endif; ?>
         <h2>Ajouter une liste</h2>
         <form method="post" enctype="multipart/form-data">
+            <?php echo csrfField(); ?>
             <label for="nom">Nom de la liste</label>
             <input type="text" name="nom" id="nom" required>
             <label for="description">Description</label>

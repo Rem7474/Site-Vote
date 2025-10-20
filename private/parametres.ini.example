@@ -1,0 +1,39 @@
+<?php
+/**
+ * FICHIER DE CONFIGURATION EXEMPLE
+ * 
+ * Copier ce fichier vers 'parametres.ini' et remplir avec vos propres valeurs
+ * NE JAMAIS commiter le fichier parametres.ini dans git
+ */
+
+// Parametres de connexion a la base de donnees PostgreSQL
+$lehost = "localhost";        // Hôte de la base de données
+$leport = "5432";            // Port PostgreSQL (par défaut: 5432)
+$dbname = "nom_base_donnees"; // Nom de votre base de données
+$user = "utilisateur_bdd";    // Utilisateur PostgreSQL
+$pass = "mot_de_passe_bdd";   // Mot de passe PostgreSQL
+
+// Mode debug (IMPORTANT: mettre à false en production)
+$debug = true; // true = affiche les erreurs PHP, false = masque les erreurs
+
+// Parametres SMTP pour l'envoi d'emails
+$smtp_host = "smtp.exemple.com";      // Serveur SMTP
+$smtp_username = "vote@exemple.com";  // Identifiant SMTP
+$smtp_password = "mot_de_passe_smtp"; // Mot de passe SMTP
+
+/**
+ * NOTES DE SÉCURITÉ:
+ * 
+ * 1. Ce fichier contient des informations sensibles (mots de passe, identifiants)
+ * 2. Il doit être protégé en lecture (chmod 600 sur Linux)
+ * 3. Il ne doit JAMAIS être accessible via HTTP
+ * 4. Il ne doit JAMAIS être commité dans git
+ * 5. Créer un fichier parametres.ini.example sans les vraies valeurs pour git
+ * 
+ * PRODUCTION:
+ * - Mettre $debug = false
+ * - Utiliser des mots de passe forts
+ * - Activer HTTPS uniquement
+ * - Configurer les headers de sécurité (voir security_headers.php)
+ */
+?>
