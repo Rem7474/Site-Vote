@@ -58,12 +58,13 @@ if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) &&
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Page d'inscription en tant qu'organisateur</title>
+    <title>Inscription</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
@@ -82,7 +83,8 @@ if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) &&
             <input type="password" id="password" name="password" required minlength="8">
             <label for="password2">Confirmer le mot de passe :</label>
             <input type="password" id="password2" name="password2" required minlength="8">
-            <input type="submit" value="S'inscrire">
+            <input type="submit" value="S'inscrire" class="btn">
+        </form>
     </div>
 </body>
 </html>

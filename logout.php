@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 session_start();
 
 // Détruire toutes les variables de session
@@ -20,3 +21,11 @@ session_destroy();
 header('Location: login.php');
 exit();
 ?>
+=======
+// Déconnexion sécurisée
+session_start();
+session_unset();
+session_destroy();
+header('Location: login.php');
+exit();
+>>>>>>> origin/beta

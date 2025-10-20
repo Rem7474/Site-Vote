@@ -20,9 +20,10 @@ $hash=$_GET["hash"];
     <title>Inscription pour les votes du BDE R&T</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -33,7 +34,7 @@ $hash=$_GET["hash"];
         <!-- Affichage du hash de vote -->
         <p class="hash">Hash de participation : <?php echo $hash?></p>
         <!-- Lien pour vérifier son vote-->
-        <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php">Vérifier son vote</a></p>
+        <p class="reussite">Conserver ce hash pour vérifier votre vote : <a href="checkVote.php" class="btn">Vérifier son vote</a></p>
     </div>
 </body>
 </html>

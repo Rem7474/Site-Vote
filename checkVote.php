@@ -5,9 +5,10 @@
     <title>Vérifier son vote</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -16,7 +17,7 @@
         <p>Veuillez entrer le hash de votre vote pour vérifier l'équipe pour laquelle vous avez voté :</p>
         <form action="checkVote.php" method="post">
             <input type="text" name="hash" placeholder="Entrez votre hash de vote" required>
-            <input type="submit" value="Vérifier">
+            <input type="submit" value="Vérifier" class="btn">
         </form>
         <div class="result" id="result">
             <?php

@@ -50,4 +50,10 @@ elseif (isset($_GET['id']) && !empty($_GET['id'])){
     include('vote.php');
     exit();
 }
+else {
+    // Redirection par défaut vers la page de connexion organisateur
+    ob_clean();
+    header('Location: login.php');
+    exit();
+}
 ?>

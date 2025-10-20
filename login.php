@@ -1,6 +1,14 @@
 <?php
 include 'fonctionsPHP.php';
+<<<<<<< HEAD
 
+=======
+session_start();
+if (isset($_SESSION['id'])) {
+    header('Location: dashboard.php');
+    exit();
+}
+>>>>>>> origin/beta
 if (isset($_POST['login']) && isset($_POST['password'])) {
     // Vérification CSRF
     if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
@@ -30,7 +38,6 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
         //vérification du mot de passe
         if (password_verify($password, $result['password'])){
             //on démarre la session
-            session_start();
             $_SESSION['email'] = $result['email'];
             $_SESSION['id'] = $result['id'];
             $_SESSION['nom'] = $result['nom'];
@@ -57,12 +64,13 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Page de connexion en tant qu'organisateur</title>
+    <title>Connexion</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
@@ -75,11 +83,11 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
             <input type="text" name="login" placeholder="email" required>
             <label for="password">Mot de passe</label>
             <input type="password" name="password" placeholder="mot de passe" required>
-            <input type="submit" value="Se connecter">
+            <input type="submit" value="Se connecter" class="btn">
         </form>
     </div>
     <div class="footer">
-        <p><a href="register.php">S'inscrire en tant qu'organisateur</a></p>
+        <p><a href="register.php" class="btn">S'inscrire en tant qu'organisateur</a></p>
     </div>
 </body>
 </html>

@@ -82,6 +82,8 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+    <?php include 'inc_header.php'; ?>
+    <?php include 'inc_admin_menu.php'; ?>
     <div class="container">
         <a href="dashboard.php">Retour au tableau de bord</a>
         <h1>Evènement : <?php echo $event['nom']; ?></h1>

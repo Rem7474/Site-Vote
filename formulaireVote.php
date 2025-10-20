@@ -34,9 +34,10 @@ $candidats = getListes($IDevent, $conn);
     <title>Vote</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <div class="container">
+    <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
@@ -56,7 +57,7 @@ $candidats = getListes($IDevent, $conn);
             }
             ?>
             <input type="hidden" name="hash" value="<?php echo $hash; ?>">
-            <input type="submit" value="Voter">
+            <input type="submit" value="Voter" class="btn">
         </form>
     </div>
 </body>
