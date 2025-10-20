@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 
 $param = parse_ini_file('./private/parametres.ini');
 $superadmin_user = $param['superadmin_user'] ?? '';
@@ -37,7 +37,7 @@ if (!isset($_SESSION['superadmin'])) {
         <meta charset="utf-8">
         <title>🔐 Connexion Super Admin</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
         <?php printFaviconTag(); addDarkModeScript(); ?>
     </head>
     <body>
@@ -118,7 +118,7 @@ if (file_exists($logFile)) {
     <meta charset="utf-8">
     <title>👑 Super Admin - Tableau de Bord</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
     <style>
         .stats-grid {
@@ -381,3 +381,4 @@ function showTab(tabName) {
 </script>
 </body>
 </html>
+

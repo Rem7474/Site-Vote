@@ -1,7 +1,7 @@
 <?php
 // Statistiques avancées et historique temporel des votes pour un événement
 session_start();
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     header('Location: dashboard.php');
     exit();
@@ -60,7 +60,7 @@ foreach ($listes as $liste) {
 <head>
     <meta charset="utf-8">
     <title>Statistiques avancées</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -96,3 +96,4 @@ foreach ($listes as $liste) {
 </div>
 </body>
 </html>
+

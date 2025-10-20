@@ -1,28 +1,29 @@
 <?php
-//connexion à la base de données
-include 'FonctionsConnexion.php';
-include 'fonctionsBDD.php';
-<<<<<<< HEAD
-include 'fonctionsSecurite.php';
-$conn = connexionBDD('./private/parametres.ini');
-=======
-// Correction : ne pas inclure parametres.ini comme un fichier PHP, mais le parser
-$param = parse_ini_file('./private/parametres.ini');
-$conn = ConnexionBDD('./private/parametres.ini');
+// Connexion à la base de données
+include __DIR__ . '/../config/database.php';
+include __DIR__ . '/fonctionsBDD.php';
+include __DIR__ . '/fonctionsSecurite.php';
+
+// Configuration
+$param = parse_ini_file(__DIR__ . '/../../private/parametres.ini');
+$conn = ConnexionBDD(__DIR__ . '/../../private/parametres.ini');
 $DEBUG = isset($param['debug']) && ($param['debug'] === true || $param['debug'] === 'true');
+
 if ($DEBUG) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+
 // Chargement de Composer autoload
-if (!file_exists('vendor/autoload.php')) {
+$autoloadPath = __DIR__ . '/../../vendor/autoload.php';
+if (!file_exists($autoloadPath)) {
     if ($DEBUG) {
         echo '<b>Erreur :</b> vendor/autoload.php est manquant. Exécutez composer install.';
     }
     exit();
 }
-require 'vendor/autoload.php';
+require $autoloadPath;
 >>>>>>> origin/beta
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -168,20 +169,11 @@ function resultats($equipe){
     return $result;
 }
 function SendMail($to, $subject, $lien, $event){
-<<<<<<< HEAD
-    include './private/parametres.ini';
-    
-    // Échappement HTML pour prévenir les injections
-    $eventEscaped = htmlspecialchars($event, ENT_QUOTES, 'UTF-8');
-    $lienEscaped = htmlspecialchars($lien, ENT_QUOTES, 'UTF-8');
-    
-=======
     $param = parse_ini_file('./private/parametres.ini');
     $smtp_host = $param['smtp_host'] ?? '';
     $smtp_port = $param['smtp_port'] ?? 587;
     $smtp_user = $param['smtp_user'] ?? '';
     $smtp_pass = $param['smtp_pass'] ?? '';
->>>>>>> origin/beta
     $message = "<!DOCTYPE html>
     <html lang='fr'>
     <head>
@@ -213,13 +205,7 @@ function SendMail($to, $subject, $lien, $event){
         $mail->Username = $smtp_user;
         $mail->Password = $smtp_pass;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-<<<<<<< HEAD
-        $mail->Port = 587;
-        $mail->CharSet = 'UTF-8';
-        
-=======
         $mail->Port = $smtp_port;
->>>>>>> origin/beta
         //Recipients
         $mail->setFrom('vote@remcorp.fr', 'Système de Vote');
         $mail->addAddress($to);
@@ -233,18 +219,12 @@ function SendMail($to, $subject, $lien, $event){
         $mail->send();
         return true;
     } catch (Exception $e) {
-<<<<<<< HEAD
-        // Log l'erreur au lieu de rediriger (peut ne pas fonctionner si headers déjà envoyés)
-        error_log("Erreur d'envoi d'email: " . $mail->ErrorInfo);
-        return false;
-=======
         //redirection vers une page d'erreur
         global $DEBUG;
         if ($DEBUG) {
             echo '<b>Erreur d\'envoi de mail :</b> ' . $e->getMessage();
         }
         header('Location: erreur.html');
->>>>>>> origin/beta
     }   
 }
 function deleteaccent($string){

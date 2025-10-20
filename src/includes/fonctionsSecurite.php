@@ -128,7 +128,7 @@ function logSecurityEvent($action, $details = '', $level = 'INFO') {
         mkdir('./logs', 0755, true);
     }
     
-    error_log($log_entry, 3, './logs/security_' . date('Y-m-d') . '.log');
+    error_log($log_entry, 3, '../../logs/security_' . date('Y-m-d') . '.log');
 }
 
 /**
@@ -218,3 +218,4 @@ function validateFileUpload($file, $allowed_extensions = ['jpg', 'jpeg', 'png', 
     return ['valid' => true, 'error' => null];
 }
 ?>
+

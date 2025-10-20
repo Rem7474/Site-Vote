@@ -1,7 +1,7 @@
 <?php
 // Page de création/modification d'une liste (candidat)
 session_start();
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     header('Location: dashboard.php');
     exit();
@@ -24,7 +24,7 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
         if (in_array($extension, $extensions)) {
             $safeNom = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $nom);
             $nomphoto = $safeNom . $liste['refevent'] . '.' . $extension;
-            move_uploaded_file($photo['tmp_name'], './images/' . $nomphoto);
+            move_uploaded_file($photo['tmp_name'], '../public/assets/images/' . $nomphoto);
         } else {
             echo '<script>window.toastMessage="Extension de fichier non autorisée";window.toastType="error";</script>';
             header('Refresh:2;url=list.php?id=' . $idListe);
@@ -52,7 +52,7 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
 <head>
     <meta charset="utf-8">
     <title>Modifier la liste</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <script>
     function previewImage(input) {
         const preview = document.getElementById('img-preview');
@@ -82,10 +82,11 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
         <input type="text" name="description" value="<?php echo htmlspecialchars($liste['description']); ?>" required>
         <label for="photo">Photo de la liste</label>
         <input type="file" name="photo" onchange="previewImage(this)">
-        <img id="img-preview" src="<?php echo $liste['photo'] ? './images/' . htmlspecialchars($liste['photo']) : ''; ?>" alt="Prévisualisation" style="max-width:120px;display:<?php echo $liste['photo'] ? 'block' : 'none'; ?>;margin-top:10px;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+        <img id="img-preview" src="<?php echo $liste['photo'] ? '../public/assets/images/' . htmlspecialchars($liste['photo']) : ''; ?>" alt="Prévisualisation" style="max-width:120px;display:<?php echo $liste['photo'] ? 'block' : 'none'; ?>;margin-top:10px;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
         <input type="submit" value="Enregistrer les modifications">
     </form>
     <a href="event.php?id=<?php echo $liste['refevent']; ?>">Retour à l'événement</a>
 </div>
 </body>
 </html>
+

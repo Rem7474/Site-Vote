@@ -1,6 +1,6 @@
 <?php
 // Export des résultats d'un événement au format CSV
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     die('Erreur : événement non spécifié.');
 }
@@ -29,3 +29,4 @@ foreach ($listes as $liste) {
 fclose($output);
 exit();
 ?>
+

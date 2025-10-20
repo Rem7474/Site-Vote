@@ -1,6 +1,6 @@
 <?php
 //récupération du hash dans l'url
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 if(isset($_GET['hash'])){
     //vérification du hash
     $hash = $_GET['hash'];
@@ -33,7 +33,7 @@ $candidats = getListes($IDevent, $conn);
     <meta charset="utf-8">
     <title>🗳️ Vote - <?php echo htmlspecialchars($nomEvent); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
@@ -53,7 +53,7 @@ $candidats = getListes($IDevent, $conn);
                 echo '<div class="candidate">';
                 echo '<input id="candidat'.htmlspecialchars($candidat['id']).'" type="radio" name="vote" value="'.htmlspecialchars($candidat['id']).'" required>';
                 echo '<label for="candidat'.htmlspecialchars($candidat['id']).'"><strong>'.htmlspecialchars($candidat['nom']).'</strong></label>';
-                if (!empty($candidat['photo']) && file_exists('./images/'.$candidat['photo'])) {
+                if (!empty($candidat['photo']) && file_exists('assets/images/'.$candidat['photo'])) {
                     echo '<img src="./images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe '.htmlspecialchars($candidat['nom']).'">';
                 }
                 echo '</div>';
@@ -68,3 +68,4 @@ $candidats = getListes($IDevent, $conn);
     </div>
 </body>
 </html>
+

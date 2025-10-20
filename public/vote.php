@@ -10,7 +10,7 @@ if (!isset($infosEvent) || empty($infosEvent)) {
     <meta charset="utf-8">
     <title>📝 Inscription - <?php echo htmlspecialchars($infosEvent["nom"]); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
@@ -37,3 +37,4 @@ if (!isset($infosEvent) || empty($infosEvent)) {
     </div>
 </body>
 </html>
+

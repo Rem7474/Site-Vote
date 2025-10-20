@@ -2,58 +2,114 @@
 session_start();
 if(!isset($_SESSION['id'])){
     header('location:login.php');
+    exit();
 }
+
 include 'fonctionsPHP.php';
-// Gestion du logo personnalisé
+
 $idOrga = $_SESSION['id'];
-$logoPath = 'bgsharklo.jpg';
-foreach(['jpg','png','webp'] as $ext) {
-    $customLogo = './images/logo_' . $idOrga . '.' . $ext;
-    if (file_exists($customLogo)) {
-        $logoPath = $customLogo;
-        break;
+
+// Gestion de la création d'événement
+if(isset($_POST['nom']) && isset($_POST['universite'])){
+    if(!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Dashboard event creation', 'WARNING');
+        header('location:erreur.html');
+        exit();
     }
+    addEvent(sanitizeInput($_POST['nom']), sanitizeInput($_POST['universite']), $idOrga, $conn);
+    logSecurityEvent('EVENT_CREATED', "Event: {$_POST['nom']}", 'INFO');
+    header('location:dashboard.php');
+    exit();
 }
-// Gestion du changement de logo
+
+// Gestion du logo personnalisé
 if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-    $fileTmp = $_FILES['logo']['tmp_name'];
-    $fileType = mime_content_type($fileTmp);
-    $allowed = ['image/jpeg', 'image/png', 'image/webp'];
-    if (in_array($fileType, $allowed)) {
-        $ext = $fileType === 'image/png' ? 'png' : ($fileType === 'image/webp' ? 'webp' : 'jpg');
+    if(!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Logo upload', 'WARNING');
+        header('location:erreur.html');
+        exit();
+    }
+    
+    $validation = validateFileUpload($_FILES['logo']);
+    if ($validation['valid']) {
+        $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
         $dest = './images/logo_' . $idOrga . '.' . $ext;
-        move_uploaded_file($fileTmp, $dest);
-        foreach(['jpg','png','webp'] as $e) {
+        move_uploaded_file($_FILES['logo']['tmp_name'], $dest);
+        
+        // Supprimer anciens logos
+        foreach(['jpg','png','webp','jpeg'] as $e) {
             $old = './images/logo_' . $idOrga . '.' . $e;
             if ($old !== $dest && file_exists($old)) unlink($old);
         }
-        echo "<script>window.toastMessage='Logo mis à jour avec succès';window.toastType='success';</script>";
-        header('Refresh:1;url=dashboard.php');
-        exit();
+        
+        logSecurityEvent('LOGO_UPDATED', "Organizer ID: $idOrga", 'INFO');
+        echo "<script>window.toastMessage='Logo mis à jour avec succès';window.toastType='success';setTimeout(()=>location.reload(),800);</script>";
     } else {
-        $msg = 'Format de logo non supporté.';
-        echo "<script>window.toastMessage='Format de logo non supporté';window.toastType='error';</script>";
+        echo "<script>window.toastMessage='".htmlspecialchars($validation['error'])."';window.toastType='error';</script>";
     }
 }
 
-// but de la page : afficher les evenements qu'il a créer, et affiche un formulaire pour créer un nouvel evenement
-// quand il clique sur un evenement, il est redirigé vers la page event.php, ou il peut voir les détails de l'evenement
-// il peut voir aussi les votes pour chaque evenement depuis cette page
-
-//récupération des evenements de l'utilisateur
-$events = getEventsOrga($_SESSION['id'], $conn);
-//print de l'array $events;
-//print_r($events);
-//affiche les erreurs php
-ini_set('display_errors', 1);
-
-
-//création d'un nouvel evenement
-if(isset($_POST['nom']) && isset($_POST['universite'])){
-    addEvent($_POST['nom'], $_POST['universite'], $_SESSION['id'], $conn);
-//A MODIFIER + SI PAS ENCORE D'EVENTS alors ne pas afficher le tableau
-    header('location:dashboard.php');
+// Gestion du favicon personnalisé
+if (isset($_POST['upload_favicon']) && isset($_FILES['favicon']) && $_FILES['favicon']['error'] === UPLOAD_ERR_OK) {
+    if(!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Favicon upload', 'WARNING');
+        header('location:erreur.html');
+        exit();
+    }
+    
+    $fileTmp = $_FILES['favicon']['tmp_name'];
+    $fileType = mime_content_type($fileTmp);
+    $allowed = ['image/x-icon', 'image/vnd.microsoft.icon', 'image/png'];
+    
+    if (in_array($fileType, $allowed) && $_FILES['favicon']['size'] <= 5242880) {
+        $ext = $fileType === 'image/png' ? 'png' : 'ico';
+        $dest = './images/favicon_' . $idOrga . '.' . $ext;
+        move_uploaded_file($fileTmp, $dest);
+        
+        // Supprimer anciens favicons
+        foreach(['ico','png'] as $e) {
+            $old = './images/favicon_' . $idOrga . '.' . $e;
+            if ($old !== $dest && file_exists($old)) unlink($old);
+        }
+        
+        logSecurityEvent('FAVICON_UPDATED', "Organizer ID: $idOrga", 'INFO');
+        echo "<script>window.toastMessage='Favicon mis à jour avec succès';window.toastType='success';setTimeout(()=>location.reload(),800);</script>";
+    } else {
+        echo "<script>window.toastMessage='Format de favicon non supporté';window.toastType='error';</script>";
+    }
 }
+
+// Récupération des événements de l'utilisateur
+$events = getEventsOrga($idOrga, $conn);
+
+// Calcul des statistiques globales
+$totalVotes = 0;
+$totalParticipants = 0;
+$totalListes = 0;
+$votesParJour = [];
+
+foreach($events as $event) {
+    $eventId = $event['id'];
+    $votes = getVotes($eventId, $conn);
+    $participants = getParticipants($eventId, $conn);
+    $listes = getListes($eventId, $conn);
+    
+    $totalVotes += count($votes);
+    $totalParticipants += count($participants);
+    $totalListes += count($listes);
+    
+    // Calculer votes par jour (derniers 7 jours)
+    foreach($votes as $vote) {
+        // Simplification : compter par événement pour l'instant
+        $date = date('Y-m-d');
+        if(!isset($votesParJour[$date])) {
+            $votesParJour[$date] = 0;
+        }
+        $votesParJour[$date]++;
+    }
+}
+
+$tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalParticipants) * 100, 1) : 0;
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -67,15 +123,30 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
 <?php include 'inc_admin_menu.php'; ?>
 <div class="container card">
     <h1>Dashboard</h1>
-    <!-- Statistiques avancées -->
+    <!-- Statistiques globales -->
     <div class="card" style="margin-bottom:20px;">
-        <h2>Statistiques globales</h2>
-        <div style="display:flex;flex-wrap:wrap;gap:30px;align-items:center;">
-            <div>
-                <strong>Taux de participation :</strong> <span id="taux-participation">Calcul...</span><br>
-                <strong>Nombre total de votes :</strong> <span id="total-votes">Calcul...</span>
+        <h2>📊 Statistiques globales</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-bottom:20px;">
+            <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(102,126,234,0.3);">
+                <div style="font-size:2em;font-weight:bold;"><?php echo count($events); ?></div>
+                <div style="opacity:0.9;">Événements</div>
             </div>
-            <canvas id="evolutionVotes" width="320" height="120"></canvas>
+            <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(240,147,251,0.3);">
+                <div style="font-size:2em;font-weight:bold;"><?php echo $totalVotes; ?></div>
+                <div style="opacity:0.9;">Votes totaux</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(79,172,254,0.3);">
+                <div style="font-size:2em;font-weight:bold;"><?php echo $totalListes; ?></div>
+                <div style="opacity:0.9;">Listes créées</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(67,233,123,0.3);">
+                <div style="font-size:2em;font-weight:bold;"><?php echo $tauxParticipation; ?>%</div>
+                <div style="opacity:0.9;">Taux participation</div>
+            </div>
+        </div>
+        <div style="background:white;padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <h3 style="margin-top:0;">Évolution des votes</h3>
+            <canvas id="evolutionVotes" style="max-height:200px;"></canvas>
         </div>
     </div>
     <!-- Mes événements -->
@@ -104,8 +175,9 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             </table>
             </div>
         <?php endif; ?>
-        <h3>Créer un nouvel événement</h3>
+        <h3>➕ Créer un nouvel événement</h3>
         <form method="post" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+            <?php echo csrfField(); ?>
             <input type="text" name="nom" placeholder="Nom de l'événement" required class="input" style="flex:1;min-width:180px;">
             <input type="text" name="universite" placeholder="Université" required class="input" style="flex:1;min-width:180px;">
             <input type="submit" value="Créer" class="btn">
@@ -117,10 +189,11 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         <div style="display:flex;flex-direction:column;gap:30px;">
             <!-- Logo -->
             <div style="background:#f7faff;border-radius:12px;padding:18px 14px 14px 14px;box-shadow:0 2px 8px rgba(60,90,200,0.07);">
-                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">Logo personnalisé</h3>
+                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">🎨 Logo personnalisé</h3>
                 <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
+                    <?php echo csrfField(); ?>
                     <label for="logo" style="font-weight:bold;">Logo&nbsp;:</label>
-                    <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" style="width:auto;">
+                    <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" required style="width:auto;">
                     <input type="submit" value="Mettre à jour" class="btn" style="width:auto;">
                     <?php
                     $idOrga = $_SESSION['id'];
@@ -160,10 +233,11 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
             </div>
             <!-- Favicon -->
             <div style="background:#f7faff;border-radius:12px;padding:18px 14px 14px 14px;box-shadow:0 2px 8px rgba(60,90,200,0.07);">
-                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">Favicon personnalisé</h3>
+                <h3 style="margin-bottom:10px;color:#2d3a4b;font-size:1.08em;">🖼️ Favicon personnalisé</h3>
                 <form method="post" enctype="multipart/form-data" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;">
+                    <?php echo csrfField(); ?>
                     <label for="favicon" style="font-weight:bold;">Favicon&nbsp;:</label>
-                    <input type="file" name="favicon" accept="image/x-icon,image/png" style="width:auto;">
+                    <input type="file" name="favicon" accept="image/x-icon,image/png" required style="width:auto;">
                     <input type="submit" name="upload_favicon" value="Mettre à jour" class="btn" style="width:auto;">
                     <?php
                     $faviconPath = null;
@@ -203,5 +277,45 @@ if(isset($_POST['nom']) && isset($_POST['universite'])){
         </div>
     </div>
 </div>
+
+<script>
+// Graphique Chart.js - Évolution des votes
+const ctx = document.getElementById('evolutionVotes').getContext('2d');
+const votesData = <?php echo json_encode(array_values($votesParJour)); ?>;
+const votesLabels = <?php echo json_encode(array_keys($votesParJour)); ?>;
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: votesLabels.length > 0 ? votesLabels : ['Aucune donnée'],
+        datasets: [{
+            label: 'Nombre de votes',
+            data: votesData.length > 0 ? votesData : [0],
+            backgroundColor: 'rgba(102, 126, 234, 0.2)',
+            borderColor: 'rgba(102, 126, 234, 1)',
+            borderWidth: 2,
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+</script>
 </body>
 </html>

@@ -1,17 +1,10 @@
-<?php<?php
+<?php
+include '../src/includes/fonctionsPHP.php';
 
-/**include 'fonctionsPHP.php';
-
- * Site-Vote - Point d'entrée principal
-
- * Redirige vers la page d'accueil publiqueif(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
-
- */    // Vérification CSRF
-
-header('Location: public/index.php');    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
-
-exit();        logSecurityEvent('CSRF_ATTEMPT', 'Registration', 'WARNING');
-
+if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Registration', 'WARNING');
         header('Location: erreur.html');
         exit();
     }
@@ -60,7 +53,7 @@ elseif (isset($_GET['id']) && !empty($_GET['id'])){
 else {
     // Redirection par défaut vers la page de connexion organisateur
     ob_clean();
-    header('Location: login.php');
+    header('Location: ../admin/login.php');
     exit();
 }
 ?>

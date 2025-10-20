@@ -1,6 +1,6 @@
 <?php
 // Page de résultats dynamique pour un événement
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 include 'inc_header.php';
 
 // Vérification de l'id de l'événement
@@ -18,7 +18,7 @@ if (!$event) {
 $logoPath = 'bgsharklo.jpg';
 if (isset($event['reforga'])) {
     foreach(['jpg','png','webp'] as $ext) {
-        $customLogo = './images/logo_' . $event['reforga'] . '.' . $ext;
+        $customLogo = 'assets/images/logo_' . $event['reforga'] . '.' . $ext;
         if (file_exists($customLogo)) {
             $logoPath = $customLogo;
             break;
@@ -54,7 +54,7 @@ foreach ($listes as $liste) {
     <meta charset="utf-8">
     <title>📊 Résultats - <?php echo htmlspecialchars($event['nom']); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
@@ -87,7 +87,7 @@ foreach ($listes as $liste) {
                 <?php foreach ($gagnants as $gagnant): ?>
                     <div class="gagnant-block" style="text-align: center; margin: 20px 0;">
                         <p style="font-size: 1.5em; font-weight: bold; color: #f57f17; margin: 10px 0;"><?php echo htmlspecialchars($gagnant['nom']); ?></p>
-                        <?php if (!empty($gagnant['photo']) && file_exists('./images/'.$gagnant['photo'])): ?>
+                        <?php if (!empty($gagnant['photo']) && file_exists('assets/images/'.$gagnant['photo'])): ?>
                             <img src="./images/<?php echo htmlspecialchars($gagnant['photo']); ?>" alt="Photo de la liste gagnante" style="max-width:200px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 15px 0;">
                         <?php endif; ?>
                     </div>
@@ -101,3 +101,4 @@ foreach ($listes as $liste) {
     </div>
 </body>
 </html>
+

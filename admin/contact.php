@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Contact & FAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
@@ -25,3 +25,4 @@
     </div>
 </body>
 </html>
+
