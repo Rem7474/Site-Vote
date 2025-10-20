@@ -76,53 +76,87 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Event</title>
+    <meta charset="utf-8">
+    <title>📋 <?php echo htmlspecialchars($event['nom']); ?> - Gestion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
     <?php include 'inc_header.php'; ?>
     <?php include 'inc_admin_menu.php'; ?>
-    <div class="container">
-        <a href="dashboard.php">Retour au tableau de bord</a>
-        <h1>Evènement : <?php echo $event['nom']; ?></h1>
-        <h2>Listes</h2>
+    <div class="container card">
+        <div class="header">
+            <a href="dashboard.php" class="btn" style="margin-bottom: 15px;">← Retour au tableau de bord</a>
+        </div>
+        <h1>📋 Gestion de l'événement</h1>
+        <h2><?php echo htmlspecialchars($event['nom']); ?></h2>
+        
+        <div class="card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #2196f3; margin-bottom: 20px;">
+            <h3 style="color: #0d47a1; margin: 0 0 5px 0;">📊 Statistiques</h3>
+            <p style="color: #0d47a1; margin: 0;"><strong><?php echo count($lists); ?> liste(s)</strong> | <strong>Total votes : <?php $totalVotes = 0; foreach($lists as $l) { $totalVotes += getVotes($l['id'], $conn); } echo $totalVotes; ?></strong></p>
+        </div>
+        
+        <h3>🗳️ Listes candidates</h3>
         <?php if (!empty($lists)): ?>
-            <table>
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Photo</th>
-                    <th>Nombre de votes</th>
-                    <th>Action</th>
-                </tr>
-                <?php foreach ($lists as $list): 
-                    $votes = getVotes($list['id'], $conn);
-                ?>
-                    <tr>
-                        <td><?php echo $list['nom']; ?></td>
-                        <td><?php echo $list['description']; ?></td>
-                        <td><div class="liste"><img src="./images/<?php echo $list['photo']; ?>" alt="<?php echo $list['nom']; ?>"></div></td>
-                        <td><?php echo $votes; ?></td>
-                        <td><a href="list.php?id=<?php echo $list['id']; ?>">Voir</a></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Description</th>
+                            <th>Photo</th>
+                            <th>Votes</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($lists as $list): 
+                            $votes = getVotes($list['id'], $conn);
+                        ?>
+                            <tr>
+                                <td><strong><?php echo htmlspecialchars($list['nom']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($list['description']); ?></td>
+                                <td>
+                                    <div class="liste">
+                                        <?php if (!empty($list['photo']) && file_exists('./images/'.$list['photo'])): ?>
+                                            <img src="./images/<?php echo htmlspecialchars($list['photo']); ?>" alt="<?php echo htmlspecialchars($list['nom']); ?>">
+                                        <?php else: ?>
+                                            <span>Pas d'image</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td><strong><?php echo $votes; ?></strong> 🗳️</td>
+                                <td><a href="list.php?id=<?php echo htmlspecialchars($list['id']); ?>" class="btn" style="padding: 5px 15px;">👁️ Voir</a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php else: ?>
-            <p>Aucune liste disponible pour cet événement.</p>
+            <div class="card" style="background: #fff3cd; border-left: 5px solid #ffc107; padding: 15px;">
+                <p style="color: #856404; margin: 0;">⚠️ Aucune liste n'a encore été ajoutée pour cet événement.</p>
+            </div>
         <?php endif; ?>
-        <h2>Ajouter une liste</h2>
-        <form method="post" enctype="multipart/form-data">
-            <?php echo csrfField(); ?>
-            <label for="nom">Nom de la liste</label>
-            <input type="text" name="nom" id="nom" required>
-            <label for="description">Description</label>
-            <input type="text" name="description" id="description" required>
-            <label for="photo">Photo de la liste</label>
-            <input type="file" name="photo" id="photo" required>
-            <input type="submit" value="Ajouter">
-        </form>
+        
+        <div class="card" style="margin-top: 30px; background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-left: 5px solid #9c27b0;">
+            <h3 style="color: #4a148c; margin-top: 0;">➕ Ajouter une nouvelle liste</h3>
+            <form method="post" enctype="multipart/form-data">
+                <?php echo csrfField(); ?>
+                <label for="nom">📝 Nom de la liste</label>
+                <input type="text" name="nom" id="nom" placeholder="Exemple: Équipe Innovation" required>
+                
+                <label for="description">📄 Description</label>
+                <input type="text" name="description" id="description" placeholder="Décrivez brièvement l'équipe" required>
+                
+                <label for="photo">📷 Photo de la liste (JPG, PNG, WEBP, max 5MB)</label>
+                <input type="file" name="photo" id="photo" accept="image/jpeg,image/png,image/webp,image/gif" required>
+                
+                <input type="submit" value="✨ Ajouter la liste" class="btn">
+            </form>
+        </div>
     </div>
 </body>
 </html>

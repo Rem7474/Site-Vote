@@ -31,7 +31,7 @@ $candidats = getListes($IDevent, $conn);
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Vote</title>
+    <title>🗳️ Vote - <?php echo htmlspecialchars($nomEvent); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
@@ -39,26 +39,32 @@ $candidats = getListes($IDevent, $conn);
 <body>
     <div class="container card">
         <div class="header">
-            <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Vote pour le <?php echo $nomEvent;?></h1>
-        <p>Bienvenue sur la page de vote pour le <?php echo $nomEvent;?>. Pour voter, veuillez choisir un candidat dans la liste ci-dessous.</p>
+        <h1>🗳️ Votez maintenant</h1>
+        <h2><?php echo htmlspecialchars($nomEvent); ?></h2>
+        <p>Bienvenue sur votre page de vote personnalisée. Choisissez l'équipe pour laquelle vous souhaitez voter ci-dessous.</p>
+        <p class="reussite"><strong>⚠️ Attention :</strong> Vous ne pourrez voter qu'une seule fois. Votre choix est définitif.</p>
 
         <form action="index.php" method="post" class="vote-form">
             <?php echo csrfField(); ?>
             <?php
             foreach($candidats as $candidat){
                 echo '<div class="candidate">';
-                echo '<input id="candidat'.$candidat['id'].'" type="radio" name="vote" value="'.$candidat['id'].'">';
-                echo '<label for="candidat'.$candidat['id'].'">'.htmlspecialchars($candidat['nom']).'</label>';
-                echo '<img src="./images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe de '.htmlspecialchars($candidat['nom']).'">';
+                echo '<input id="candidat'.htmlspecialchars($candidat['id']).'" type="radio" name="vote" value="'.htmlspecialchars($candidat['id']).'" required>';
+                echo '<label for="candidat'.htmlspecialchars($candidat['id']).'"><strong>'.htmlspecialchars($candidat['nom']).'</strong></label>';
+                if (!empty($candidat['photo']) && file_exists('./images/'.$candidat['photo'])) {
+                    echo '<img src="./images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe '.htmlspecialchars($candidat['nom']).'">';
+                }
                 echo '</div>';
             }
             ?>
-            <input type="hidden" name="hash" value="<?php echo $hash; ?>">
-            <input type="submit" value="Voter" class="btn">
+            <input type="hidden" name="hash" value="<?php echo htmlspecialchars($hash); ?>">
+            <input type="submit" value="🗳️ Confirmer mon vote" class="btn">
         </form>
+    </div>
+    <div class="footer">
+        <p>⚠️ Votre vote est anonyme et sécurisé</p>
     </div>
 </body>
 </html>

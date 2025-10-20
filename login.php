@@ -1,14 +1,12 @@
 <?php
 include 'fonctionsPHP.php';
-<<<<<<< HEAD
-
-=======
 session_start();
+
 if (isset($_SESSION['id'])) {
     header('Location: dashboard.php');
     exit();
 }
->>>>>>> origin/beta
+
 if (isset($_POST['login']) && isset($_POST['password'])) {
     // Vérification CSRF
     if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
@@ -64,7 +62,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Connexion</title>
+    <title>🔐 Connexion Organisateur - Vote en ligne</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
@@ -74,20 +72,21 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Connexion organisateur</h1>
-        <p>Bienvenue sur le site de vote en ligne. Pour vous connecter en tant qu'organisateur, veuillez remplir le formulaire ci-dessous.</p>
-        <p>Pour effectuer un vote, veuillez vous rendre sur le lien indiqué par l'organisateur.</p>
+        <h1>🔐 Connexion Organisateur</h1>
+        <p>Accédez à votre tableau de bord pour gérer vos événements de vote et consulter les résultats en temps réel.</p>
         <form action="login.php" method="post">
             <?php echo csrfField(); ?>
-            <label for="login">Email</label>
-            <input type="text" name="login" placeholder="email" required>
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" placeholder="mot de passe" required>
-            <input type="submit" value="Se connecter" class="btn">
+            <label for="login">📧 Email</label>
+            <input type="email" id="login" name="login" placeholder="votre@email.com" required>
+            <label for="password">🔒 Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+            <input type="submit" value="🚀 Se connecter" class="btn">
         </form>
     </div>
     <div class="footer">
-        <p><a href="register.php" class="btn">S'inscrire en tant qu'organisateur</a></p>
+        <p>Pas encore de compte ?</p>
+        <p><a href="register.php" class="btn">📝 S'inscrire en tant qu'organisateur</a></p>
+        <p style="margin-top: 20px;"><a href="checkVote.php">🔍 Vérifier un vote</a></p>
     </div>
 </body>
 </html>

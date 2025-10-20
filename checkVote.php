@@ -2,41 +2,53 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Vérifier son vote</title>
+    <title>🔍 Vérifier son vote - Vote en ligne</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <?php printFaviconTag(); addDarkModeScript(); ?>
+    <?php 
+    include_once 'fonctionsPHP.php';
+    printFaviconTag(); 
+    addDarkModeScript(); 
+    ?>
 </head>
 <body>
     <div class="container card">
         <div class="header">
-            <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Vérifier son vote pour le BDE R&T</h1>
-        <p>Veuillez entrer le hash de votre vote pour vérifier l'équipe pour laquelle vous avez voté :</p>
+        <h1>🔍 Vérifier mon vote</h1>
+        <p>Entrez le hash de vérification que vous avez reçu par email après avoir voté pour confirmer votre choix :</p>
         <form action="checkVote.php" method="post">
-            <input type="text" name="hash" placeholder="Entrez votre hash de vote" required>
-            <input type="submit" value="Vérifier" class="btn">
+            <label for="hash">🔐 Hash de vérification</label>
+            <input type="text" id="hash" name="hash" placeholder="Entrez votre hash de vote" required>
+            <small>Le hash vous a été envoyé par email après votre vote</small>
+            <input type="submit" value="🔍 Vérifier" class="btn">
         </form>
         <div class="result" id="result">
             <?php
-            include 'fonctionsPHP.php';
             //récupération du hash
             if(isset($_POST['hash'])){
                 //vérification du hash
-                $hash = $_POST['hash'];
+                $hash = sanitizeInput($_POST['hash']);
                 $equipe = getEquipeVote($hash);
                 if($equipe != ""){
                     //récupération de l'équipe pour laquelle le vote a été effectué
-                    echo "<p class='reussite'>Vous avez voté pour l'équipe de ".htmlspecialchars($equipe)."</p>";
+                    echo "<div class='card' style='background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left: 5px solid #28a745;'>";
+                    echo "<h2 style='color: #155724; margin: 0 0 10px 0;'>✅ Vote confirmé</h2>";
+                    echo "<p style='color: #155724; font-size: 1.1em;'>Vous avez voté pour l'équipe : <strong>".htmlspecialchars($equipe)."</strong></p>";
+                    echo "</div>";
                 }
                 else{
-                    echo "<p>Le hash de vote n'existe pas</p>";
+                    echo "<div class='card erreur'>";
+                    echo "<p style='margin: 0;'>❌ Le hash de vote n'existe pas ou est invalide</p>";
+                    echo "</div>";
                 }
             }
             ?>
         </div>
+    </div>
+    <div class="footer">
+        <p><a href="login.php" class="btn">Connexion organisateur</a></p>
     </div>
 </body>
 </html>

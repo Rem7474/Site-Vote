@@ -2,18 +2,40 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Erreur</title>
+    <title>❌ Erreur - Vote en ligne</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <?php printFaviconTag
+    <script>
+        // Thème sombre
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+</head>
 <body>
     <div class="container card">
         <div class="header">
-            <!-- Insérez votre logo ici -->
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Inscription pour les votes du BDE R&T</h1>
-        <p class="erreur">Une erreur est survenue</p>
+        <div class="card erreur" style="text-align: center; padding: 30px;">
+            <h1 style="font-size: 4em; margin: 0;">⚠️</h1>
+            <h2 style="color: #fff; margin: 15px 0;">Une erreur est survenue</h2>
+            <p style="color: #fff; font-size: 1.1em; margin: 15px 0;">
+                La page que vous recherchez n'existe pas ou vous n'avez pas les autorisations nécessaires.
+            </p>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); border-left: 5px solid #ffc107; margin-top: 20px;">
+            <h3 style="color: #856404; margin-top: 0;">💡 Que faire ?</h3>
+            <ul style="color: #856404; text-align: left; padding-left: 25px;">
+                <li>Vérifiez que le lien est correct</li>
+                <li>Retournez à la page d'accueil</li>
+                <li>Contactez l'organisateur si le problème persiste</li>
+            </ul>
+        </div>
+        <div class="footer" style="margin-top: 30px;">
+            <p><a href="login.php" class="btn">🏠 Retour à l'accueil</a></p>
+            <p><a href="checkVote.php" class="btn">🔍 Vérifier un vote</a></p>
+        </div>
     </div>
 </body>
 </html>
