@@ -140,7 +140,7 @@ function getUser($login, $IDevent, $conn){
     $sql = "SELECT * FROM utilisateurs WHERE login = :login AND refevent = :IDevent";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':login', $login);
-    $stmt->bindParam(':IDevent', $event);
+    $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
     $result = $stmt->fetch();
     if($result){
@@ -156,8 +156,8 @@ function getUsers($IDevent, $conn){
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':IDevent', $IDevent);
     $stmt->execute();
-    $result = $stmt->fetch();
-    return $result[0];
+    $result = $stmt->fetchAll();
+    return $result;
 }
 //fonction pour supprimer un utilisateur de la base de données
 function deleteUser($login, $IDevent, $conn){
@@ -257,8 +257,8 @@ function getMembres($RefListe, $conn){
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':RefListe', $RefListe);
     $stmt->execute();
-    $result = $stmt->fetch();
-    return $result[0];
+    $result = $stmt->fetchAll();
+    return $result;
 }
 //fonction pour supprimer un membre de la base de données
 function deleteMembre($Nom, $Prenom, $RefListe, $conn){

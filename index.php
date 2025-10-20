@@ -1,9 +1,5 @@
 <?php
 include 'fonctionsPHP.php';
-//debug : affichage des erreurs
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) && !empty($_POST['event'])){
     $login = $_POST['login'];
     $event = $_POST['event'];

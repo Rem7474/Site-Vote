@@ -11,8 +11,8 @@
         <div class="header">
             <img src="bgsharklo.jpg" alt="Logo du site">
         </div>
-        <h1>Inscription pour les votes de : <?php echo $infosEvent["nom"]; ?></h1>
-        <p>Bienvenue sur le site d'inscription pour les votes de l'évènement <?php echo $infosEvent["nom"]; ?>. Pour vous inscrire, veuillez remplir le formulaire ci-dessous.</p>
+        <h1>Inscription pour les votes de : <?php echo htmlspecialchars($infosEvent["nom"]); ?></h1>
+        <p>Bienvenue sur le site d'inscription pour les votes de l'évènement <?php echo htmlspecialchars($infosEvent["nom"]); ?>. Pour vous inscrire, veuillez remplir le formulaire ci-dessous.</p>
         <p>Vous recevrez un mail contenant un lien pour effectuer votre vote.</p>
         <form action="index.php" method="post">
             <input type="text" name="login" placeholder="login universitaire" required>

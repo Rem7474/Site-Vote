@@ -28,7 +28,7 @@
                 $equipe = getEquipeVote($hash);
                 if($equipe != ""){
                     //récupération de l'équipe pour laquelle le vote a été effectué
-                    echo "<p class='reussite'>Vous avez voté pour l'équipe de $equipe</p>";
+                    echo "<p class='reussite'>Vous avez voté pour l'équipe de ".htmlspecialchars($equipe)."</p>";
                 }
                 else{
                     echo "<p>Le hash de vote n'existe pas</p>";

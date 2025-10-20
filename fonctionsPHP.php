@@ -171,17 +171,10 @@ function getEquipeVote($hash){
     global $conn;
     $result=getEquipe($hash, $conn);
     if ($result){
-        if ($result == "1"){
-            return "Couniamamaw";
-        }
-        else{
-            return "Medrick";
-        }
+        return $result;
     }
     else{
-        //redirection vers une page d'erreur
-        header('Location: erreur.html');
-        exit();
+        return "";
     }
 }
 ?>

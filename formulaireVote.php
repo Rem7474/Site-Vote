@@ -1,8 +1,5 @@
 <?php
 //récupération du hash dans l'url
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 include 'fonctionsPHP.php';
 if(isset($_GET['hash'])){
     //vérification du hash
@@ -12,7 +9,7 @@ if(isset($_GET['hash'])){
     if($IDevent){
         //récupération de l'événement associé au hash
         $event = getEvent($IDevent, $conn);
-        $nomEvent = $event['nom'];
+        $nomEvent = htmlspecialchars($event['nom']);
     }
     else{
         //hash non trouvé dans la base de données
@@ -52,8 +49,8 @@ $candidats = getListes($IDevent, $conn);
             foreach($candidats as $candidat){
                 echo '<div class="candidate">';
                 echo '<input id="candidat'.$candidat['id'].'" type="radio" name="vote" value="'.$candidat['id'].'">';
-                echo '<label for="candidat'.$candidat['id'].'">'.$candidat['nom'].'</label>';
-                echo '<img src="./images/'.$candidat['photo'].'" alt="Photo de l\'équipe de '.$candidat['nom'].'">';
+                echo '<label for="candidat'.$candidat['id'].'">'.htmlspecialchars($candidat['nom']).'</label>';
+                echo '<img src="./images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe de '.htmlspecialchars($candidat['nom']).'">';
                 echo '</div>';
             }
             ?>
