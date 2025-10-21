@@ -567,6 +567,69 @@ form input:focus, form select:focus {
     border-bottom: 1px solid #444 !important;
 }
 
+/* Mode sombre - Nouveau header moderne */
+.dark-mode .modern-header {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
+}
+
+.dark-mode .header-logo {
+    border-color: rgba(255,255,255,0.2) !important;
+}
+
+.dark-mode .welcome-text {
+    color: #e0e7ff !important;
+}
+
+.dark-mode .theme-toggle {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+
+.dark-mode .theme-toggle:hover {
+    background: rgba(255,255,255,0.25) !important;
+}
+
+.dark-mode .btn-back {
+    background: rgba(255,255,255,0.1) !important;
+    color: #e0e7ff !important;
+    border-color: rgba(255,255,255,0.2) !important;
+}
+
+.dark-mode .btn-back:hover {
+    background: rgba(255,255,255,0.15) !important;
+}
+
+.dark-mode .btn-logout {
+    background: rgba(255,255,255,0.1) !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+
+.dark-mode .btn-logout:hover {
+    background: rgba(255,255,255,0.15) !important;
+}
+
+/* Mode sombre - Menu admin */
+.dark-mode .admin-menu {
+    background: #23272f !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4) !important;
+}
+
+.dark-mode .menu-item {
+    color: #a0aec0 !important;
+    border-bottom-color: transparent !important;
+}
+
+.dark-mode .menu-item:hover {
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.15), transparent) !important;
+    color: #90cdf4 !important;
+}
+
+.dark-mode .menu-item.active {
+    color: #90cdf4 !important;
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.2), transparent) !important;
+    border-bottom-color: #90cdf4 !important;
+}
+
 /* Animations douces */
 .btn, .header img, .card, .container, .toast, .global-menu, .footer, .liste img, .candidate img, .table-responsive, table, th, td, .erreur, .reussite {
     transition: all 0.25s cubic-bezier(.4,0,.2,1);
