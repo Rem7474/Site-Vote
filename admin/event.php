@@ -71,11 +71,11 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     $nomphoto = preg_replace('/[^a-zA-Z0-9]/', '', $nom) . $IDevent . '.' . $extension;
     
     // Créer le dossier images si il n'existe pas
-    if (!file_exists('./images')) {
-        mkdir('./images', 0755, true);
+    if (!file_exists('../images')) {
+        mkdir('../images', 0755, true);
     }
     
-    if (move_uploaded_file($photo['tmp_name'], '../public/assets/images/' . $nomphoto)) {
+    if (move_uploaded_file($photo['tmp_name'], '../images/' . $nomphoto)) {
         $idList = addListe($nom, $nomphoto, $description, $IDevent, $conn);
         if ($idList != null) {
             logSecurityEvent('LIST_CREATED', "List: $nom - Event: $IDevent", 'INFO');
