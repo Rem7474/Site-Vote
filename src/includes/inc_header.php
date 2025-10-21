@@ -25,12 +25,17 @@ if ($orgaId) {
 // Affichage du bouton retour uniquement si on n'est PAS sur le dashboard
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
+
+// Détection du contexte (admin ou public) pour les liens
+$isPublicPage = strpos($_SERVER['PHP_SELF'], '/public/') !== false;
+$dashboardLink = $isPublicPage ? '../admin/dashboard.php' : 'dashboard.php';
+$logoutLink = $isPublicPage ? '../admin/logout.php' : 'logout.php';
 ?>
 <?php printFaviconTag(); addDarkModeScript(); ?>
 <header class="modern-header">
     <div class="header-container">
         <div class="header-left">
-            <a href="dashboard.php" class="logo-link">
+            <a href="<?php echo $dashboardLink; ?>" class="logo-link">
                 <img src="<?php echo htmlspecialchars($logoHref, ENT_QUOTES, 'UTF-8'); ?>" alt="Logo" class="header-logo">
             </a>
             <div class="header-info">
@@ -44,9 +49,9 @@ $showRetour = $current !== 'dashboard.php';
                 🌓
             </button>
             <?php if ($showRetour): ?>
-                <a href="dashboard.php" class="btn-back">← Dashboard</a>
+                <a href="<?php echo $dashboardLink; ?>" class="btn-back">← Dashboard</a>
             <?php endif; ?>
-            <form action="logout.php" method="post" style="display:inline;margin:0;">
+            <form action="<?php echo $logoutLink; ?>" method="post" style="display:inline;margin:0;">
                 <button type="submit" class="btn-logout">Déconnexion</button>
             </form>
         </div>
