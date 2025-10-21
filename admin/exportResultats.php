@@ -31,26 +31,48 @@ if (!$listes || count($listes) === 0) {
 // Log de l'export
 logSecurityEvent('RESULTS_EXPORTED', "Event: $eventId - User: {$_SESSION['id']}", 'INFO');
 
-// Préparation du CSV
+// Préparation du fichier Excel (CSV avec séparateur point-virgule)
 $eventName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $event['nom']);
 $filename = 'resultats_' . $eventName . '_' . date('Y-m-d') . '.csv';
 
-header('Content-Type: text/csv; charset=utf-8');
+// Headers pour Excel
+header('Content-Type: text/csv; charset=Windows-1252');
 header('Content-Disposition: attachment; filename="' . $filename . '"');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 $output = fopen('php://output', 'w');
 
-// BOM UTF-8 pour Excel
-fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+// Fonction pour encoder en Windows-1252
+function encodeForExcel($text) {
+    return mb_convert_encoding($text, 'Windows-1252', 'UTF-8');
+}
 
-// En-têtes
-fputcsv($output, ['Événement', htmlspecialchars($event['nom'])]);
-fputcsv($output, ['Date export', date('d/m/Y H:i:s')]);
-fputcsv($output, ['Université', htmlspecialchars($event['Univ'] ?? '')]);
-fputcsv($output, []); // Ligne vide
+// En-têtes (avec point-virgule comme séparateur pour Excel)
+fputcsv($output, [
+    encodeForExcel('Événement'), 
+    encodeForExcel($event['nom'])
+], ';');
+
+fputcsv($output, [
+    encodeForExcel('Date export'), 
+    date('d/m/Y H:i:s')
+], ';');
+
+fputcsv($output, [
+    encodeForExcel('Université'), 
+    encodeForExcel($event['Univ'] ?? '')
+], ';');
+
+fputcsv($output, [], ';'); // Ligne vide
 
 // Colonnes
-fputcsv($output, ['Nom de la liste', 'Description', 'Nombre de votes', 'Pourcentage']);
+fputcsv($output, [
+    encodeForExcel('Nom de la liste'), 
+    encodeForExcel('Description'), 
+    encodeForExcel('Nombre de votes'), 
+    encodeForExcel('Pourcentage')
+], ';');
 
 $totalVotes = 0;
 foreach ($listes as $liste) {
@@ -62,15 +84,20 @@ foreach ($listes as $liste) {
     $percentage = $totalVotes > 0 ? round(($votes / $totalVotes) * 100, 2) : 0;
     
     fputcsv($output, [
-        $liste['nom'],
-        $liste['description'],
+        encodeForExcel($liste['nom']),
+        encodeForExcel($liste['description']),
         $votes,
-        $percentage . '%'
-    ]);
+        str_replace('.', ',', $percentage) . '%'  // Virgule décimale pour Excel français
+    ], ';');
 }
 
-fputcsv($output, []); // Ligne vide
-fputcsv($output, ['Total des votes', '', $totalVotes, '100%']);
+fputcsv($output, [], ';'); // Ligne vide
+fputcsv($output, [
+    encodeForExcel('Total des votes'), 
+    '', 
+    $totalVotes, 
+    '100%'
+], ';');
 
 fclose($output);
 exit();
