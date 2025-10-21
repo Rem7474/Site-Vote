@@ -93,23 +93,22 @@ $votesParJour = [];
 
 foreach($events as $event) {
     $eventId = $event['id'];
-    $votes = getVotes($eventId, $conn);
+    $nbVotes = getNbVotes($eventId, $conn);
     $nbParticipants = getNbParticipants($eventId, $conn);
     $listes = getListes($eventId, $conn);
     
-    $totalVotes += count($votes);
+    $totalVotes += $nbVotes;
     $totalParticipants += $nbParticipants;
     $totalListes += count($listes);
     
     // Calculer votes par jour (derniers 7 jours)
-    foreach($votes as $vote) {
-        // Simplification : compter par événement pour l'instant
-        $date = date('Y-m-d');
-        if(!isset($votesParJour[$date])) {
-            $votesParJour[$date] = 0;
-        }
-        $votesParJour[$date]++;
+    // Note: pour l'instant on compte tous les votes aujourd'hui
+    // TODO: améliorer pour avoir l'historique réel par date
+    $date = date('Y-m-d');
+    if(!isset($votesParJour[$date])) {
+        $votesParJour[$date] = 0;
     }
+    $votesParJour[$date] += $nbVotes;
 }
 
 $tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalParticipants) * 100, 1) : 0;
