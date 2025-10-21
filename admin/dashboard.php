@@ -183,6 +183,7 @@ $tauxParticipation = $totalInscrits > 0 ? round(($totalVotes / $totalInscrits) *
                             <a href="event.php?id=<?php echo $event['id']; ?>" class="btn">Détails</a>
                             <a href="event.php?id=<?php echo $event['id']; ?>&edit=1" class="btn">Modifier</a>
                             <a href="../public/resultats.php?id=<?php echo $event['id']; ?>" class="btn" style="background:linear-gradient(90deg,#43e97b 0%,#38f9d7 100%);">📊 Résultats</a>
+                            <a href="exportResultats.php?id=<?php echo $event['id']; ?>" class="btn" style="background:linear-gradient(90deg,#4facfe 0%,#00f2fe 100%);font-size:0.9em;padding:8px 15px;">📥 CSV</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

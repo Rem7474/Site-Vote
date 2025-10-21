@@ -139,6 +139,17 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
         </div>
         
         <h3>🗳️ Listes candidates</h3>
+        
+        <!-- Boutons d'action -->
+        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+            <a href="../public/resultats.php?id=<?php echo $IDevent; ?>" class="btn" style="background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);">
+                📊 Voir les résultats publics
+            </a>
+            <a href="exportResultats.php?id=<?php echo $IDevent; ?>" class="btn" style="background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);">
+                📥 Exporter en CSV
+            </a>
+        </div>
+        
         <?php if (!empty($lists)): ?>
             <div class="table-responsive">
                 <table>
