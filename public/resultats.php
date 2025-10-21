@@ -45,9 +45,12 @@ foreach ($listes as $liste) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <?php include '../src/includes/inc_header.php'; ?>
+    <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
+    <?php if (isset($_SESSION['id'])): ?>
+        <?php include '../src/includes/inc_header.php'; ?>
+    <?php endif; ?>
     <div class="container card">
         <h1>📊 Résultats du vote</h1>
         <h2><?php echo htmlspecialchars($event['nom']); ?></h2>
