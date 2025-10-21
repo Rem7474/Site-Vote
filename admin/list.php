@@ -28,7 +28,7 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
         $extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
         $extension = strtolower(pathinfo($photo['name'], PATHINFO_EXTENSION));
         if (in_array($extension, $extensions)) {
-            $safeNom = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $nom);
+            $safeNom = strtolower(preg_replace('/[^a-zA-Z0-9_\-]/', '_', $nom));
             $nomphoto = $safeNom . $liste['refevent'] . '.' . $extension;
             move_uploaded_file($photo['tmp_name'], '../images/' . $nomphoto);
         } else {

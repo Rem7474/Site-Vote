@@ -68,7 +68,7 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     $extension = strtolower(pathinfo($photo['name'], PATHINFO_EXTENSION));
     
     //déplacement de la photo dans le dossier images
-    $nomphoto = preg_replace('/[^a-zA-Z0-9]/', '', $nom) . $IDevent . '.' . $extension;
+    $nomphoto = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $nom)) . $IDevent . '.' . $extension;
     
     // Créer le dossier images si il n'existe pas
     if (!file_exists('../images')) {
