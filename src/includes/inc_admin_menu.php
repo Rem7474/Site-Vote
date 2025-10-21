@@ -1,35 +1,82 @@
 <?php
 // Menu de navigation admin à inclure dans le dashboard et les pages admin
 if (session_status() === PHP_SESSION_NONE) session_start();
+
+$current = basename($_SERVER['PHP_SELF']);
 ?>
-<nav class="global-menu">
-    <a href="dashboard.php">Dashboard</a>
-    <a href="contact.php">FAQ/Contact</a>
-    <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
-        <span class="user">Connecté : <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
-    <?php endif; ?>
-    <a href="logout.php" style="float:right;">Déconnexion</a>
+<nav class="admin-menu">
+    <div class="menu-container">
+        <a href="dashboard.php" class="menu-item <?php echo $current === 'dashboard.php' ? 'active' : ''; ?>">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="contact.php" class="menu-item <?php echo $current === 'contact.php' ? 'active' : ''; ?>">
+            <span class="icon">💬</span>
+            <span>FAQ/Contact</span>
+        </a>
+    </div>
 </nav>
-<script src="toast.js"></script>
 <style>
-.global-menu {
-    text-align: center;
-    margin-bottom: 18px;
-    font-size: 1.08em;
+.admin-menu {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+    overflow: hidden;
 }
-.global-menu a {
-    color: #3b6eea;
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.menu-item {
+    flex: 1;
+    max-width: 200px;
+    padding: 16px 24px;
     text-decoration: none;
-    margin: 0 10px;
+    color: #64748b;
     font-weight: 500;
-    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    position: relative;
 }
-.global-menu a:hover {
-    color: #1a3e8a;
+
+.menu-item .icon {
+    font-size: 1.2em;
 }
-.user {
-    margin: 0 10px;
-    font-weight: 400;
-    color: #333;
+
+.menu-item:hover {
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.05), transparent);
+    color: #667eea;
+}
+
+.menu-item.active {
+    color: #667eea;
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.08), transparent);
+    border-bottom-color: #667eea;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .menu-container {
+        flex-direction: column;
+    }
+    
+    .menu-item {
+        max-width: 100%;
+        border-bottom: 1px solid #e2e8f0;
+        border-left: 3px solid transparent;
+    }
+    
+    .menu-item.active {
+        border-bottom: 1px solid #e2e8f0;
+        border-left-color: #667eea;
+    }
 }
 </style>

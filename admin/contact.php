@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <?php 
+    session_start();
     require_once __DIR__ . '/../src/includes/fonctionsPHP.php';
     printFaviconTag(); 
     addDarkModeScript();
@@ -13,13 +14,12 @@
     ?>
 </head>
 <body>
+    <?php include '../src/includes/inc_header.php'; ?>
+    <?php include '../src/includes/inc_admin_menu.php'; ?>
     <div class="container card">
-        <div class="header">
-            <img src="../public/assets/images/bgsharklo.jpg" alt="Logo du site">
-        </div>
-        <h1>Contact & FAQ</h1>
+        <h1>💬 Contact & FAQ</h1>
         <h2>Questions fréquentes</h2>
-        <ul>
+        <ul style="line-height: 2;">
             <li><strong>Comment voter ?</strong> <br>Inscrivez-vous via le lien fourni par l'organisateur, puis suivez le lien reçu par mail.</li>
             <li><strong>Comment vérifier mon vote ?</strong> <br>Utilisez la page "Vérifier son vote" et entrez le hash reçu après votre vote.</li>
             <li><strong>Je n'ai pas reçu de mail, que faire ?</strong> <br>Vérifiez vos spams ou contactez l'organisateur de l'événement.</li>

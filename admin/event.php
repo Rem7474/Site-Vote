@@ -88,9 +88,6 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     <?php include '../src/includes/inc_header.php'; ?>
     <?php include '../src/includes/inc_admin_menu.php'; ?>
     <div class="container card">
-        <div class="header">
-            <a href="dashboard.php" class="btn" style="margin-bottom: 15px;">← Retour au tableau de bord</a>
-        </div>
         <h1>📋 Gestion de l'événement</h1>
         <h2><?php echo htmlspecialchars($event['nom']); ?></h2>
         

@@ -27,58 +27,205 @@ $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
 <?php printFaviconTag(); addDarkModeScript(); ?>
-<div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
-    <img src="<?php echo htmlspecialchars($logoHref, ENT_QUOTES, 'UTF-8'); ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
-    <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
-        <span style="font-size:1.25em;font-weight:600;color:#2d3a4b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
-    <?php endif; ?>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px;">
-        <button class="burger" onclick="document.querySelector('.global-menu').classList.toggle('open')" style="display:none;">☰</button>
-        <?php if ($showRetour): ?>
-            <a href="dashboard.php" class="btn" style="padding:7px 16px;font-size:0.98em;">&larr; Retour au dashboard</a>
-        <?php endif; ?>
-        <?php if ($current === 'dashboard.php'): ?>
-            <form action="logout.php" method="post" style="display:inline;">
-                <input type="submit" value="Déconnexion" class="btn" style="padding:7px 16px;font-size:0.98em;">
+<header class="modern-header">
+    <div class="header-container">
+        <div class="header-left">
+            <a href="dashboard.php" class="logo-link">
+                <img src="<?php echo htmlspecialchars($logoHref, ENT_QUOTES, 'UTF-8'); ?>" alt="Logo" class="header-logo">
+            </a>
+            <div class="header-info">
+                <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
+                    <span class="welcome-text">Bienvenue, <strong><?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></strong></span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="theme-toggle" onclick="toggleDarkMode()" title="Changer le thème">
+                🌓
+            </button>
+            <?php if ($showRetour): ?>
+                <a href="dashboard.php" class="btn-back">← Dashboard</a>
+            <?php endif; ?>
+            <form action="logout.php" method="post" style="display:inline;margin:0;">
+                <button type="submit" class="btn-logout">Déconnexion</button>
             </form>
-        <?php endif; ?>
+        </div>
     </div>
-    <div style="margin-top:18px;">
-        <button class="btn" onclick="toggleDarkMode()" style="padding:10px 30px;font-size:1.1em;">🌓 Thème sombre</button>
-    </div>
-    <script>
-    // Burger menu mobile : ouverture/fermeture
-    (function() {
-        var burger = document.querySelector('.burger');
-        var menu = document.querySelector('.global-menu');
-        if (burger && menu) {
-            burger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                menu.classList.toggle('open');
-            });
-            document.addEventListener('click', function(e) {
-                if (!menu.contains(e.target) && !burger.contains(e.target)) {
-                    menu.classList.remove('open');
-                }
-            });
-        }
-    })();
-    </script>
-</div>
+</header>
+
 <style>
-@media (max-width: 900px) {
-    .header {flex-direction: column !important;align-items: center !important;gap: 10px !important;}
-    .header img {max-width: 80px !important;min-width: 50px !important;}
-    .header span {font-size: 1.1em !important;max-width: 90vw !important;text-align: center;}
-    .header .btn, .header form {margin-top: 8px;}
-    .burger { display: inline-block !important; }
+.modern-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 15px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
 }
-@media (min-width: 901px) {
-    .burger { display: none !important; }
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
-@media (max-width: 600px) {
-    .header {padding: 10px 4vw 10px 4vw !important;}
-    .header img {max-width: 60px !important;min-width: 40px !important;}
-    .header span {font-size: 1em !important;max-width: 98vw !important;text-align: center;}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.logo-link {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.logo-link:hover {
+    transform: scale(1.05);
+}
+
+.header-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    object-fit: cover;
+    background: white;
+}
+
+.header-info {
+    flex: 1;
+}
+
+.welcome-text {
+    color: white;
+    font-size: 1.1em;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.welcome-text strong {
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.theme-toggle {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 1.3em;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.3);
+    transform: rotate(180deg);
+}
+
+.btn-back {
+    background: rgba(255,255,255,0.95);
+    color: #667eea;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    white-space: nowrap;
+}
+
+.btn-back:hover {
+    background: white;
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-logout {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    padding: 10px 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-logout:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modern-header {
+        padding: 12px 15px;
+    }
+    
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .header-left {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .header-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .welcome-text {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-logo {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .welcome-text {
+        font-size: 0.95em;
+    }
+    
+    .btn-back, .btn-logout {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1em;
+    }
 }
 </style>
