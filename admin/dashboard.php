@@ -160,13 +160,19 @@ $tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalPartici
             <div class="table-responsive">
             <table class="table">
                 <thead>
-                    <tr><th>Nom</th><th>Université</th><th>Actions</th></tr>
+                    <tr><th>Nom</th><th>Université</th><th>Lien d'inscription</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                 <?php foreach($events as $event): ?>
+                    <?php 
+                    $inscriptionLink = 'https://' . $DOMAIN . '/index.php?id=' . $event['id'];
+                    ?>
                     <tr>
                         <td><?php echo htmlspecialchars($event['nom']); ?></td>
                         <td><?php echo htmlspecialchars($event['Univ'] ?? getUniversity($event['id'], $conn) ?? ''); ?></td>
+                        <td>
+                            <button class="btn" onclick="navigator.clipboard.writeText('<?php echo $inscriptionLink; ?>'); this.innerHTML='✅ Copié!'; setTimeout(() => this.innerHTML='📋 Copier le lien', 1500);" style="font-size:0.9em;padding:8px 15px;">📋 Copier le lien</button>
+                        </td>
                         <td>
                             <a href="event.php?id=<?php echo $event['id']; ?>" class="btn">Détails</a>
                             <a href="event.php?id=<?php echo $event['id']; ?>&edit=1" class="btn">Modifier</a>
@@ -175,6 +181,16 @@ $tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalPartici
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            </div>
+            <div style="background:#e0f2fe;border-left:4px solid #0ea5e9;padding:15px;margin-top:15px;border-radius:6px;">
+                <strong>ℹ️ Comment ça marche ?</strong>
+                <ol style="margin:10px 0 0 20px;line-height:1.8;">
+                    <li>Partagez le <strong>lien d'inscription</strong> avec les votants</li>
+                    <li>Ils s'inscrivent avec leur login universitaire (prenom.nom)</li>
+                    <li>Un <strong>email leur est envoyé</strong> avec leur lien de vote unique</li>
+                    <li>Ils cliquent sur le lien dans l'email pour voter</li>
+                    <li>Après le vote, ils reçoivent un email de confirmation</li>
+                </ol>
             </div>
         <?php endif; ?>
         <h3>➕ Créer un nouvel événement</h3>
