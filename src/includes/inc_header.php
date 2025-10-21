@@ -22,6 +22,11 @@ if ($orgaId) {
     }
 }
 
+// Détection du contexte (admin ou public) pour les liens
+$isPublicPage = strpos($_SERVER['PHP_SELF'], '/public/') !== false;
+$dashboardLink = $isPublicPage ? '../admin/dashboard.php' : 'dashboard.php';
+$logoutLink = $isPublicPage ? '../admin/logout.php' : 'logout.php';
+
 // Affichage du bouton retour uniquement si on n'est PAS sur le dashboard
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
@@ -29,11 +34,6 @@ $showRetour = $current !== 'dashboard.php';
 // Support des URLs de retour personnalisées
 $retourUrl = isset($customReturnUrl) ? $customReturnUrl : $dashboardLink;
 $retourText = isset($customReturnText) ? $customReturnText : '← Dashboard';
-
-// Détection du contexte (admin ou public) pour les liens
-$isPublicPage = strpos($_SERVER['PHP_SELF'], '/public/') !== false;
-$dashboardLink = $isPublicPage ? '../admin/dashboard.php' : 'dashboard.php';
-$logoutLink = $isPublicPage ? '../admin/logout.php' : 'logout.php';
 ?>
 <?php printFaviconTag(); addDarkModeScript(); ?>
 <header class="modern-header">
