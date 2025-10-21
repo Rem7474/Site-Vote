@@ -17,11 +17,11 @@
             <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>🔍 Vérifier mon vote</h1>
-        <p>Entrez le hash de vérification que vous avez reçu par email après avoir voté pour confirmer votre choix :</p>
+        <p>Entrez le hash de vérification qui vous a été affiché à l'écran après avoir voté pour confirmer votre choix :</p>
         <form action="checkVote.php" method="post">
             <label for="hash">🔐 Hash de vérification</label>
             <input type="text" id="hash" name="hash" placeholder="Entrez votre hash de vote" required>
-            <small>Le hash vous a été envoyé par email après votre vote</small>
+            <small>Le hash vous a été affiché après votre vote (à conserver précieusement)</small>
             <input type="submit" value="🔍 Vérifier" class="btn">
         </form>
         <div class="result" id="result">
