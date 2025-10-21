@@ -64,8 +64,8 @@ foreach ($listes as $liste) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<?php include 'inc_header.php'; ?>
-<?php include 'inc_admin_menu.php'; ?>
+<?php include '../src/includes/inc_header.php'; ?>
+<?php include '../src/includes/inc_admin_menu.php'; ?>
 <div class="container">
     <h1>Statistiques avancées pour l'événement : <?php echo htmlspecialchars($event['nom']); ?></h1>
     <h2>Évolution temporelle des votes</h2>

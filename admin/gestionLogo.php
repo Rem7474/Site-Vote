@@ -7,7 +7,7 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 $idOrga = $_SESSION['id'];
-$logoPath = 'bgsharklo.jpg';
+$logoPath = '../public/assets/images/bgsharklo.jpg';
 $customLogo = '../public/assets/images/logo_' . $idOrga . '.jpg';
 if (file_exists($customLogo)) {
     $logoPath = $customLogo;

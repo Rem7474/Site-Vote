@@ -85,8 +85,8 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
-    <?php include 'inc_header.php'; ?>
-    <?php include 'inc_admin_menu.php'; ?>
+    <?php include '../src/includes/inc_header.php'; ?>
+    <?php include '../src/includes/inc_admin_menu.php'; ?>
     <div class="container card">
         <div class="header">
             <a href="dashboard.php" class="btn" style="margin-bottom: 15px;">← Retour au tableau de bord</a>
@@ -122,7 +122,7 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
                                 <td>
                                     <div class="liste">
                                         <?php if (!empty($list['photo']) && file_exists('../public/assets/images/'.$list['photo'])): ?>
-                                            <img src="./images/<?php echo htmlspecialchars($list['photo']); ?>" alt="<?php echo htmlspecialchars($list['nom']); ?>">
+                                            <img src="../public/assets/images/<?php echo htmlspecialchars($list['photo']); ?>" alt="<?php echo htmlspecialchars($list['nom']); ?>">
                                         <?php else: ?>
                                             <span>Pas d'image</span>
                                         <?php endif; ?>

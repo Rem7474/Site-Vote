@@ -15,7 +15,7 @@ if (!$event) {
     exit();
 }
 // Détermination du logo de l'organisateur
-$logoPath = 'bgsharklo.jpg';
+$logoPath = 'assets/images/bgsharklo.jpg';
 if (isset($event['reforga'])) {
     foreach(['jpg','png','webp'] as $ext) {
         $customLogo = 'assets/images/logo_' . $event['reforga'] . '.' . $ext;
@@ -88,7 +88,7 @@ foreach ($listes as $liste) {
                     <div class="gagnant-block" style="text-align: center; margin: 20px 0;">
                         <p style="font-size: 1.5em; font-weight: bold; color: #f57f17; margin: 10px 0;"><?php echo htmlspecialchars($gagnant['nom']); ?></p>
                         <?php if (!empty($gagnant['photo']) && file_exists('assets/images/'.$gagnant['photo'])): ?>
-                            <img src="./images/<?php echo htmlspecialchars($gagnant['photo']); ?>" alt="Photo de la liste gagnante" style="max-width:200px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 15px 0;">
+                            <img src="assets/images/<?php echo htmlspecialchars($gagnant['photo']); ?>" alt="Photo de la liste gagnante" style="max-width:200px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 15px 0;">
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>

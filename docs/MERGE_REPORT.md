@@ -46,14 +46,13 @@ Après le merge de la branche `beta`, l'ensemble du site a été **entièrement 
 #### 1. `login.php`
 **Problème**: Conflit entre HEAD et beta (gestion session)
 ```php
-<<<<<<< HEAD
-=======
+```
 session_start();
 if (isset($_SESSION['id'])) {
     header('Location: dashboard.php');
     exit();
 }
->>>>>>> origin/beta
+```
 ```
 
 **Solution**: Intégré la logique de redirection automatique pour utilisateurs connectés

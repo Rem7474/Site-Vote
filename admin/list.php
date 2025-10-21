@@ -14,6 +14,12 @@ if (!$liste) {
 }
 // Modification de la liste
 if (isset($_POST['nom']) && isset($_POST['description'])) {
+    // Vérification CSRF
+    if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
+        logSecurityEvent('CSRF_ATTEMPT', 'Modifier liste', 'WARNING');
+        header('Location: dashboard.php');
+        exit();
+    }
     $nom = $_POST['nom'];
     $description = $_POST['description'];
     // Gestion de la photo si upload
@@ -72,10 +78,11 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
 </head>
 <body>
 <?php include 'inc_header.php'; ?>
-<?php include 'inc_admin_menu.php'; ?>
+<?php include '../src/includes/inc_admin_menu.php'; ?>
 <div class="container">
     <h1>Modifier la liste : <?php echo htmlspecialchars($liste['nom']); ?></h1>
     <form method="post" enctype="multipart/form-data">
+        <?php echo csrfField(); ?>
         <label for="nom">Nom de la liste</label>
         <input type="text" name="nom" value="<?php echo htmlspecialchars($liste['nom']); ?>" required>
         <label for="description">Description</label>

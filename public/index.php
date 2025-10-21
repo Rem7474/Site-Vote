@@ -5,7 +5,7 @@ if(isset($_POST['login']) && !empty($_POST['login']) && isset($_POST['event']) &
     // Vérification CSRF
     if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
         logSecurityEvent('CSRF_ATTEMPT', 'Registration', 'WARNING');
-        header('Location: erreur.html');
+    header('Location: erreur.html');
         exit();
     }
     
@@ -18,7 +18,7 @@ else if(isset($_POST['vote']) && isset($_POST['hash'])){
     // Vérification CSRF
     if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
         logSecurityEvent('CSRF_ATTEMPT', 'Vote', 'WARNING');
-        header('Location: erreur.html');
+    header('Location: erreur.html');
         exit();
     }
     
@@ -38,7 +38,7 @@ else if(isset($_GET['hash'])){
     }
     else{
         //affichage d'une page html d'erreur
-        header('Location: erreur.html');
+    header('Location: erreur.html');
         exit();
     }
 }

@@ -13,13 +13,13 @@ if(isset($_GET['hash'])){
     }
     else{
         //hash non trouvé dans la base de données
-        header('Location: formulaire.html');
+    header('Location: erreur.html');
         exit();
     }
 }
 else{
     //forumlaire d'inscription header
-    header('Location: formulaire.html');
+    header('Location: erreur.html');
     exit();
 }
 //récupération des candidats dans la base de données
@@ -39,7 +39,7 @@ $candidats = getListes($IDevent, $conn);
 <body>
     <div class="container card">
         <div class="header">
-            <img src="bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
         </div>
         <h1>🗳️ Votez maintenant</h1>
         <h2><?php echo htmlspecialchars($nomEvent); ?></h2>
@@ -53,8 +53,8 @@ $candidats = getListes($IDevent, $conn);
                 echo '<div class="candidate">';
                 echo '<input id="candidat'.htmlspecialchars($candidat['id']).'" type="radio" name="vote" value="'.htmlspecialchars($candidat['id']).'" required>';
                 echo '<label for="candidat'.htmlspecialchars($candidat['id']).'"><strong>'.htmlspecialchars($candidat['nom']).'</strong></label>';
-                if (!empty($candidat['photo']) && file_exists('assets/images/'.$candidat['photo'])) {
-                    echo '<img src="./images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe '.htmlspecialchars($candidat['nom']).'">';
+                if (!empty($candidat['photo']) && file_exists('assets/images/'. $candidat['photo'])) {
+                    echo '<img src="assets/images/'.htmlspecialchars($candidat['photo']).'" alt="Photo de l\'équipe '.htmlspecialchars($candidat['nom']).'">';
                 }
                 echo '</div>';
             }

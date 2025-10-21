@@ -18,7 +18,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
     // Rate limiting - max 5 tentatives de connexion toutes les 15 minutes
     if (!checkRateLimit('login', 5, 900)) {
         logSecurityEvent('RATE_LIMIT_EXCEEDED', 'Login attempts', 'WARNING');
-        header('Location: erreur.html');
+    header('Location: ../public/erreur.html');
         exit();
     }
     
@@ -64,13 +64,13 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
     <meta charset="utf-8">
     <title>🔐 Connexion Organisateur - Vote en ligne</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
     <?php printFaviconTag(); addDarkModeScript(); ?>
 </head>
 <body>
     <div class="container card">
         <div class="header">
-            <img src="bgsharklo.jpg" alt="Logo du site">
+            <img src="../public/assets/images/bgsharklo.jpg" alt="Logo du site">
         </div>
         <h1>🔐 Connexion Organisateur</h1>
         <p>Accédez à votre tableau de bord pour gérer vos événements de vote et consulter les résultats en temps réel.</p>
@@ -86,7 +86,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
     <div class="footer">
         <p>Pas encore de compte ?</p>
         <p><a href="register.php" class="btn">📝 S'inscrire en tant qu'organisateur</a></p>
-        <p style="margin-top: 20px;"><a href="checkVote.php">🔍 Vérifier un vote</a></p>
+    <p style="margin-top: 20px;"><a href="../public/checkVote.php">🔍 Vérifier un vote</a></p>
     </div>
 </body>
 </html>

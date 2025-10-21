@@ -5,7 +5,7 @@
 
 set -e
 REPO_URL="https://github.com/Rem7474/Site-Vote.git"
-BRANCH="beta"
+BRANCH="main"
 INSTALL_MODE=""
 
 # 0. Détection install ou update
@@ -33,6 +33,7 @@ if [ "$INSTALL_MODE" = "1" ]; then
   mkdir -p private
   PARAM_FILE="private/parametres.ini"
   echo "Configuration initiale du fichier $PARAM_FILE :"
+  read -p "Nom de domaine du site (ex: vote.example.com) : " domain
   read -p "Hôte de la base de données (lehost) : " lehost
   read -p "Nom de la base (dbname) : " dbname
   read -p "Port PostgreSQL (leport) [5432] : " leport
@@ -46,7 +47,10 @@ if [ "$INSTALL_MODE" = "1" ]; then
   read -p "SMTP Port : " smtp_port
   read -p "SMTP Username : " smtp_user
   read -s -p "SMTP Password : " smtp_pass; echo
+  read -p "Email de support (optionnel, ex: support@$domain) : " support_email
+  support_email=${support_email:-support@$domain}
   cat > $PARAM_FILE <<EOF
+domain = "$domain"
 lehost = "$lehost"
 dbname = "$dbname"
 leport = "$leport"
@@ -57,6 +61,7 @@ smtp_host = "$smtp_host"
 smtp_port = "$smtp_port"
 smtp_user = "$smtp_user"
 smtp_pass = "$smtp_pass"
+support_email = "$support_email"
 EOF
   echo "Fichier $PARAM_FILE généré."
 fi

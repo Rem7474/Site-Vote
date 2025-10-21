@@ -1,31 +1,34 @@
 <?php
 // Inclusion à placer en haut de chaque page principale
 if (session_status() === PHP_SESSION_NONE) session_start();
-include_once 'fonctionsPHP.php';
+include_once __DIR__ . '/fonctionsPHP.php';
+
 // Détermination du logo à afficher
-$logoPath = 'bgsharklo.jpg';
 $orgaId = null;
 if (isset($_SESSION['id'])) {
     $orgaId = $_SESSION['id'];
 } elseif (isset($event) && isset($event['reforga'])) {
     $orgaId = $event['reforga'];
 }
+
+$logoHref = assetPath('assets/images/logo-default.jpg');
 if ($orgaId) {
     foreach(['jpg','png','webp'] as $ext) {
-        $customLogo = './images/logo_' . $orgaId . '.' . $ext;
-        if (file_exists($customLogo)) {
-            $logoPath = $customLogo;
+        $fs = __DIR__ . '/../../public/assets/images/logo_' . $orgaId . '.' . $ext;
+        if (file_exists($fs)) {
+            $logoHref = assetPath('assets/images/logo_' . $orgaId . '.' . $ext);
             break;
         }
     }
 }
+
 // Affichage du bouton retour uniquement si on n'est PAS sur le dashboard
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 ?>
 <?php printFaviconTag(); addDarkModeScript(); ?>
 <div class="header" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
-    <img src="<?php echo $logoPath; ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
+    <img src="<?php echo htmlspecialchars($logoHref, ENT_QUOTES, 'UTF-8'); ?>" alt="Logo du site" style="max-width:110px;min-width:70px;width:18vw;min-height:70px;max-height:110px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.07);background:#f2f6ff;">
     <?php if (isset($_SESSION['prenom']) && isset($_SESSION['nom'])): ?>
         <span style="font-size:1.25em;font-weight:600;color:#2d3a4b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw;">Bienvenue, <?php echo htmlspecialchars($_SESSION['prenom'].' '.$_SESSION['nom']); ?></span>
     <?php endif; ?>

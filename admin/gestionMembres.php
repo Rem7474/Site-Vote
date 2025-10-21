@@ -1,7 +1,7 @@
 <?php
 // Page de gestion des membres d'une liste
 session_start();
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 // Vérification de la connexion organisateur
 if (!isset($_SESSION['id'])) {
     header('Location: login.php');
@@ -9,14 +9,17 @@ if (!isset($_SESSION['id'])) {
 }
 $idOrga = $_SESSION['id'];
 // Gestion du logo personnalisé
-$logoPath = 'bgsharklo.jpg';
-$customLogo = './images/logo_' . $idOrga . '.jpg';
-if (file_exists($customLogo)) {
-    $logoPath = $customLogo;
+$logoPath = '../public/assets/images/bgsharklo.jpg';
+foreach (['jpg','png','jpeg','webp'] as $ext) {
+    $customLogo = __DIR__ . '/../public/assets/images/logo_' . $idOrga . '.' . $ext;
+    if (file_exists($customLogo)) {
+        $logoPath = '../public/assets/images/logo_' . $idOrga . '.' . $ext;
+        break;
+    }
 }
 
 if (!isset($_GET['id'])) {
-    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : aucune liste sélectionnée.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
+    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css"></head><body><div class="container"><div class="header"><img src="' . htmlspecialchars($logoPath, ENT_QUOTES, 'UTF-8') . '" alt="Logo du site"></div><p class="erreur">Erreur : aucune liste sélectionnée.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
     exit();
 }
 $idListe = $_GET['id'];
@@ -32,7 +35,7 @@ foreach ($listes as $l) {
     }
 }
 if (!$liste) {
-    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="styles.css"></head><body><div class="container"><div class="header"><img src="' . $logoPath . '" alt="Logo du site"></div><p class="erreur">Erreur : liste introuvable.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
+    echo '<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>Erreur</title><link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css"></head><body><div class="container"><div class="header"><img src="' . htmlspecialchars($logoPath, ENT_QUOTES, 'UTF-8') . '" alt="Logo du site"></div><p class="erreur">Erreur : liste introuvable.</p><a href="dashboard.php">Retour au dashboard</a></div></body></html>';
     exit();
 }
 // Ajout d'un membre
@@ -56,7 +59,7 @@ $membres = getMembres($idListe, $conn);
 <head>
     <meta charset="utf-8">
     <title>Gestion des membres</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -92,7 +95,7 @@ $membres = getMembres($idListe, $conn);
             <p>Aucun membre pour cette liste.</p>
         <?php endif; ?>
     </div>
-    <?php include 'inc_header.php'; ?>
-    <?php include 'inc_admin_menu.php'; ?>
+    <?php include '../src/includes/inc_header.php'; ?>
+    <?php include '../src/includes/inc_admin_menu.php'; ?>
 </body>
 </html>

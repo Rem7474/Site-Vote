@@ -1,22 +1,24 @@
-<<<<<<< HEAD
 # Configuration sensible
+private/
 private/parametres.ini
 
 # Logs
 logs/
 *.log
 
-# Images uploadées
+# Uploads
 images/
+public/assets/images/
 !images/.gitkeep
 
 # Vendor (Composer)
 vendor/
+/vendor/
 
 # Sessions PHP
 sessions/
 
-# Fichiers temporaires
+# Temp files
 *.tmp
 *.temp
 *.bak
@@ -35,19 +37,7 @@ desktop.ini
 .phpintel/
 .phpunit.result.cache
 
-# Backups de base de données
+# DB backups
 *.sql
 *.dump
 backup/
-=======
-# Ne jamais versionner le dossier de configuration privée
-private/
-# Dépendances PHP
-/vendor/
-# Fichiers temporaires
-*.log
-*.tmp
-# Fichiers système
-.DS_Store
-Thumbs.db
->>>>>>> origin/beta

@@ -5,12 +5,17 @@
     <title>Contact & FAQ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
-    <?php printFaviconTag(); addDarkModeScript(); ?>
+    <?php 
+    require_once __DIR__ . '/../src/includes/fonctionsPHP.php';
+    printFaviconTag(); 
+    addDarkModeScript();
+    $supportEmail = isset($param['support_email']) ? $param['support_email'] : 'support@' . $DOMAIN;
+    ?>
 </head>
 <body>
     <div class="container card">
         <div class="header">
-            <img src="bgsharklo.jpg" alt="Logo du site">
+            <img src="../public/assets/images/bgsharklo.jpg" alt="Logo du site">
         </div>
         <h1>Contact & FAQ</h1>
         <h2>Questions fréquentes</h2>
@@ -21,7 +26,7 @@
             <li><strong>Comment devenir organisateur ?</strong> <br>Inscrivez-vous via la page dédiée aux organisateurs.</li>
         </ul>
         <h2>Contact</h2>
-        <p>Pour toute question ou problème technique, contactez-nous à : <a href="mailto:support@vote.remcorp.fr" class="btn">support@vote.remcorp.fr</a></p>
+        <p>Pour toute question ou problème technique, contactez-nous à : <a href="mailto:<?php echo htmlspecialchars($supportEmail); ?>" class="btn"><?php echo htmlspecialchars($supportEmail); ?></a></p>
     </div>
 </body>
 </html>

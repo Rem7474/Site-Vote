@@ -7,11 +7,28 @@ A PHP-based voting system for university events (e.g., BDE elections) with secur
 
 ## Architecture
 
+### File Organization
+- **`admin/`** - Administration interface (organizers)
+  - `dashboard.php`, `event.php`, `login.php`, `register.php`, etc.
+- **`public/`** - Public interface (voters)
+  - `index.php` (registration), `vote.php`, `checkVote.php`, etc.
+- **`src/includes/`** - Core PHP logic
+  - `fonctionsPHP.php` - Business logic
+  - `fonctionsBDD.php` - Database access
+  - `fonctionsSecurite.php` - Security functions
+  - `inc_header.php`, `inc_admin_menu.php` - UI components
+- **`src/config/`** - Configuration
+  - `database.php` - Database connection
+- **Root files**
+  - `index.php` - Entry point (redirects to `public/index.php`)
+  - `fonctionsPHP.php` - Compatibility shim (requires `src/includes/fonctionsPHP.php`)
+  - `inc_footer.php` - Footer with version number
+
 ### Three-Layer Structure
-1. **Entry Point Router** (`index.php`) - handles all URL routing via GET/POST parameters
-2. **Business Logic** (`fonctionsPHP.php`) - coordinates workflows and email sending
-3. **Data Access** (`fonctionsBDD.php`) - all PostgreSQL queries using PDO prepared statements
-4. **Security Layer** (`fonctionsSecurite.php`) - CSRF, rate limiting, validation, logging
+1. **Entry Point Router** (`public/index.php`) - handles all URL routing via GET/POST parameters
+2. **Business Logic** (`src/includes/fonctionsPHP.php`) - coordinates workflows and email sending
+3. **Data Access** (`src/includes/fonctionsBDD.php`) - all PostgreSQL queries using PDO prepared statements
+4. **Security Layer** (`src/includes/fonctionsSecurite.php`) - CSRF, rate limiting, validation, logging
 
 ### Database Schema (PostgreSQL)
 ```
@@ -25,7 +42,7 @@ membres: id, Nom, Prenom, Fonction, RefListe
 ```
 
 ### Critical Security Flow
-1. User registers at `index.php?id={eventId}` with university login (format: `prenom.nom`)
+1. User registers at `public/index.php?id={eventId}` with university login (format: `prenom.nom`)
 2. System generates SHA-256 hash with timestamp salt → stored in `participants` table
 3. Email sent with voting link containing hash
 4. After vote submitted, participant hash deleted (one-time use)
@@ -33,23 +50,34 @@ membres: id, Nom, Prenom, Fonction, RefListe
 
 ## Development Conventions
 
+### Include Pattern
+```php
+// For admin pages (admin/*.php)
+require_once __DIR__ . '/../src/includes/fonctionsPHP.php';
+
+// For public pages (public/*.php)
+require_once __DIR__ . '/../src/includes/fonctionsPHP.php';
+
+// For legacy root files (compatibility shim)
+include 'fonctionsPHP.php';  // This requires src/includes/fonctionsPHP.php
+```
+
 ### Database Connection Pattern
 ```php
-include 'FonctionsConnexion.php';
-include 'fonctionsBDD.php';
-$conn = connexionBDD('./private/parametres.ini');
+// Connection is established in src/includes/fonctionsPHP.php
+// $conn is available globally after including fonctionsPHP.php
 ```
 - `$conn` is a **global variable** used throughout the codebase
 - All DB functions expect `$conn` as last parameter
 - Connection details in `private/parametres.ini` (PostgreSQL, port 5432)
 
 ### Function Naming & Organization
-- Database functions in `fonctionsBDD.php`: `addX()`, `getX()`, `deleteX()` pattern
+- Database functions in `src/includes/fonctionsBDD.php`: `addX()`, `getX()`, `deleteX()` pattern
 - All DB functions use `returning id` for inserts
 - Functions returning multiple rows MUST use `fetchAll()` not `fetch()`
-- Business logic in `fonctionsPHP.php`: `InscriptionVote()`, `EnregistrerVote()`, `SendMail()`
+- Business logic in `src/includes/fonctionsPHP.php`: `InscriptionVote()`, `EnregistrerVote()`, `SendMail()`
 
-### Routing Pattern in index.php
+### Routing Pattern in public/index.php
 Routes based on POST/GET parameters in priority order:
 1. `POST[login] + POST[event]` → registration workflow
 2. `POST[vote] + POST[hash]` → vote submission
@@ -61,7 +89,7 @@ Routes based on POST/GET parameters in priority order:
 session_start();
 $_SESSION['id'], $_SESSION['email'], $_SESSION['nom'], $_SESSION['prenom']
 ```
-Used in `dashboard.php`, `event.php` - organizer authentication with `password_verify()`
+Used in admin pages - organizer authentication with `password_verify()`
 
 ### Security Best Practices
 - **ALWAYS use `htmlspecialchars()` when echoing user data** to prevent XSS
@@ -76,9 +104,12 @@ Used in `dashboard.php`, `event.php` - organizer authentication with `password_v
 - Always use `exit()` after `header()` redirects
 
 ### Email System (PHPMailer)
-- SMTP credentials in `private/parametres.ini` (variables: `$smtp_host`, `$smtp_username`, `$smtp_password`)
+- SMTP credentials in `private/parametres.ini` (variables: `smtp_host`, `smtp_user`, `smtp_pass`)
+- Domain configured in `parametres.ini` (variable: `domain`) - used in email links and assets
+- Support email configurable in `parametres.ini` (variable: `support_email`)
 - HTML email templates inline in `SendMail()` function
-- Voting links format: `https://vote.remcorp.fr/index.php?hash={hash}`
+- Voting links format: `https://{$DOMAIN}/index.php?hash={hash}` (domain from config)
+- **NEVER hardcode domain URLs** - always use `$DOMAIN` global variable
 
 ## Common Tasks
 
@@ -131,7 +162,7 @@ logSecurityEvent('EMAIL_FAILED', "Email: $email", 'ERROR');
 ```
 
 ### Adding a New Database Table
-1. Add CRUD functions to `fonctionsBDD.php` following table comment pattern:
+1. Add CRUD functions to `src/includes/fonctionsBDD.php` following table comment pattern:
    ```php
    // ********** TABLE TABLENAME : id, field1, field2 **********
    ```
@@ -148,7 +179,7 @@ logSecurityEvent('EMAIL_FAILED', "Email: $email", 'ERROR');
 - Use `htmlspecialchars()` for all user-generated content
 
 ### Debug Mode
-Set `$debug = true` in `private/parametres.ini` to enable PHP error display via `ini_set()` in `FonctionsConnexion.php`
+Set `$debug = true` in `private/parametres.ini` to enable PHP error display via `ini_set()` in `src/config/database.php`
 
 ### Hash Validation Pattern
 ```php
@@ -158,14 +189,14 @@ if ($eventId) { /* valid */ } else { header('Location: erreur.html'); exit(); }
 ```
 
 ## File Upload Handling
-See `event.php` for pattern:
+See `admin/event.php` for pattern:
 - Extensions whitelist: `jpg, jpeg, png, gif, bmp, webp`
 - File naming: `{listName}{eventId}.{extension}`
 - Storage: `./images/` directory
 - Always validate extension before `move_uploaded_file()`
 
 ## Dashboard Features
-The dashboard (`dashboard.php`) provides:
+The dashboard (`admin/dashboard.php`) provides:
 - Global statistics (total events, votes, pending participants, lists)
 - Event cards with preview images and vote counts
 - Direct copy-to-clipboard for share links
@@ -175,7 +206,7 @@ The dashboard (`dashboard.php`) provides:
 ## Integration Points
 - **PHPMailer**: Composer dependency (`vendor/autoload.php`)
 - **PostgreSQL**: PDO with prepared statements exclusively
-- **External domain**: Hardcoded `vote.remcorp.fr` in email templates and links
+- **Domain configuration**: Set via `domain` parameter in `parametres.ini` (available as `$DOMAIN` global variable)
 
 ## Key Constraints
 - University login format enforced: `/^[a-z]+\.[a-z]+$/` (prenom.nom)
@@ -190,12 +221,12 @@ The dashboard (`dashboard.php`) provides:
 
 ### File Structure
 ```
-fonctionsSecurite.php    - Security functions (CSRF, rate limit, validation, logging)
-security_headers.php     - HTTP security headers
-SECURITY.md             - Complete security documentation
-database_schema.sql     - PostgreSQL schema with security comments
-logs/                   - Security event logs (not in git)
-private/parametres.ini  - Configuration (not in git)
+src/includes/fonctionsSecurite.php  - Security functions (CSRF, rate limit, validation, logging)
+src/includes/security_headers.php   - HTTP security headers
+docs/SECURITY.md                    - Complete security documentation
+database_schema.sql                 - PostgreSQL schema with security comments
+logs/                               - Security event logs (not in git)
+private/parametres.ini              - Configuration (not in git)
 ```
 
 ### Rate Limits
@@ -224,7 +255,10 @@ All forms include CSRF protection and are logged:
 4. ✅ Fixed `getEquipeVote()` - removed hardcoded team names, now returns actual team name
 5. ✅ Added XSS protection with `htmlspecialchars()` across all output
 6. ✅ Removed debug mode from production files
-7. ✅ Fixed share link in dashboard (was pointing to non-existent `vote.php`)
+7. ✅ Reorganized file structure with `admin/` and `public/` folders
+8. ✅ Centralized includes in `src/includes/` and `src/config/`
+9. ✅ Removed redundant root redirect files (`dashboard.php`, `event.php`, `vote.php`)
+10. ✅ Added footer with version number (`inc_footer.php`)
 
 ## Security Improvements (Oct 2025)
 1. ✅ Added CSRF protection on all forms
@@ -232,6 +266,11 @@ All forms include CSRF protection and are logged:
 3. ✅ Added comprehensive security logging (`./logs/`)
 4. ✅ Enhanced file upload validation (MIME type checking)
 5. ✅ Improved hash generation with `random_bytes()`
+6. ✅ Added input sanitization functions
+7. ✅ Created security headers configuration
+8. ✅ Added `.gitignore` for sensitive files
+9. ✅ Created `SECURITY.md` documentation
+10. ✅ Added database schema with security comments
 6. ✅ Added input sanitization functions
 7. ✅ Created security headers configuration
 8. ✅ Added `.gitignore` for sensitive files

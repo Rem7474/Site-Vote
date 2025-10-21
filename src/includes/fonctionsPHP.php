@@ -8,6 +8,7 @@ include __DIR__ . '/fonctionsSecurite.php';
 $param = parse_ini_file(__DIR__ . '/../../private/parametres.ini');
 $conn = ConnexionBDD(__DIR__ . '/../../private/parametres.ini');
 $DEBUG = isset($param['debug']) && ($param['debug'] === true || $param['debug'] === 'true');
+$DOMAIN = isset($param['domain']) ? $param['domain'] : 'vote.remcorp.fr'; // Domaine par défaut si non défini
 
 if ($DEBUG) {
     ini_set('display_errors', 1);
@@ -24,24 +25,36 @@ if (!file_exists($autoloadPath)) {
     exit();
 }
 require $autoloadPath;
->>>>>>> origin/beta
+// Librairies email
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+
+// Helpers de chemin selon le contexte (public/admin)
+function isAdminContext(): bool {
+    $script = $_SERVER['SCRIPT_NAME'] ?? '';
+    return strpos($script, '/admin/') !== false || strpos($script, '\\admin\\') !== false;
+}
+
+function assetPath(string $relative): string {
+    // Retourne le chemin href correct selon contexte
+    return isAdminContext() ? ('../public/' . ltrim($relative, '/')) : $relative;
+}
+
 function InscriptionVote($login, $IDevent){
     global $conn;
     
     // Rate limiting - max 5 inscriptions par IP toutes les 5 minutes
     if (!checkRateLimit('inscription', 5, 300)) {
         logSecurityEvent('RATE_LIMIT_EXCEEDED', "Inscription - Event: $IDevent", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     
     //vérification de l'existence de l'événement dans la base de données
     if(!getEvent($IDevent, $conn)){
         logSecurityEvent('INVALID_EVENT', "Event ID: $IDevent", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     
@@ -51,7 +64,7 @@ function InscriptionVote($login, $IDevent){
     //vérification du login : prénom.nom
     if (!validateUniversityLogin($login)){
         logSecurityEvent('INVALID_LOGIN_FORMAT', "Login: $login - Event: $IDevent", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     
@@ -68,17 +81,18 @@ function InscriptionVote($login, $IDevent){
     $user=getUser($login, $IDevent, $conn);
     if($user){
         logSecurityEvent('DUPLICATE_REGISTRATION', "Login: $login - Event: $IDevent", 'INFO');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     else{
         //récupération du nom de l'événement
         $nomEvent = getNomEvent($IDevent, $conn);
-        $mailSent = SendMail($email, "[Vote ".$nomEvent."] Confirmation d'inscription", "https://vote.remcorp.fr/index.php?hash=".$hash, $nomEvent);
+        global $DOMAIN;
+        $mailSent = SendMail($email, "[Vote ".$nomEvent."] Confirmation d'inscription", "https://" . $DOMAIN . "/index.php?hash=".$hash, $nomEvent);
         
         if (!$mailSent) {
             logSecurityEvent('EMAIL_FAILED', "Email: $email - Event: $IDevent", 'ERROR');
-            header('Location: erreur.html');
+            header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
             exit();
         }
         
@@ -89,12 +103,12 @@ function InscriptionVote($login, $IDevent){
         //redirection vers une page de confirmation si l'ajout a réussi
         if($ajout){
             logSecurityEvent('REGISTRATION_SUCCESS', "Login: $login - Event: $IDevent", 'INFO');
-            header('Location: confirmationInscription.php?mail='.$email);
+            header('Location: ' . (isAdminContext() ? '../public/confirmationInscription.php' : 'confirmationInscription.php') . '?mail='.$email);
             exit();
         }
         else{
             logSecurityEvent('REGISTRATION_FAILED', "Login: $login - Event: $IDevent", 'ERROR');
-            header('Location: erreur.html');
+            header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
             exit();
         }
     }
@@ -106,7 +120,7 @@ function EnregistrerVote($vote, $hash){
     // Rate limiting - max 3 votes par IP toutes les 10 minutes
     if (!checkRateLimit('vote', 3, 600)) {
         logSecurityEvent('RATE_LIMIT_EXCEEDED', "Vote attempt with hash", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     
@@ -119,7 +133,7 @@ function EnregistrerVote($vote, $hash){
     $event=getHash($hash, $conn);
     if (!isset($event) || $event === false){
         logSecurityEvent('INVALID_HASH', "Hash not found", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
     
@@ -142,24 +156,24 @@ function EnregistrerVote($vote, $hash){
             $result2=deleteHash($hash, $conn);
             if(!$result2){
                 logSecurityEvent('HASH_DELETE_FAILED', "Event: $event", 'ERROR');
-                header('Location: erreur.html');
+                header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
                 exit();
             }
             else{
                 logSecurityEvent('VOTE_SUCCESS', "Event: $event - Liste: $vote", 'INFO');
-                header('Location: confirmationVote.php?hash='.$participation);
+                header('Location: ' . (isAdminContext() ? '../public/confirmationVote.php' : 'confirmationVote.php') . '?hash='.$participation);
                 exit();
             }
         }
         else{
             logSecurityEvent('VOTE_FAILED', "Event: $event - Liste: $vote", 'ERROR');
-            header('Location: erreur.html');
+            header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
             exit();
         }
     }
     else{
         logSecurityEvent('INVALID_VOTE', "Invalid list ID: $vote for event: $event", 'WARNING');
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
         exit();
     }
 }
@@ -169,23 +183,26 @@ function resultats($equipe){
     return $result;
 }
 function SendMail($to, $subject, $lien, $event){
-    $param = parse_ini_file('./private/parametres.ini');
+    $param = parse_ini_file(__DIR__ . '/../../private/parametres.ini');
     $smtp_host = $param['smtp_host'] ?? '';
     $smtp_port = $param['smtp_port'] ?? 587;
     $smtp_user = $param['smtp_user'] ?? '';
     $smtp_pass = $param['smtp_pass'] ?? '';
+    $eventEscaped = htmlspecialchars($event, ENT_QUOTES, 'UTF-8');
+    $lienEscaped = htmlspecialchars($lien, ENT_QUOTES, 'UTF-8');
+    global $DOMAIN;
     $message = "<!DOCTYPE html>
     <html lang='fr'>
     <head>
         <meta charset='utf-8'>
         <title>Inscription pour les votes</title>
         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <link rel='stylesheet' type='text/css' href='https://vote.remcorp.fr/styles.css'>
+    <link rel='stylesheet' type='text/css' href='https://" . $DOMAIN . "/public/assets/css/styles.css'>
     </head>
     <body>
         <div class='container'>
             <div class='header'>
-                <img src='https://vote.remcorp.fr/bgsharklo.jpg' alt='Logo du site'>
+                <img src='https://" . $DOMAIN . "/public/assets/images/bgsharklo.jpg' alt='Logo du site'>
             </div>
             <h1>Inscription pour les votes de : ".$eventEscaped."</h1>
             <p class='reussite'>Cliquez sur ce lien pour effectuer votre vote : <a href='".$lienEscaped."'>Accéder au vote</a></p>
@@ -224,7 +241,8 @@ function SendMail($to, $subject, $lien, $event){
         if ($DEBUG) {
             echo '<b>Erreur d\'envoi de mail :</b> ' . $e->getMessage();
         }
-        header('Location: erreur.html');
+        header('Location: ' . (isAdminContext() ? '../public/erreur.html' : 'erreur.html'));
+        exit();
     }   
 }
 function deleteaccent($string){
@@ -270,23 +288,24 @@ function doubleConfirm($message = 'Êtes-vous sûr de vouloir effectuer cette ac
     </script>";
 }
 function printFaviconTag() {
-    $idOrga = null;
-    if (isset($_SESSION['id'])) {
-        $idOrga = $_SESSION['id'];
-    } elseif (isset($event) && isset($event['reforga'])) {
-        $idOrga = $event['reforga'];
-    }
-    if ($idOrga) {
-        foreach(['ico','png'] as $ext) {
-            $customFavicon = './images/favicon_' . $idOrga . '.' . $ext;
-            if (file_exists($customFavicon)) {
-                echo '<link rel="icon" type="image/'.$ext.'" href="'.$customFavicon.'">';
+    // Résout le favicon utilisateur si présent; fallback sur favicon par défaut
+    $organizerId = $_SESSION['id'] ?? null;
+    $fsBase = __DIR__ . '/../../public/assets/images';
+    $hrefBase = assetPath('assets/images');
+
+    if ($organizerId) {
+        foreach (['ico','png'] as $ext) {
+            $fsPath = $fsBase . '/favicon_' . $organizerId . '.' . $ext;
+            if (file_exists($fsPath)) {
+                $href = $hrefBase . '/favicon_' . $organizerId . '.' . $ext;
+                $type = $ext === 'ico' ? 'image/x-icon' : 'image/png';
+                echo '<link rel="icon" type="'.$type.'" href="'.htmlspecialchars($href, ENT_QUOTES, 'UTF-8').'">';
                 return;
             }
         }
     }
     // Fallback
-    echo '<link rel="icon" type="image/png" href="favicon.png">';
+    echo '<link rel="icon" type="image/png" href="'.htmlspecialchars(assetPath('assets/favicon.png'), ENT_QUOTES, 'UTF-8').'">';
 }
 // Ajout d'une fonction pour récupérer une liste par son id
 function getListeById($id, $conn) {

@@ -1,7 +1,7 @@
 <?php
 // Gestion des utilisateurs (votants) pour un événement
 session_start();
-include 'fonctionsPHP.php';
+include '../src/includes/fonctionsPHP.php';
 if (!isset($_SESSION['id']) || !isset($_GET['id'])) {
     header('Location: dashboard.php');
     exit();
@@ -26,11 +26,11 @@ $users = getUsers($eventId, $conn);
 <head>
     <meta charset="utf-8">
     <title>Gestion des utilisateurs</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../public/assets/css/styles.css">
 </head>
 <body>
-<?php include 'inc_header.php'; ?>
-<?php include 'inc_admin_menu.php'; ?>
+<?php include '../src/includes/inc_header.php'; ?>
+<?php include '../src/includes/inc_admin_menu.php'; ?>
 <div class="container">
     <h1>Utilisateurs inscrits à l'événement : <?php echo htmlspecialchars($event['nom']); ?></h1>
     <?php if ($users && count($users) > 0): ?>
