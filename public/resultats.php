@@ -1,5 +1,6 @@
 <?php
 // Page de résultats dynamique pour un événement
+session_start();
 include '../src/includes/fonctionsPHP.php';
 
 // Vérification de l'id de l'événement
