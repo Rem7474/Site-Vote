@@ -32,8 +32,8 @@ if (!isset($infosEvent) || empty($infosEvent)) {
         </form>
     </div>
     <div class="footer">
-        <p><a href="checkVote.php" class="btn">Vérifier un vote effectué</a></p>
-        <p><a href="login.php" class="btn">Connexion administrateur</a></p>
+        <p><a href="checkVote.php" class="btn">🔍 Vérifier un vote effectué</a></p>
+        <p><a href="../admin/login.php" class="btn">🔐 Connexion administrateur</a></p>
     </div>
 </body>
 </html>

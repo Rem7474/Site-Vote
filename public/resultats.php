@@ -97,7 +97,7 @@ foreach ($listes as $liste) {
     </div>
     <div class="footer" style="text-align:center;margin:30px 0 0 0;">
         <button class="btn" onclick="navigator.clipboard.writeText(window.location.href); this.innerHTML='✅ Lien copié!'; setTimeout(() => this.innerHTML='📋 Copier le lien de cette page', 2000);" style="padding:12px 30px;font-size:1.1em;">📋 Copier le lien de cette page</button>
-        <p style="margin-top: 15px;"><a href="login.php">🔐 Connexion organisateur</a></p>
+        <p style="margin-top: 15px;"><a href="../admin/login.php" class="btn">🔐 Connexion organisateur</a></p>
     </div>
 </body>
 </html>

@@ -48,7 +48,8 @@
         </div>
     </div>
     <div class="footer">
-        <p><a href="login.php" class="btn">Connexion organisateur</a></p>
+        <p><a href="../admin/login.php" class="btn">🔐 Connexion organisateur</a></p>
+        <p><a href="../admin/register.php" class="btn">📝 S'inscrire en tant qu'organisateur</a></p>
     </div>
 </body>
 </html>

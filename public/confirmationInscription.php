@@ -22,8 +22,8 @@
             Vous recevrez un mail sur l'adresse <strong><?php echo htmlspecialchars($_GET["mail"] ?? ''); ?></strong> pour pouvoir effectuer votre vote.
         </p>
         <div class="footer">
-            <p><a href="checkVote.php" class="btn">Vérifier mon vote</a></p>
-            <p><a href="login.php" class="btn">Connexion organisateur</a></p>
+            <p><a href="checkVote.php" class="btn">🔍 Vérifier mon vote</a></p>
+            <p><a href="../admin/login.php" class="btn">🔐 Connexion organisateur</a></p>
         </div>
     </div>
 </body>
