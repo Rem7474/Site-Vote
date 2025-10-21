@@ -9,7 +9,7 @@ if (!isset($_SESSION['id'])) {
 }
 $idOrga = $_SESSION['id'];
 // Gestion du logo personnalisé
-$logoPath = '../public/assets/images/bgsharklo.jpg';
+$logoPath = '../public/assets/images/logo-default.jpg';
 foreach (['jpg','png','jpeg','webp'] as $ext) {
     $customLogo = __DIR__ . '/../public/assets/images/logo_' . $idOrga . '.' . $ext;
     if (file_exists($customLogo)) {

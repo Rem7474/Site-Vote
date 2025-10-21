@@ -15,7 +15,7 @@
     <div class="container card">
         <div class="header">
             <!-- Insérez votre logo ici -->
-            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>✅ Inscription confirmée</h1>
         <p class="reussite">Votre inscription a bien été prise en compte.<br>

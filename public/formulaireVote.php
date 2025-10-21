@@ -39,7 +39,7 @@ $candidats = getListes($IDevent, $conn);
 <body>
     <div class="container card">
         <div class="header">
-            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>🗳️ Votez maintenant</h1>
         <h2><?php echo htmlspecialchars($nomEvent); ?></h2>

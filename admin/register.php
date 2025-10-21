@@ -66,7 +66,7 @@ if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']) &&
 <body>
     <div class="container card">
         <div class="header">
-            <img src="../public/assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="../public/assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>📝 Créer un compte organisateur</h1>
         <p>Créez votre compte pour organiser des votes en ligne sécurisés pour vos événements universitaires.</p>

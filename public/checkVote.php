@@ -14,7 +14,7 @@
 <body>
     <div class="container card">
         <div class="header">
-            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>🔍 Vérifier mon vote</h1>
         <p>Entrez le hash de vérification que vous avez reçu par email après avoir voté pour confirmer votre choix :</p>

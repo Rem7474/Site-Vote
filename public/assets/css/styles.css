@@ -674,6 +674,11 @@ form input:focus, form select:focus {
     color: #e0e7ff !important;
 }
 
+/* Mode sombre - Graphique résultats */
+.dark-mode canvas {
+    filter: brightness(0.9);
+}
+
 /* Animations douces */
 .btn, .header img, .card, .container, .toast, .global-menu, .footer, .liste img, .candidate img, .table-responsive, table, th, td, .erreur, .reussite {
     transition: all 0.25s cubic-bezier(.4,0,.2,1);

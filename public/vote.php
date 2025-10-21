@@ -16,7 +16,7 @@ if (!isset($infosEvent) || empty($infosEvent)) {
 <body>
     <div class="container card">
         <div class="header">
-            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>📝 Inscription pour les votes</h1>
         <h2><?php echo htmlspecialchars($infosEvent["nom"]); ?></h2>

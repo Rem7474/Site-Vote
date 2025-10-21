@@ -70,7 +70,7 @@ if (isset($_POST['login']) && isset($_POST['password'])) {
 <body>
     <div class="container card">
         <div class="header">
-            <img src="../public/assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="../public/assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <h1>🔐 Connexion Organisateur</h1>
         <p>Accédez à votre tableau de bord pour gérer vos événements de vote et consulter les résultats en temps réel.</p>

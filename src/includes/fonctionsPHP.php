@@ -202,7 +202,7 @@ function SendMail($to, $subject, $lien, $event){
     <body>
         <div class='container'>
             <div class='header'>
-                <img src='https://" . $DOMAIN . "/public/assets/images/bgsharklo.jpg' alt='Logo du site'>
+                <img src='https://" . $DOMAIN . "/public/assets/images/logo-default.jpg' alt='Logo du site'>
             </div>
             <h1>Inscription pour les votes de : ".$eventEscaped."</h1>
             <p class='reussite'>Cliquez sur ce lien pour effectuer votre vote : <a href='".$lienEscaped."'>Accéder au vote</a></p>

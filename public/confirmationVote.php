@@ -29,7 +29,7 @@ $hash=$_GET["hash"];
 <body>
     <div class="container card">
         <div class="header">
-            <img src="assets/images/bgsharklo.jpg" alt="Logo du site">
+            <img src="assets/images/logo-default.jpg" alt="Logo du site">
         </div>
         <div class="card" style="background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border-left: 5px solid #28a745; margin-bottom: 20px;">
             <h1 style="color: #155724; margin: 0 0 10px 0;">🎉 Vote enregistré avec succès !</h1>

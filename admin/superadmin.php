@@ -43,7 +43,7 @@ if (!isset($_SESSION['superadmin'])) {
     <body>
         <div class="container card">
             <div class="header">
-                <img src="../public/assets/images/bgsharklo.jpg" alt="Logo" style="max-width: 100px;">
+                <img src="../public/assets/images/logo-default.jpg" alt="Logo" style="max-width: 100px;">
             </div>
             <h1>🔐 Super Admin</h1>
             <?php if (isset($error)): ?>
@@ -193,7 +193,7 @@ if (file_exists($logFile)) {
 <body>
 <div class="container card">
     <div class="header" style="text-align: center;">
-    <img src="../public/assets/images/bgsharklo.jpg" alt="Logo" style="max-width: 80px;">
+    <img src="../public/assets/images/logo-default.jpg" alt="Logo" style="max-width: 80px;">
         <h1 style="margin: 15px 0;">👑 Panneau Super Admin</h1>
         <p style="color: #666;">Gestion globale de la plateforme</p>
     </div>
