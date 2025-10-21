@@ -25,6 +25,10 @@ smtp_pass = "mot_de_passe_smtp"     ; Mot de passe SMTP
 ; Email de support (optionnel, défaut: support@{domain})
 support_email = "support@vote.example.com"
 
+; Configuration superadministrateur (accès complet à la plateforme)
+superadmin_user = "superadmin"
+superadmin_pass = "VotreMotDePasseSecurise2024!"
+
 ; NOTES DE SÉCURITÉ:
 ; 
 ; 1. Ce fichier contient des informations sensibles (mots de passe, identifiants)

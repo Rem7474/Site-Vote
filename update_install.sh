@@ -49,6 +49,10 @@ if [ "$INSTALL_MODE" = "1" ]; then
   read -s -p "SMTP Password : " smtp_pass; echo
   read -p "Email de support (optionnel, ex: support@$domain) : " support_email
   support_email=${support_email:-support@$domain}
+  echo -e "\nConfiguration superadministrateur (accès complet à la plateforme) :"
+  read -p "Nom d'utilisateur superadmin [superadmin] : " superadmin_user
+  superadmin_user=${superadmin_user:-superadmin}
+  read -s -p "Mot de passe superadmin : " superadmin_pass; echo
   cat > $PARAM_FILE <<EOF
 domain = "$domain"
 lehost = "$lehost"
@@ -62,6 +66,8 @@ smtp_port = "$smtp_port"
 smtp_user = "$smtp_user"
 smtp_pass = "$smtp_pass"
 support_email = "$support_email"
+superadmin_user = "$superadmin_user"
+superadmin_pass = "$superadmin_pass"
 EOF
   echo "Fichier $PARAM_FILE généré."
 fi

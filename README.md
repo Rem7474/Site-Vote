@@ -218,6 +218,10 @@ smtp_pass = "app-specific-password"
 
 # Email de support (optionnel)
 support_email = "support@vote.example.com"
+
+# Configuration superadministrateur (accès complet à la plateforme)
+superadmin_user = "superadmin"
+superadmin_pass = "VotreMotDePasseSecurise2024!"
 ```
 
 **Note**: Le domaine configuré dans `parametres.ini` est automatiquement utilisé dans :
