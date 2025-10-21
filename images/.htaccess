@@ -1,0 +1,7 @@
+# Autoriser l'accès aux fichiers images
+<FilesMatch "\.(jpg|jpeg|png|gif|bmp|webp)$">
+    Require all granted
+</FilesMatch>
+
+# Désactiver l'affichage du listing de répertoire (sécurité)
+Options -Indexes
