@@ -215,7 +215,7 @@ $tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalPartici
                     <input type="submit" value="Mettre à jour" class="btn" style="width:auto;">
                     <?php
                     $idOrga = $_SESSION['id'];
-                    $logoPath = '../public/assets/images/logo_default.png';
+                    $logoPath = '../public/assets/images/logo_default.jpg';
                     foreach(['jpg','png','webp'] as $ext) {
                         $customLogo = '../public/assets/images/logo_' . $idOrga . '.' . $ext;
                         if (file_exists($customLogo)) {
