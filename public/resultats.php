@@ -62,8 +62,8 @@ foreach ($listes as $liste) {
                 <?php foreach ($gagnants as $gagnant): ?>
                     <div class="gagnant-block" style="text-align: center; margin: 10px 0;">
                         <p style="font-size: 1.5em; font-weight: bold; color: #f57f17; margin: 10px 0;"><?php echo htmlspecialchars($gagnant['nom']); ?></p>
-                        <?php if (!empty($gagnant['photo']) && file_exists('assets/images/'.$gagnant['photo'])): ?>
-                            <img src="assets/images/<?php echo htmlspecialchars($gagnant['photo']); ?>" alt="Photo de la liste gagnante" style="max-width:150px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 10px 0;">
+                        <?php if (!empty($gagnant['photo'])): ?>
+                            <img src="../images/<?php echo htmlspecialchars($gagnant['photo']); ?>" alt="Photo de la liste gagnante" style="max-width:150px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin: 10px 0;">
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
