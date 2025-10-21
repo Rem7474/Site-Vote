@@ -111,7 +111,9 @@ foreach($events as $event) {
     $votesParJour[$date] += $nbVotes;
 }
 
-$tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalParticipants) * 100, 1) : 0;
+// Calcul du taux de participation : votes effectués / total d'inscrits
+$totalInscrits = $totalVotes + $totalParticipants;
+$tauxParticipation = $totalInscrits > 0 ? round(($totalVotes / $totalInscrits) * 100, 1) : 0;
 ?><!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -136,6 +138,10 @@ $tauxParticipation = $totalParticipants > 0 ? round(($totalVotes / $totalPartici
             <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(240,147,251,0.3);">
                 <div style="font-size:2em;font-weight:bold;"><?php echo $totalVotes; ?></div>
                 <div style="opacity:0.9;">Votes totaux</div>
+            </div>
+            <div style="background:linear-gradient(135deg,#ffa726 0%,#fb8c00 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(255,167,38,0.3);">
+                <div style="font-size:2em;font-weight:bold;"><?php echo $totalParticipants; ?></div>
+                <div style="opacity:0.9;">Votes en attente</div>
             </div>
             <div style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);color:white;padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(79,172,254,0.3);">
                 <div style="font-size:2em;font-weight:bold;"><?php echo $totalListes; ?></div>

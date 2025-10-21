@@ -92,8 +92,21 @@ if (isset($_POST['nom']) && isset($_POST['description']) && isset($_FILES['photo
         <h2><?php echo htmlspecialchars($event['nom']); ?></h2>
         
         <div class="card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #2196f3; margin-bottom: 20px;">
-            <h3 style="color: #0d47a1; margin: 0 0 5px 0;">📊 Statistiques</h3>
-            <p style="color: #0d47a1; margin: 0;"><strong><?php echo count($lists); ?> liste(s)</strong> | <strong>Total votes : <?php $totalVotes = 0; foreach($lists as $l) { $totalVotes += getVotes($l['id'], $conn); } echo $totalVotes; ?></strong></p>
+            <h3 style="color: #0d47a1; margin: 0 0 10px 0;">📊 Statistiques de l'événement</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div>
+                    <p style="color: #0d47a1; margin: 0; font-size: 0.9em;">📋 Listes</p>
+                    <p style="color: #0d47a1; margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold;"><?php echo count($lists); ?></p>
+                </div>
+                <div>
+                    <p style="color: #0d47a1; margin: 0; font-size: 0.9em;">✅ Votes enregistrés</p>
+                    <p style="color: #0d47a1; margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold;"><?php $totalVotes = 0; foreach($lists as $l) { $totalVotes += getVotes($l['id'], $conn); } echo $totalVotes; ?></p>
+                </div>
+                <div>
+                    <p style="color: #ff6f00; margin: 0; font-size: 0.9em;">⏳ Votes en attente</p>
+                    <p style="color: #ff6f00; margin: 5px 0 0 0; font-size: 1.5em; font-weight: bold;"><?php echo getNbParticipants($IDevent, $conn); ?></p>
+                </div>
+            </div>
         </div>
         
         <h3>🗳️ Listes candidates</h3>
