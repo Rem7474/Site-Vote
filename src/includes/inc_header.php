@@ -26,6 +26,10 @@ if ($orgaId) {
 $current = basename($_SERVER['PHP_SELF']);
 $showRetour = $current !== 'dashboard.php';
 
+// Support des URLs de retour personnalisées
+$retourUrl = isset($customReturnUrl) ? $customReturnUrl : $dashboardLink;
+$retourText = isset($customReturnText) ? $customReturnText : '← Dashboard';
+
 // Détection du contexte (admin ou public) pour les liens
 $isPublicPage = strpos($_SERVER['PHP_SELF'], '/public/') !== false;
 $dashboardLink = $isPublicPage ? '../admin/dashboard.php' : 'dashboard.php';
@@ -49,7 +53,7 @@ $logoutLink = $isPublicPage ? '../admin/logout.php' : 'logout.php';
                 🌓
             </button>
             <?php if ($showRetour): ?>
-                <a href="<?php echo $dashboardLink; ?>" class="btn-back">← Dashboard</a>
+                <a href="<?php echo $retourUrl; ?>" class="btn-back"><?php echo $retourText; ?></a>
             <?php endif; ?>
             <form action="<?php echo $logoutLink; ?>" method="post" style="display:inline;margin:0;">
                 <button type="submit" class="btn-logout">Déconnexion</button>

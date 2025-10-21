@@ -52,6 +52,10 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
     header('Refresh:1;url=event.php?id=' . $liste['refevent']);
     exit();
 }
+
+// Variable pour personnaliser le bouton retour dans le header
+$customReturnUrl = 'event.php?id=' . $liste['refevent'];
+$customReturnText = '← Retour';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -77,7 +81,7 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
     </script>
 </head>
 <body>
-<?php include 'inc_header.php'; ?>
+<?php include '../src/includes/inc_header.php'; ?>
 <?php include '../src/includes/inc_admin_menu.php'; ?>
 <div class="container">
     <h1>Modifier la liste : <?php echo htmlspecialchars($liste['nom']); ?></h1>
@@ -92,7 +96,6 @@ if (isset($_POST['nom']) && isset($_POST['description'])) {
         <img id="img-preview" src="<?php echo $liste['photo'] ? '../images/' . htmlspecialchars($liste['photo']) : ''; ?>" alt="Prévisualisation" style="max-width:120px;display:<?php echo $liste['photo'] ? 'block' : 'none'; ?>;margin-top:10px;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
         <input type="submit" value="Enregistrer les modifications">
     </form>
-    <a href="event.php?id=<?php echo $liste['refevent']; ?>">Retour à l'événement</a>
 </div>
 </body>
 </html>
