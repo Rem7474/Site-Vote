@@ -1,4 +1,7 @@
 <?php
+// Activer le mode debug en premier pour voir toutes les erreurs
+require_once __DIR__ . '/../src/config/debug.php';
+
 session_start();
 if(!isset($_SESSION['id'])){
     header('location:login.php');
@@ -91,11 +94,11 @@ $votesParJour = [];
 foreach($events as $event) {
     $eventId = $event['id'];
     $votes = getVotes($eventId, $conn);
-    $participants = getParticipants($eventId, $conn);
+    $nbParticipants = getNbParticipants($eventId, $conn);
     $listes = getListes($eventId, $conn);
     
     $totalVotes += count($votes);
-    $totalParticipants += count($participants);
+    $totalParticipants += $nbParticipants;
     $totalListes += count($listes);
     
     // Calculer votes par jour (derniers 7 jours)
