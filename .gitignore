@@ -8,7 +8,6 @@ logs/
 
 # Uploads
 images/
-public/assets/images/
 !images/.gitkeep
 
 # Vendor (Composer)
