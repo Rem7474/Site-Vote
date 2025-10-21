@@ -36,6 +36,14 @@ function getNbParticipants($IDevent, $conn){
     $result = $stmt->fetch();
     return $result[0];
 }
+// fonction pour supprimer tous les participants en attente pour un événement
+function deleteAllPendingParticipants($IDevent, $conn){
+    $sql = "DELETE FROM participants WHERE RefEvent = :IDevent";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':IDevent', $IDevent);
+    $stmt->execute();
+    return $stmt->rowCount();
+}
 // ********** TABLE EVENEMENTS : id, Nom, Univ, RefOrga **********
 //fonction pour ajouter un événement dans la base de données
 function addEvent($Nom, $Univ, $RefOrga, $conn){
